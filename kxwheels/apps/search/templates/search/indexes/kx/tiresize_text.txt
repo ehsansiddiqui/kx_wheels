@@ -1,0 +1,7 @@
+{{ object.sku }}
+{{ object.tire.name }}
+{{ object.tire.manufacturer.name }}
+{{ object.tire.category.name }}
+{{ object.treadwidth }}
+{{ object.profile }}
+{{ object.diameter }}

@@ -1,0 +1,52 @@
+{% extends "kx/base.html" %}
+{% load thumbnail kx_tags markdown_deux_tags %}
+
+{% block title %}{{ tire_manufacturer }}{% endblock %}
+
+{% block meta_title %}{{ tire_manufacturer.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ tire_manufacturer.meta_keywords }}{% endblock %}
+{% block meta_description %}{{ tire_manufacturer.meta_description }}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>{{ tire_manufacturer }} Tires</h1>
+    </div>
+
+    <div class="grid_3">
+        {% thumbnail tire_manufacturer.picture "125x80" as im %}
+            <img src="{{ im.url }}" alt="{{ tire.name }}">
+        {% empty %}{% endthumbnail %}
+    </div>
+    <div class="grid_13">
+
+    </div>
+    <div class="clear"></div>
+
+    <div class="grid_16">
+        {% include "kx/pagination.html" %}
+    </div>
+
+    {% for tire in tire_list %}
+        <div class="grid_3">
+            <div class="block">
+                <div class="vertical_category_icon {{ tire.category.slug }}"></div>
+                <a href="{{ tire.get_absolute_url }}">
+                    {% kxthumbnail tire.pictures.all.0 "med" as im %}
+                        <img src="{{ im.path }}" alt="{{ wheel.name }}">
+                    {% endkxthumbnail %}
+                    <br><span class="manufacturer_name">{{ tire.manufacturer }}</span><br>{{ tire }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="grid_16">
+        {% include "kx/pagination.html" %}
+    </div>
+    <div class="grid_16" style="font-size: 12px; line-height: 16px; padding-top: 10px; padding-bottom: 10px;">
+        {{ tire_manufacturer.description|markdown:"safe"  }}
+    </div>
+{% endblock %}

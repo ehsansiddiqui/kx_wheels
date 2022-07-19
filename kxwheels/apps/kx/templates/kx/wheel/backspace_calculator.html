@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Online Wheel Backspace Calculator in Canada{% endblock %}
+{% block meta_description %}Canada's online discount wheel website now offers a wheel backspace calculator.  Convert Metric offsets to Backspacing.{% endblock %}
+{% block meta_keywords %}Wheel Backspace Calculator Canada{% endblock %}
+
+{% block content %}
+    <div class="grid_16">
+        <table width="767" border="0" align="center">
+            <tr>
+                <td valign="top" width="759">&nbsp;<form>
+                    <p align="center"><img src="{% static "img/title_findwbackspace.png" %}"></p>
+                    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bgcolor="#FFFFFF">
+                        <tr valign="top" align="center" bgcolor="#b0e0e6"><td bgcolor="8b91cd"><table width="746" align="center" cellspacing="0" border="2" bordercolor="#FFFF00" bordercolorlight="#FFFF00" bordercolordark="#FFFF00">
+                            <tr valign="bottom" align="center" bgcolor="#4682b4">
+
+                                <td width="163" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">ENTER
+                                    WHEEL WIDTH INCHES</font></b></td>
+                                <td width="185" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">ENTER
+                                    WHEEL OFFSET MILLIMETERS</font></b></td>
+                                <td width="204" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">YOUR
+                                    WHEEL BACKSPACE INCHES</font></b></td>
+                                <td width="174" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000" bordercolordark="#000000"><div align="center"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">&nbsp;FRONT
+                                    OF WHEEL INCHES</font></b></div></td>
+                            </tr>
+                            <tr valign="top" align="center" bgcolor="#b0e0e6">
+                                <td bgcolor="#000000" width="163"><input type="text" name="rimwidtha" value="7" size="6" maxlength="5" onChange="calculatea(this.form)"></td>
+
+                                <td bgcolor="#000000" width="185"><input type="text" name="offseta" value="40" size="6" maxlength="5" onChange="calculatea(this.form)"></td>
+                                <td width="204" bgcolor="#000000"><div align="center">
+                                    <input type="text" name="resultbs" size="11">
+                                    <td width="174" bgcolor="#000000"><div align="center">
+                                        <input type="text" name="resultfs" size="11">
+                                    </div></td>
+                            </tr>
+                            <tr bgcolor="#b0e0e6" align="center">
+
+                                <td colspan="4" valign="middle" bgcolor="#000000" width="738"><div align="center">
+
+                                    <input type="button" value="FIND YOUR BACKSPACE" onClick="calculatea(this.form)">
+                                </div></td>
+                            </tr>
+                        </table></tr></table>
+                </form>
+
+                    <p align="center"><img src="{% static "img/title_findwoffset.png" %}"></p>
+                    <form><table width="450" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bgcolor="#FFFFFF">
+                        <tr valign="top" align="center" bgcolor="#b0e0e6"><td bgcolor="8b91cd"><table width="745" align="center" cellpadding="3" cellspacing="0" border="1" bordercolor="#FFFF00" bordercolorlight="#FFFF00" bordercolordark="#FFFF00">
+
+                            <tr valign="bottom" align="center" bgcolor="#4682b4">
+
+                                <td width="161" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">ENTER
+                                    WHEEL WIDTH INCHES</font></b></td>
+                                <td width="181" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000"><div align="center"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">CHOOSE
+                                    WHEEL OFFSET&nbsp;</font></b></div></td>
+                                <td width="200" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000"><b><font size="2" face="Verdana, Arial, Helvetica, sans-serif" color="#000000">ENTER
+                                    WHEEL BACKSPACE INCHES</font></b></td>
+                                <td width="169" valign="middle" bgcolor="#FFFF00" bordercolor="#000000" bordercolorlight="#000000"><b><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#000000">THIS
+                                    IS YOUR OFFSET MILLIMETERS</font></b></td>
+                            </tr>
+
+                            <tr valign="top" align="center" bgcolor="#b0e0e6">
+                                <td bgcolor="#000000" width="161"><input type="text" name="rimwidthb" value="7" size="6" maxlength="5" onChange="calculateb(this.form)"></td>
+
+                                <td bgcolor="#000000" width="181"><select name="from" size="1" onChange="calculateb(this.form)">
+                                    <option value="2">FIND OFFSET
+                                    <option value="1">FIND FRONT
+                                </select></td>
+                                <td bgcolor="#000000" width="200"><input type="text" name="space" value="5.57" size="6" maxlength="5" onChange="calculateb(this.form)"></td>
+                                <td width="169" bgcolor="#000000"><input type="text" name="resultoff" size="11"></td>
+                            </tr>
+
+                            <tr bgcolor="#b0e0e6" align="center">
+                                <td colspan="4" valign="middle" bgcolor="#000000" width="735"><div align="center">
+                                    <input type="button" value="FIND YOUR OFFSET" onClick="calculateb(this.form)">
+
+                                </div></td>
+                            </tr>
+                        </table></tr></table>
+                    </form>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+    <div class="clear"></div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        var msg
+        var check = new Array(6)
+        var field = new Array(6)
+        field[0] = "rimwidtha"
+        field[1] = "offseta"
+
+        field[2] = "rimwidthb"
+        field[3] = "space"
+
+        field[4] = "sectionwidth"
+        field[5] = "offsetb"
+
+        var min = new Array(6)
+        min[0] = 1
+        min[1] = -5000
+        min[2] = 1
+        min[3] = -200
+        min[4] = 5
+        min[5] = -5000
+
+        var max = new Array(6)
+        max[0] = 100
+        max[1] = 5000
+        max[2] = 100
+        max[3] = 200
+        max[4] = 5000
+        max[5] = 5000
+
+        function stripZeros(inputStr) {
+            var result = inputStr
+            while (result.substring(0,1) == "0") {
+                result = result.substring(1,result.length)
+            }
+            return result
+        }
+        function isEmpty(inputStr) {
+            if (inputStr == "" || inputStr == null) {
+                return true
+            }
+            return false
+        }
+        function notNumber(inputStr) {
+            for (var i = 0; i < inputStr.length; i++) {
+                var oneChar = inputStr.substring(i, i + 1)
+                if ((oneChar < "0" || oneChar > "9") && (oneChar!= ".")) {
+
+                    return true
+                }
+            }
+            return  false
+        }
+        function checkRange(value,min,max) {
+            if (value < min || value > max){
+                return true
+            }
+            return false
+        }
+        function isValida(a,b) {
+            check[0] = a
+            check[1] = b
+            var bad = 0
+            for (var n = 0; n<2; n++){
+                var flag = 0;
+                if (flag!=1) {
+                    if (checkRange(check[n],min[n],max[n])) {
+                        msg = msg + "\n -The "+ field[n] +
+                                " must be a value between " + min[n] +
+                                " and " + max[n] + "\n"
+                        bad = 1
+                    }
+                }
+            }
+            if (bad==1) {
+                return false}
+            else {
+                return true
+            }
+        }
+        function isValidb(c,d) {
+            check[2] = c
+            check[3] = d
+            var bad = 0
+            for (var n = 0; n<2; n++){
+                var flag = 0;
+                if (flag!=1) {
+                    if (checkRange(check[n],min[n],max[n])) {
+                        msg = msg + "\n -The "+ field[n] +
+                                " must be a value between " + min[n] +
+                                " and " + max[n] + "\n"
+                        bad = 1
+                    }
+                }
+            }
+            if (bad==1) {
+                return false}
+            else {
+                return true
+            }
+        }
+        function isValidc(e,f) {
+            check[4] = e
+            check[5] = f
+            var bad = 0
+            for (var n = 0; n<2; n++){
+                var flag = 0;
+                if (flag!=1) {
+                    if (checkRange(check[n],min[n],max[n])) {
+                        msg = msg + "\n -The "+ field[n] +
+                                " must be a value between " + min[n] +
+                                " and " + max[n] + "\n"
+                        bad = 1
+                    }
+                }
+            }
+            if (bad==1) {
+                return false}
+            else {
+                return true
+            }
+        }
+        function calculatea(form){
+            msg = ""
+            rimwidtha = stripZeros(form.rimwidtha.value)
+            offseta = stripZeros(form.offseta.value)
+            if (isValida(rimwidtha,offseta)) {
+                var rimwidtha=rimwidtha-0
+                var offseta=offseta-0
+                var aBackspace=(((rimwidtha+1)/2)+(offseta/25.4))
+                var aBackspaceResult = aBackspace.toString()
+                form.resultbs.value = (aBackspaceResult.substring(0,4)+" in")
+                var aFrontspace=(((rimwidtha+1)/2)-(offseta/25.4))
+                var aFrontspaceResult = aFrontspace.toString()
+                form.resultfs.value = (aFrontspaceResult.substring(0,4)+" in")
+            }
+            else {
+                alert(msg)
+                form.resultbs.value = ("")
+                form.resultfs.value = ("")
+            }
+        }
+        function calculateb(form){
+            msg = ""
+            rimwidthb = stripZeros(form.rimwidthb.value)
+            space = stripZeros(form.space.value)
+            if (isValidb(rimwidthb,space)) {
+                for (var i = 0; i<2; i++)
+                    if (form.from[i].selected)
+                        var afrom = form.from[i].value;
+                var afrom=afrom-0
+                var rimwidthb=rimwidthb-0
+                var space=space-0
+                if(afrom==1){
+                    var aOffset=((25.4*((rimwidthb+1)/2))-(25.4*space))
+                    var aOffsetResult = aOffset.toString()
+                    form.resultoff.value = (aOffsetResult.substring(0,4)+"")
+                }
+                if(afrom==2){
+                    var aOffset=((25.4*space)-(25.4*((rimwidthb+1)/2)))
+                    var aOffsetResult = aOffset.toString()
+                    form.resultoff.value = (aOffsetResult.substring(0,4)+"")
+                }
+            }
+            else {
+                alert(msg)
+                form.resultoff.value = ("")
+            }
+        }
+        function calculatec(form){
+            msg = ""
+            sectionwidth = stripZeros(form.sectionwidth.value)
+            offsetb = stripZeros(form.offsetb.value)
+            if (isValidb(sectionwidth,offsetb)) {
+                var sectionwidth=sectionwidth-0
+                var offsetb=offsetb-0
+                var bBackspace=(((sectionwidth/25.4)/2)+(offsetb/25.4))
+                var bBackspaceResult = bBackspace.toString()
+                form.resultbs2.value = (bBackspaceResult.substring(0,4)+" in")
+                var bFrontspace=(((sectionwidth/25.4)/2)-(offsetb/25.4))
+                var bFrontspaceResult = bFrontspace.toString()
+                form.resultfs2.value = (bFrontspaceResult.substring(0,4)+" in")
+            }
+            else {
+                alert(msg)
+                form.resultbs2.value = ("")
+                form.resultfs2.value = ("")
+            }
+        }
+    </script>
+{% endblock %}

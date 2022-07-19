@@ -1,0 +1,25 @@
+{% load shipping_tags %}{% spaceless %}<?xml version="1.0" ?>
+<eparcel>
+    <language>{{ config.LANG }}</language>
+    <ratesAndServicesRequest>
+        <merchantCPCID>{{ config.CPCID }}</merchantCPCID>
+        <fromPostalCode>{{ seller.postal_code }}</fromPostalCode>
+        <turnAroundTime>{{ config.TURN_AROUND_TIME }}</turnAroundTime>
+        <itemsPrice>{{ parcel.total }}</itemsPrice>
+        <lineItems>{% for item in parcel.items %}
+            <item>
+                <quantity>{{ item.qty }}</quantity>
+                <weight>{{ item.weight|unit:"kg" }}</weight>
+                <length>{{ item.length|unit:"cm" }}</length>
+                <width>{{ item.width|unit:"cm" }}</width>
+                <height>{{ item.height|unit:"cm" }}</height>
+                <description>{{ item.name }}</description>
+                <!--<readyToShip/>-->
+            </item>{% endfor %}
+        </lineItems>
+        <city>{{ buyer.city }}</city>
+        <provOrState>{{ buyer.province_code }}</provOrState>
+        <country>{{ buyer.country }}</country>
+        <postalCode>{{ buyer.postal_code }}</postalCode>
+    </ratesAndServicesRequest>
+</eparcel>{% endspaceless %}

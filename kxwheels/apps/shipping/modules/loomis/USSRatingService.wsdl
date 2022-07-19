@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax29="http://ws.rating.uss.transforce.ca/xsd"
+                  xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://ws.rating.uss.transforce.ca"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax211="http://dto.uss.transforce.ca/xsd"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  targetNamespace="http://ws.rating.uss.transforce.ca">
+    <wsdl:documentation>USSRatingService</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ax212="http://dto.uss.transforce.ca/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="qualified" targetNamespace="http://ws.rating.uss.transforce.ca/xsd">
+            <xs:import namespace="http://dto.uss.transforce.ca/xsd"/>
+            <xs:complexType name="GetVersionRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="version" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="SubmitManifestRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="data" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="SubmitManifestRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetAvailableServicesRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="delivery_country" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_postal_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_postal_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipping_date" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetAvailableServicesRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="getAvailableServicesResult" nillable="true"
+                                type="ax212:GetAvailableServicesResult"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetPublicRatesRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="shipment" nillable="true" type="ax212:Shipment"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetPublicRatesRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="getRatesResult" nillable="true"
+                                type="ax212:GetRatesResult"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="IsResidentialRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="consignee_name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="postal_code" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="IsResidentialRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="result" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RateShipmentRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipment" nillable="true" type="ax212:Shipment"/>
+                    <xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="RateShipmentRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="processShipmentResult" nillable="true"
+                                type="ax212:ProcessShipmentResult"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetRatesRq">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="password" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipment" nillable="true" type="ax212:Shipment"/>
+                    <xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetRatesRs">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="getRatesResult" nillable="true"
+                                type="ax212:GetRatesResult"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax210="http://ws.rating.uss.transforce.ca/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="qualified" targetNamespace="http://ws.rating.uss.transforce.ca">
+            <xs:import namespace="http://ws.rating.uss.transforce.ca/xsd"/>
+            <xs:element name="getVersion">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getVersionResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:GetVersionRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="submitManifest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:SubmitManifestRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="submitManifestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:SubmitManifestRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAvailableServices">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:GetAvailableServicesRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAvailableServicesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:GetAvailableServicesRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPublicRates">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:GetPublicRatesRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getPublicRatesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:GetPublicRatesRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="isResidential">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:IsResidentialRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="isResidentialResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:IsResidentialRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="rateShipment">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:RateShipmentRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="rateShipmentResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:RateShipmentRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRates">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="request" nillable="true" type="ax29:GetRatesRq"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getRatesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax29:GetRatesRs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                   targetNamespace="http://dto.uss.transforce.ca/xsd">
+            <xs:complexType name="GetAvailableServicesResult">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="additional_services" nillable="true"
+                                type="ax211:AdditionalService"/>
+                    <xs:element minOccurs="0" name="estimated_delivery_date" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="transit_time_guaranteed" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="type" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AdditionalService">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Shipment">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="billed_weight" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="billed_weight_unit" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="collect_shipper_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="consolidation_type" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="courier" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_address_id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_address_line_1" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_address_line_2" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_address_line_3" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_city" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_country" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_email" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_extension" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_phone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_postal_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_province" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="delivery_residential" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="dimension_unit" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="estimated_delivery_date" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="freight_charge" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="fuel_surcharge" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="manifest_num" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="packages" nillable="true"
+                                type="ax211:Package"/>
+                    <xs:element minOccurs="0" name="pickup_address_line_1" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_address_line_2" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_address_line_3" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_city" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_email" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_extension" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_phone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_postal_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="pickup_province" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="proforma" nillable="true" type="ax211:Proforma"/>
+                    <xs:element minOccurs="0" name="reported_weight_unit" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="service_type" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="shipment_info_num" nillable="true"
+                                type="ax211:ShipmentInfoNum"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="shipment_info_str" nillable="true"
+                                type="ax211:ShipmentInfoStr"/>
+                    <xs:element minOccurs="0" name="shipment_status" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipper_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipping_date" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="tax_charge_1" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="tax_charge_2" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="tax_code_1" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="tax_code_2" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="transit_time" type="xs:byte"/>
+                    <xs:element minOccurs="0" name="transit_time_guaranteed" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="user_id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="voided" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="zone" type="xs:byte"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Package">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="billed_weight" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="dim_weight" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="dim_weight_flag" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="min_weight_flag" type="xs:boolean"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="package_info_num" nillable="true"
+                                type="ax211:PackageInfoNum"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="package_info_str" nillable="true"
+                                type="ax211:PackageInfoStr"/>
+                    <xs:element minOccurs="0" name="package_num" type="xs:int"/>
+                    <xs:element minOccurs="0" name="package_reference" type="xs:long"/>
+                    <xs:element minOccurs="0" name="reported_weight" nillable="true" type="xs:decimal"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PackageInfoNum">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PackageInfoStr">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Proforma">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="broker_address_line_1" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_city" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_country" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_extension" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_phone" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_postal_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="broker_province" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="business_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="currency_of_declared_value" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="permit_num" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="proforma_items" nillable="true"
+                                type="ax211:ProformaItem"/>
+                    <xs:element minOccurs="0" name="reason_for_export" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="reference" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="status" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ProformaItem">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="country_of_origin" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="description" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="hs_code" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="province_of_origin" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="quantity" type="xs:int"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ShipmentInfoNum">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:decimal"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ShipmentInfoStr">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="inserted_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updated_on" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="value" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GetRatesResult">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="errors" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="messages" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ProcessShipmentResult">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="errors" nillable="true" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="messages" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="shipment" nillable="true" type="ax211:Shipment"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getAvailableServicesRequest">
+        <wsdl:part name="parameters" element="ns:getAvailableServices"/>
+    </wsdl:message>
+    <wsdl:message name="getAvailableServicesResponse">
+        <wsdl:part name="parameters" element="ns:getAvailableServicesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getRatesRequest">
+        <wsdl:part name="parameters" element="ns:getRates"/>
+    </wsdl:message>
+    <wsdl:message name="getRatesResponse">
+        <wsdl:part name="parameters" element="ns:getRatesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="rateShipmentRequest">
+        <wsdl:part name="parameters" element="ns:rateShipment"/>
+    </wsdl:message>
+    <wsdl:message name="rateShipmentResponse">
+        <wsdl:part name="parameters" element="ns:rateShipmentResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getPublicRatesRequest">
+        <wsdl:part name="parameters" element="ns:getPublicRates"/>
+    </wsdl:message>
+    <wsdl:message name="getPublicRatesResponse">
+        <wsdl:part name="parameters" element="ns:getPublicRatesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="submitManifestRequest">
+        <wsdl:part name="parameters" element="ns:submitManifest"/>
+    </wsdl:message>
+    <wsdl:message name="submitManifestResponse">
+        <wsdl:part name="parameters" element="ns:submitManifestResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getVersionRequest">
+        <wsdl:part name="parameters" element="ns:getVersion"/>
+    </wsdl:message>
+    <wsdl:message name="getVersionResponse">
+        <wsdl:part name="parameters" element="ns:getVersionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="isResidentialRequest">
+        <wsdl:part name="parameters" element="ns:isResidential"/>
+    </wsdl:message>
+    <wsdl:message name="isResidentialResponse">
+        <wsdl:part name="parameters" element="ns:isResidentialResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="USSRatingServicePortType">
+        <wsdl:operation name="getAvailableServices">
+            <wsdl:input message="ns:getAvailableServicesRequest" wsaw:Action="urn:getAvailableServices"/>
+            <wsdl:output message="ns:getAvailableServicesResponse" wsaw:Action="urn:getAvailableServicesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getRates">
+            <wsdl:input message="ns:getRatesRequest" wsaw:Action="urn:getRates"/>
+            <wsdl:output message="ns:getRatesResponse" wsaw:Action="urn:getRatesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="rateShipment">
+            <wsdl:input message="ns:rateShipmentRequest" wsaw:Action="urn:rateShipment"/>
+            <wsdl:output message="ns:rateShipmentResponse" wsaw:Action="urn:rateShipmentResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPublicRates">
+            <wsdl:input message="ns:getPublicRatesRequest" wsaw:Action="urn:getPublicRates"/>
+            <wsdl:output message="ns:getPublicRatesResponse" wsaw:Action="urn:getPublicRatesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="submitManifest">
+            <wsdl:input message="ns:submitManifestRequest" wsaw:Action="urn:submitManifest"/>
+            <wsdl:output message="ns:submitManifestResponse" wsaw:Action="urn:submitManifestResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getVersion">
+            <wsdl:input message="ns:getVersionRequest" wsaw:Action="urn:getVersion"/>
+            <wsdl:output message="ns:getVersionResponse" wsaw:Action="urn:getVersionResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="isResidential">
+            <wsdl:input message="ns:isResidentialRequest" wsaw:Action="urn:isResidential"/>
+            <wsdl:output message="ns:isResidentialResponse" wsaw:Action="urn:isResidentialResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="USSRatingServiceSoap11Binding" type="ns:USSRatingServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getAvailableServices">
+            <soap:operation soapAction="urn:getAvailableServices" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRates">
+            <soap:operation soapAction="urn:getRates" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rateShipment">
+            <soap:operation soapAction="urn:rateShipment" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPublicRates">
+            <soap:operation soapAction="urn:getPublicRates" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="submitManifest">
+            <soap:operation soapAction="urn:submitManifest" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersion">
+            <soap:operation soapAction="urn:getVersion" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="isResidential">
+            <soap:operation soapAction="urn:isResidential" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="USSRatingServiceSoap12Binding" type="ns:USSRatingServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getAvailableServices">
+            <soap12:operation soapAction="urn:getAvailableServices" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRates">
+            <soap12:operation soapAction="urn:getRates" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rateShipment">
+            <soap12:operation soapAction="urn:rateShipment" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPublicRates">
+            <soap12:operation soapAction="urn:getPublicRates" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="submitManifest">
+            <soap12:operation soapAction="urn:submitManifest" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersion">
+            <soap12:operation soapAction="urn:getVersion" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="isResidential">
+            <soap12:operation soapAction="urn:isResidential" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="USSRatingServiceHttpBinding" type="ns:USSRatingServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="getAvailableServices">
+            <http:operation location="getAvailableServices"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRates">
+            <http:operation location="getRates"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rateShipment">
+            <http:operation location="rateShipment"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getPublicRates">
+            <http:operation location="getPublicRates"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="submitManifest">
+            <http:operation location="submitManifest"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVersion">
+            <http:operation location="getVersion"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="isResidential">
+            <http:operation location="isResidential"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="USSRatingService">
+        <wsdl:port name="USSRatingServiceHttpsSoap11Endpoint" binding="ns:USSRatingServiceSoap11Binding">
+            <soap:address
+                    location="https://sandbox.loomis-express.com/axis2/services/USSRatingService.USSRatingServiceHttpsSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="USSRatingServiceHttpsSoap12Endpoint" binding="ns:USSRatingServiceSoap12Binding">
+            <soap12:address
+                    location="https://sandbox.loomis-express.com/axis2/services/USSRatingService.USSRatingServiceHttpsSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="USSRatingServiceHttpsEndpoint" binding="ns:USSRatingServiceHttpBinding">
+            <http:address
+                    location="https://sandbox.loomis-express.com/axis2/services/USSRatingService.USSRatingServiceHttpsEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

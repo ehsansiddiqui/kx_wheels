@@ -1,0 +1,190 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify shop_tags shop_filters staticfiles %}
+
+{% block extrahead %}{{ block.super }}
+
+<script type="text/javascript" src="{{ jsi18nurl|default:"../../../jsi18n/" }}"></script>
+{{ media }}
+<style type="text/css" media="screen">
+div.note {
+    margin:20px 0;
+    /*
+    padding: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;*/
+}
+
+div.staff_note h2 {
+    color:#333;
+    background: #ccc; /* for non-css3 browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#ccc'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#ccc)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #efefef,  #ccc); /* for firefox 3.6+ */
+}
+
+div.note_content {
+    padding:10px;
+    font-size:11px;
+}
+</style>
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+{% endblock %}
+
+{% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
+
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+     <a href="../../../admin/">{% trans "Home" %}</a> &rsaquo;
+     <a href="/admin/shop/">Shop</a> &rsaquo; 
+     <a href="/admin/shop/order/">Orders</a> &rsaquo; 
+     {{ order.pk }}
+</div>
+{% endif %}{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        {% block object-tools %}
+        {% if change %}{% if not is_popup %}
+        <ul class="object-tools"><li><a href="history/" class="historylink">{% trans "History" %}</a></li>
+            {% if has_absolute_url %}<li><a href="../../../r/{{ content_type_id }}/{{ object_id }}/" class="viewsitelink">
+                {% trans "View on site" %}</a></li>{% endif%}
+        </ul>
+        {% endif %}{% endif %}
+        {% endblock %}
+      <table class="shop_list" width="100%">
+      	<tr>
+    	  <td width="33%">
+    		<strong>Bill to:</strong><br>
+            <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+    		{{ order.billing_address_1 }}, <br>
+    		{{ order.billing_city }}, {{ order.billing_province }} <br> 
+    		{{ order.billing_postal_code }}<br>
+    		{{ order.billing_country }}<br><br>
+            Phone: {{ order.customer_phone }}<br>
+    	  </td>
+    	  <td width="33%">
+    		<strong>Ship to:</strong><br>
+            <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+    		{{ order.shipping_address_1 }}, <br>
+    		{{ order.shipping_city }}, {{ order.shipping_province }} <br> 
+    		{{ order.shipping_postal_code }}<br>
+    		{{ order.shipping_country }}<br>
+    		
+    	  </td>
+    	  <td width="34%" align="right" valign="top">
+    		<h1>Order #{{ order.id}}</h1>
+    		Date: {{ order.created_at|date:"d M, Y"}}<br>
+    		User: {{ order.customer }}<br>
+            {% if order.po %}PO: {{ order.po }}<br>{% endif %}
+    	  </td>
+    	</tr>
+      </table>
+
+      <p>
+      {% if order.customer_notes %}<p id="order_notes"><strong>Customer notes:</strong> 
+          {{ order.customer_notes }}</p><br>{% else %}<br><br>{% endif %}
+      </p>
+      
+      <table class="shop_list" width="100%">
+        <thead><tr>
+            <th width="15%">SKU</th>
+            <th width="50%">Product</th>
+            <th width="12%">Unit Price</th>
+            <th width="11%">Qty.</th>
+            <th width="12%">Extended Price</th>
+        </tr></thead>
+        <tbody>
+    	{% for item in order.items.all %}
+    	<tr class="{% cycle 'odd_row' 'even_row' %}">
+    	  <td width="15%">{{ item.product.sku }}</td>
+    	  <td width="40%">
+    	      {{ item.product.name }}
+    	      <ul>{% for item_opt in item.options.all %}
+    	          <li>{{ item_opt.name }}: {{ item_opt.value }}
+    	              ({{ item_opt.price_adjustment|currency }})</li>{% endfor %}
+    	      </ul>
+    	  </td>
+    	  <td align="right">{{ item.get_price|currency }}</td>
+    	  <td width="10%" align="center">{{ item.qty }}</td>
+    	  <td align="right">{{ item.get_extended_price|currency }}</td>
+    	</tr>
+    	{% endfor %}
+    	
+    	<tr style="border-top:2px solid #ccc">
+    	    <td colspan="4" align="right">Subtotal:</td>
+    	    <td align="right"><strong>{{ order.get_subtotal|currency }}</strong></td>
+    	</tr>
+    	
+    	{% for tax in order.get_tax_summary %}
+	    <tr>
+	        <td colspan="4" align="right">{{ tax.0 }}:</td>
+	        <td align="right"><strong>{{ tax.1|currency }}</strong></td>
+	    </tr>
+	    {% endfor %}
+	    
+	    {% if order.discount %}
+	    <tr>
+	        <td colspan="4" align="right">{{ order.get_discount_summary.0 }}:</td>
+	        <td align="right"><strong>{{ order.get_discount_summary.1|currency }}</strong></td>
+	    </tr>
+	    {% endif %}
+	    
+	    <tr>
+	        <td colspan="4" align="right">{{ order.get_shipping_summary.0 }}:</td>
+	        <td align="right"><strong>{{ order.get_shipping_summary.2|currency }}</strong></td>
+	    </tr>
+	    
+	    <tr style="border-top:2px solid #ccc">
+	        <td colspan="4" align="right">Total payable:</td>
+	        <td align="right"><strong>{{ order.get_total|currency }}</strong></td>
+	    </tr>
+      </table>
+      
+        <br><br>
+        <h1>Payment(s)</h1>
+        <hr>
+        <table class="shop_list" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Gateway</th>
+                    <th>Auth Code</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for payment in order.payments.all %}
+                <tr>
+                    <td>{{ payment.trans_id }}</td>
+                    <td>{{ payment.trans_type }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.gateway }}</td>
+                    <td>{{ payment.auth_code }}</td>
+                    <td>{{ payment.message }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+       </table>
+       
+ 
+      <br><br>
+      <h1>Order notes</h1>
+      <hr>
+      {% for note in order.notes.all %}
+      <div class="module note {% if note.created_by.is_staff %}staff_note{% endif %}">
+          <h2>{% if note.created_by.first_name %}{{ note.created_by.first_name }}
+                      {% else %}{{ note.created_by.username|capfirst }}{% endif %} 
+                  wrote {{ note.created_at|timesince }} ago</h2>
+          <div class="note_content">{{ note.note }}</div>
+      </div>
+      {% endfor %}
+    </div>
+{% endblock %}

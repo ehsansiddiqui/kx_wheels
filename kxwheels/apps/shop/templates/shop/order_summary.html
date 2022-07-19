@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load shop_tags shop_filters %}
+
+{% block extra_head %}
+    <style type="text/css" media="screen">
+        #order_total { font-weight:bold; font-size:2em; }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+    var order_total = ({{ order.get_total }});
+    
+    var shipping_quotes = new Array();
+    {% for sq in cart.shipping_quotes.all %}
+    shipping_quotes.push([{{ sq.pk }}, "{{ sq.name }}", {{ sq.cost }}, "{{ sq.cost|currency }}"]){% endfor %}
+        
+    function displayTotal() {
+        i = $("#shipping_quotes option:selected").index();
+        $("#order_total").text(order_total+shipping_quotes[i][2]);
+    }
+    
+    $(function() {
+        displayTotal();        
+        var options = [];
+        $.each(shipping_quotes, function(i, value) {
+            options.push('<option value="'+shipping_quotes[i][0]+'">'+shipping_quotes[i][1]+' ('+shipping_quotes[i][3]+')'+'</option>');
+        });
+        $("#shipping_quotes").html(options.join(''));
+        $("#shipping_quotes").change(function(){
+            displayTotal();
+        });
+    });
+    </script>
+{% endblock %}
+
+{% block content %}
+<h2>Your order</h2>
+
+{% if order.items.all %}
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th align="left">Item No.</th>
+            <th align="left">Name</th>
+            <th align="right">Unit Price</th>
+            <th>Qty.</th>
+            <th align="right">Item total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr class="{% cycle 'odd_row' 'even_row' %}">
+            <td width="15%">{{ item.product.pk }}</td>
+            <td width="35%">
+                {{ item.product.name }}
+                <ul>{% for item_opt in item.options.all %}
+        	          <li>{{ item_opt.name }}: {{ item_opt.value }}
+        	              ({{ item_opt.price_adjustment|currency }})</li>{% endfor %}
+                </ul>
+            </td>
+            <td align="right">{{ item.get_price|currency }}</td>
+            <td width="20%" align="center">{{ item.qty }}</td>
+            <td align="right">{{ item.get_extended_price|currency }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr style="border-top:2px solid #000">
+            <td colspan="4" align="right">Subtotal:</td>
+            <td align="right"><strong>{{ order.get_subtotal|currency }}</strong></td>
+        </tr>
+
+
+        {% if not order.shipping_postal_code %}
+	        <tr>
+	            <td align="left">Postal Code:</td>
+	            <td colspan="4" align="left">
+                    is missing
+	            </td>
+	        </tr>
+        {% else %}
+	        {% for tax in order.get_tax_summary %}
+	        <!-- TAX -->
+	        <tr>
+	            <td colspan="4" align="right">{{ tax.0 }}:</td>
+	            <td align="right"><strong>{{ tax.1|currency }}</strong></td>
+	        </tr>
+	        {% endfor %}
+	        
+            <!-- DISCOUNT -->
+	        <tr>
+    	        <td colspan="4" align="right">
+    	            Discount Code:
+    	            <form action="{% url "shop_order_update" %}" method="post"> {% csrf_token %}
+                        {% for field in discount_code_form %}
+                            {{ field }}{% for error in field.errors %}{{ error|striptags }}{% endfor %}
+                        {% endfor %}
+                        <input type="submit" name="submit" value="Update">
+                    </form>
+    	        </td>
+    	        <td align="right"><strong>{{ order.get_discount_summary.1|currency }}</strong></td>
+    	    </tr>
+	        
+	        <!-- SHIPPING -->
+	        <tr>
+		        <td colspan="4" align="right">
+		            Shipping (estimate):
+		            <form action="{% url "shop_order_update" %}" method="post"> {% csrf_token %}
+		            {% for field in shipping_form %}
+                        {{ field }}{% for error in field.errors %}{{ error|striptags }}{% endfor %}
+                    {% endfor %}
+                    <input type="submit" name="submit" value="Update">
+		            </form>
+		        </td>
+		        <td align="right"><strong>{{ order.shipping_cost|currency }}</strong></td>
+		    </tr>
+
+            <!-- ORDER TOTAL -->
+	        <tr>
+	            <td colspan="4" align="right">Total:</td>
+	            <td align="right"><div id="order_total">{{ order.get_total|currency }}</div></td>
+	        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="5" align="right">
+                <p>&nbsp;</p>
+                <form action="{% url "shop_order_summary" %}" method="post" accept-charset="utf-8">
+                    {% csrf_token %}
+                    <input type="submit" value="Proceed to checkout">
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<h1>... is empty</h1>
+{% endif %}
+{% endblock %}

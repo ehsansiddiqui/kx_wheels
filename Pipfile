@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[dev-packages]
+prettyprint = "*"
+
+[packages]
+"https://github.com/downloads/juanre/magnitude/magnitude-0.9.4.tar.gz" = "*"
+django = "==1.8.18"
+django-registration = "*"
+psycopg2 = "*"
+django-mptt = "*"
+babel = "*"
+sorl-thumbnail = "*"
+django-haystack = "*"
+pillow = "*"
+pysolr = "*"
+django-recaptcha = "*"
+recaptcha-client = "*"
+django-crequest = "*"
+pip = "*"
+django-markdown-deux = "*"
+beautifulsoup = "*"
+python-memcached = "*"
+rollbar = "*"
+uwsgi = "*"
+zeep = "*"

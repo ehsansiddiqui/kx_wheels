@@ -1,0 +1,48 @@
+table#shopping_cart { 
+    border-top: 1px #ccc solid;
+    border-bottom: 1px #ccc solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    margin-top: 0px;
+}
+
+table#shopping_cart thead {
+    background-color: #fafafa;
+    border-bottom: 1px #ccc solid;
+}
+
+table#shopping_cart th {
+    padding:6px;
+    border-left: 1px #e6e6e6 solid;
+    border-right: 1px #e6e6e6 solid;
+}
+
+table#shopping_cart td { 
+    padding:6px;
+    border-left: 1px #e6e6e6 solid;
+    border-right: 1px #e6e6e6 solid;
+    border-bottom: 1px #e6e6e6 solid;
+}
+table#shopping_cart  input[name=quantity]{ 
+    width:30px;
+}
+
+table#shopping_cart li {
+    font-size: .8em;
+    list-style: none;
+    line-height:1.2em;
+}
+.align_right { 
+    text-align:right;
+}
+.align_center {
+    text-align:center;
+}
+.error ul { 
+    display:none;
+}
+/*** Receipt ***/
+.receipt {
+    /*border: 1px solid #e6e6e6;*/
+}
+

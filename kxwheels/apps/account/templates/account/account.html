@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load account_tags %}
+
+{% block content %}
+    <div class="grid_16">
+        <h2>Account</h2>
+        {{ user.get_full_name }} <a href="{% url "auth_password_change" %}">(Change Password)</a><br>
+        {{ user.email }}
+    </div>
+    <div class="clear"></div>
+
+    <div class="vspacer_60"></div>
+     <div class="grid_8">
+        <h2>
+            Billing
+
+            {% if billing_profile %}
+                <a href="{% url "auth_profile_update" slug="billing" %}">(edit)</a>
+            {% endif %}
+        </h2>
+
+        {% if billing_profile %}
+            <p>
+                <strong>{{ billing_profile.get_full_name }} {{ billing_profile.first_name }} {{ billing_profile.last_name }}</strong><br>
+                {{ billing_profile.address_1 }},<br>
+                {% if billing_profile.address_2 %}
+                    {{ billing_profile.address_2 }},<br>
+                {% endif %}
+                {{ billing_profile.city }}, {{ billing_profile.province }}<br>
+                {{ billing_profile.postal_code }}<br>
+                {{ billing_profile.country }}
+            </p>
+
+            <p>
+                Landline: {{ billing_profile.landline_phone|telephone }}<br>
+                Cell: {{ billing_profile.cell_phone|telephone }}<br>
+                Fax: {{ billing_profile.fax|telephone }}
+            </p>
+
+       <!--
+       <form action="{% url "auth_profile_create" slug="billing" %}">
+              <input type="submit" name="button" id="button" value="Submit" />
+       </form>
+       -->
+{% else %}
+<p><a href="{% url "auth_profile_create" slug="billing" %}">Add billing address.</a></p>
+        {% endif %}
+    </div>
+    <div class="grid_8">
+        <h2>
+            Shipping
+            {% if shipping_profile %}
+                <a href="{% url "auth_profile_update" slug="shipping" %}">(edit)</a>
+            {% endif %}
+        </h2>
+
+        {% if shipping_profile %}
+            <strong>{{ shipping_profile.get_full_name }}</strong><br>
+            <p>{{ shipping_profile.address_1 }},<br>
+            {% if shipping_profile.address_2 %}
+                {{ shipping_profile.address_2 }},<br>
+            {% endif %}
+            {{ shipping_profile.city }}, {{ shipping_profile.province }}<br>
+            {{ shipping_profile.postal_code }}<br>
+            {{ shipping_profile.country }}
+            </p>
+            
+            <p>
+                Landline: {{ shipping_profile.landline_phone|telephone }}<br>
+                Cell: {{ shipping_profile.cell_phone|telephone }}<br>
+                Fax: {{ shipping_profile.fax|telephone }}
+            </p>
+        {% else %}
+            <p><a href="{% url "auth_profile_create" slug="shipping" %}">Add shipping address.</a></p>
+        {% endif %}
+
+    </div>
+    {% if subdomain and user == subdomain_profile.user %}
+    <br clear="all" />
+    <div class="grid_8">
+    <a href="/account/markup/">Edit Manufacturer Markups</a> | 
+    <a href="/account/orders/">View Orders</a>
+    </div>
+    {% else %}
+    <!--
+      {% if subdomain_profile.subdomain %}
+        <p>You have a subdomain "{{ subdomain_profile.subdomain }}" registered.</p>
+        <a href="{{ subdomain_profile.subdomain }}.wheels-canada.com/account">Goto your subdomain</a>
+      {% endif %}
+    -->
+    {% endif %}
+   
+    <div class="clear"></div>
+
+    <div class="vspacer_60"></div>
+{% endblock %}

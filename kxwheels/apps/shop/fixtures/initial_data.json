@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "shop.setting", "fields": {"province": 1, "city": "Vancouver", "fax": "6041235555", "phone": "6041234567", "street1": "123 Main Street", "street2": null, "store_name": "Nav", "postal_code": "V3W3D4", "store_description": null, "store_orders_email": "orders@nav.ca", "store_email": "info@nav.ca"}}]

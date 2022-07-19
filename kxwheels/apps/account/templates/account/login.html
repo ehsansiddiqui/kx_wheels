@@ -1,0 +1,40 @@
+{% extends "account/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+
+    <div class="grid_16">
+
+        <h2>Login</h2>
+
+        <form method="post" id="login" action="{% url "login_user" %}">
+            <strong style="font-size:16px;margin-right: 10%;margin-left: 12%;">Email: </strong><input type="email" name="email" value="" /><br>
+            <strong style="font-size:16px;margin-right: 7%;margin-left: 12%;">Password: </strong><input type="password" name="password" value="" /><br>
+            {% if error %}
+                <br><h3 style="margin-left: 23%;color: RED;font-size: 21px;"> {{error}}</h3>
+            {% endif %}
+
+            <!--{% include "account/form_snippet.html" with form=form %}-->
+
+            <input type="hidden" name="next" value="/">
+
+            <div class="form_row">
+                <div class="grid_3 alpha">{% csrf_token %}&nbsp;</div>
+                <div class="grid_5">
+                    <input type="submit" name="submit" value="Login">
+                    <p>&nbsp;</p>
+                    <p><a href="{% url "auth_password_reset" %}">Forgot your password?</a></p>
+                    <p><a href="{% url "registration_register" %}">Create an account</a>.</p>
+                    
+                </div>
+                <div class="clear"></div>
+            </div>
+<p><a href="http://eepurl.com/YxqQb" target="_blank">Sign Up for our Newsletter to receive Product Information, KX News, Discount Coupons & Promotions.</a></p>
+        </form>
+
+    </div>
+    <div class="clear"></div>
+
+{% endblock %}

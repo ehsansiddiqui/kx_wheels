@@ -1,0 +1,445 @@
+{% extends "kx/base.html" %}
+{% load staticfiles %}
+{{ staticfiles }}
+{% load shop_filters shop_tags thumbnail kx_tags kx_filters %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "plugins/fancybox2/jquery.fancybox-1.3.4.css" %}" type="text/css" media="screen" />
+    <style type="text/css">
+        {% if wheelsizes %}
+            .pagination { display: block}
+        {% endif %}
+
+    </style>
+    
+    
+    
+{% endblock %}
+
+{% block extra_body %}{% endblock %}
+
+{% block search_filter %}
+    <form method="get" id="wheel_vehicle_search" action="{% url "wheel_vehicle_search" %}">
+        <div>{{ form.manufacturer.label_tag }}<br>{{ form.manufacturer }}</div>
+        <div>{{ form.finish.label_tag }}{{ form.finish }}</div>
+        <div>Price range:
+            {{ form.price_from }}<br>
+            {{ form.price_to }}
+        </div>
+        <div>
+            {{ form.diameter.label_tag }}{{ form.diameter }}
+        </div>
+        <div><input type="submit" value="Search" class="button"></div>
+    </form>
+{% endblock %}
+
+
+{% block main_content %}
+
+    <div class="main" id="search_results">
+
+    <div class="grid_13">
+        <h1>Search Results</h1>
+    </div>
+
+    <div class="grid_13 django">
+        <div class="pagination">
+            <span class="prev">{% if wheels.has_previous %}<a href="?page={{ wheels.previous_page_number }}&{{ params }}" onclick="startLoad()">&laquo; Prev</a>{% else %}&laquo; Prev{% endif %}</span>
+            <span class="page">Page {{ wheels.number }} of {{ wheels.paginator.num_pages }}</span>
+            <span class="next">{% if wheels.has_next %}<a href="?page={{ wheels.next_page_number }}&{{ params }}" onclick="startLoad()">Next &raquo;</a>{% else %}Next &raquo;{% endif %}</span>
+        </div>
+  
+    </div>
+
+    {% comment %}
+        <div class="grid_13">
+            <style type="text/css">ul.temp li { margin-left: 50px; list-style: disc;}</style>
+            {% for wheel, values in results.items %}
+                <ul class="temp">
+                    <li>{{ wheel }}
+                        <ul>{% for diameter, sizes in values.sizes.items %}
+                            <li>{{ diameter }}
+                                {% for size in sizes %}
+                                    {% if size|fits_front:vehicle and size|fits_rear:vehicle%}
+                                        (FRONT & REAR - {{ size.wheelwidth }} - {{ size.offset }} - {{ size.sku }})
+                                    {% endif %}
+
+                                    {% if size|fits_front:vehicle and not size|fits_rear:vehicle %}
+                                        (FRONT - {{ size.wheelwidth }} - {{ size.offset }} - {{ size.sku }})
+                                    {% endif %}
+
+                                    {% if size|fits_rear:vehicle and not size|fits_front:vehicle %}
+                                        (REAR - {{ size.wheelwidth }} - {{ size.offset }} - {{ size.sku }})
+                                    {% endif %}
+                                {% endfor %}
+
+
+                            </li>{% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+        {% endcomment %}
+
+
+    <div class="grid_13">
+        {% for wheelsize in wheelsizes %}
+            <form action="" method="post" class="cart" id="{{ wheelsize.manufacturer }}" >
+                <div class="grid_6 alpha wheel_vehicle_box" id="id_{{ wheelsize.wheel_slug }}">
+                    <h3>{{ wheelsize.manufacturer }}<br><span>{{ wheelsize.wheel }}</span></h3>
+
+                    <div class="mid">
+                        <div class="thumbnail">
+                            <a href="{% url "wheel_wheel_detail" wheelsize.manufacturer_slug  wheelsize.wheel_slug %}" class="view_details">
+
+                             <img src="{{ wheelsize.thumbnail }}">
+                            View Pictures &amp; Details
+                            </a>
+                        </div>
+
+                        <input type="hidden" name="wheel" value="id_{{ wheelsize.wheel_slug}}">
+                        <ul class="sizes">
+                            <li><strong>Available Sizes:</strong></li>
+                            {% for diameter, sizes in wheelsize.sizes.items %}
+                                {% if sizes|has_front:vehicle %}
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="{{ wheelsize.wheel_slug }}"
+                                                   value="{{ diameter }}"
+                                                   {% if forloop.counter == 1 %}checked="checked"{% endif %}>
+                                            <strong>{{ diameter }}"</strong> - {% get_price sizes.0 user subdomain %}
+                                        </label>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <div class="clear"></div>
+                    </div> <!-- .mid -->
+
+                    {% for diameter, sizes in wheelsize.sizes.items %}
+                        <div id="id_{{ wheelsize.wheel_slug }}__{{ diameter }}" class="wheelsizes {% if forloop.counter != 1 %}hidden{% endif %}">
+
+                            {% if sizes|has_front:vehicle %}
+                                <div>
+                                    <div class="front both">
+                                        <h4>Wheel Fitment</h4>
+                                        <select name="object_id_front_{{ diameter }}" id="id_object_id_front_{{ diameter }}">
+                                            {# Wheelsize fits both front and rear or just front #}
+                                            {% for size in sizes %}
+                                                {% if size|fits_front:vehicle and size|fits_rear:vehicle%}
+                                                    <option value="{{ size.pk }}">{{ size.diameter }} x {{ size.wheelwidth }}  [{{ size.offset }}mm]</option>
+                                                {% endif %}
+                                                {% if size|fits_front:vehicle and not size|fits_rear:vehicle %}
+                                                    <option value="{{ size.pk }}">{{ size.diameter }} x {{ size.wheelwidth }}  [{{ size.offset }}mm]</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select><br>
+                                        <strong>Bolt Pattern:</strong> {{ vehicle.boltpattern }}<br>
+                                        <div class="ws_finish"></span><strong>Finish:</strong> <div style="display:inline-block; width: 110px; height: 16px; overflow:hidden;"> {{ wheelsize.finish }}</div></div>
+                                        <strong>Availability:</strong> {{ size.availability }}<br>
+                                        <strong>Rec. Tire:</strong>
+					                    <div style="display:inline-block; width: 75px; height: 16px; overflow:hidden;">
+                                        {% for size in sizes %}
+                                                        {% for rt in size.front_recommended_tires %}
+                                                <a href="{% url "tire_tiresize_search" %}?{{ rt.querystring }}">{{ rt.tpd }}</a><br>
+                                                <input type="hidden" name="front_recommended_tire" value="{% url "tire_tiresize_search" %}?{{ rt.querystring }}">
+                                            {% endfor %}
+                                            {% endfor %}
+                                        
+										</div>
+                                    </div>
+
+                                    {% if sizes|has_rear:vehicle %}
+                                        <div class="rear">
+                                            <h4>Rear Fitment</h4>
+                                            <select name="object_id_rear_{{ diameter }}" id="id_object_id_rear_{{ diameter }}">
+                                                <option value="">Optional Rear</option>
+                                                {# Wheelsize fits rear only #}
+                                                {% for size in sizes %}
+                                                    {% if size|fits_rear:vehicle and not size|fits_front:vehicle%}
+                                                        <option value="{{ size.pk }}">{{ size.diameter }} x {{ size.wheelwidth }} [{{ size.offset }}mm]</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select><br>
+                                            <div class="rear_display">
+                                                <strong>Bolt Pattern:</strong> {{ vehicle.boltpattern }}<br>
+                                                <div class="ws_finish"></span><strong>Finish: </strong><div style="display:inline-block; width: 110px; height: 16px; overflow:hidden;"> {{ wheelsize.finish }}</div></div>
+                                                <strong>Availability:</strong> {{ size.availability }}<br>
+                                                <strong>Rec. Tire:</strong>
+						<div style="display:inline-block; width: 75px; height: 16px; overflow:hidden;">
+                                                    {% for size in sizes %}
+                                                        {% for rt in size.rear_recommended_tires %}
+                                                            <a class="rear_recommended_tires" href="{% url "tire_staggered_search" %}?{{ rt.querystring }}">
+                                                                {{ rt.rear_tpd }}</a>
+                                                            <input type="hidden" name="rear_recommended_tire" value="{% url "tire_staggered_search" %}?{{ rt.querystring }}">
+                                                            {{ rt.rear_tpd }}">
+                                                        {% endfor %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <span class="tbd"></span>
+                                <p>
+                                    Sorry, we couldn't find any sizes matching your vehicle.
+                                    Please contact us if you need assistance.
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="clear"></div>
+                    {% if vehicle.tpms %}
+                        <div class="tpms">
+                            <a id="tpms_info_open" href="#tpms_info">View TPMS Information</a>
+                        </div>
+                    {% endif %}
+
+                    {% if not subdomain or current_user != subdomain_profile.user %}
+                    <div class="wheel_vehicle_box_footer">
+                        <input type="hidden" value="{{ csrf_token }}" name="csrfmiddlewaretoken">
+                        <input type="hidden" name="content_type_id" value="{{ content_type_id }}">
+
+                        <!-- Defined above
+                        <input type="hidden" name="object_id_front" value="">
+                        <input type="hidden" name="object_id_rear" value="">
+                        -->
+
+                        <input type="hidden" name="quantity" value="2">
+                        <input type="submit" name="submit" class="button add_to_cart_shop_for_tires" value="Buy Wheels &amp; Shop for Tires">
+                        <input type="submit" name="submit" class="button add_to_cart" value="Buy Wheels">
+                    </div>
+                    <div class="clear"></div>
+                    {% endif %}
+
+                </div>
+            </form>
+
+            <!-- TPMS Form -->
+        {% endfor %}
+    </div> <!-- grid_13 -->
+
+    <div class="grid_16">
+        <div class="pagination">
+            <span class="prev">{% if wheels.has_previous %}<a href="?page={{ wheels.previous_page_number }}&{{ params }}" onclick="startLoad()">&laquo; Prev</a>{% else %}&laquo; Prev{% endif %}</span>
+            <span class="page">Page {{ wheels.number }} of {{ wheels.paginator.num_pages }}</span>
+            <span class="next">{% if wheels.has_next %}<a href="?page={{ wheels.next_page_number }}&{{ params }}" onclick="startLoad()">Next &raquo;</a>{% else %}Next &raquo;{% endif %}</span>
+        </div>
+    </div>
+        <!--
+<div id="listingpaginate2" class="paginationstyle">
+<a href="#" rel="previous" class="imglinks" onclick="javascript:scroll(0,0)">&laquo; Prev</a> <select></select> <a href="#" rel="next" class="imglinks">Next &raquo;</a>
+
+    </div>
+-->
+    </div> <!-- .main -->
+
+<div style="display:none">
+    <div id="tpms_info">
+        <p>
+            <img src="{% static "img/tpms_valve.jpg" %}">
+            <strong>Tire pressure monitoring system (TPMS)</strong> is a system designed to monitor the air pressure inside your
+            vehicles tires.  Your vehicle came equipped from the factory with these sensors installed in your
+            OEM wheels.  TPMS reports real-time tire pressure to the driver of the vehicle.  Your TPMS system
+            currently monitors the air pressure in tires, in order to prevent flats and accidents.  You can purchase
+            these sensors with your wheel and tire package or with just wheels, if you choose not to purchase the
+            TPMS sensors from us, you can remove the TPMS sensors out of the cart at checkout.  Warning – A tire
+            pressure light will show if you have not installed TPMS sensors in your aftermarket wheels.
+            NOTE – TPMS sensors maybe need to be reset to your vehicle, please see a tire shop or your dealership.</p>
+        <p class="tpms_model">
+            {{ vehicle.tpms }}<span>${{ vehicle.tpms.price|floatformat:2 }} (each)</span>
+        </p>
+
+        {% if vehicle.tpms %}
+            <form action="{% url "shop_cartitem_create" %}" method="post" id="id_tpms_form">
+                {% csrf_token %}
+                {% add_to_cart_form vehicle.tpms as form %}
+                {{ form.content_type_id }}
+                {{ form.object_id }}
+                <input type="hidden" name="quantity" value="4">
+            </form>
+        {% endif %}
+    </div>
+</div>Buy
+{% endblock %}
+
+{% block extra_js %}
+
+    
+    <script>
+
+        $(function() {
+        
+            // Change size for a wheel
+            $(".sizes input").live("click", function(){
+                var diameter = $(this).val();
+                var wheel = $(this).parents("form").find("input[name='wheel']").val();
+
+                // Hide all wheel sizes
+                $("#"+wheel+" .wheelsizes").addClass("hidden");
+
+                // Show the selected wheel
+                $("[id='"+wheel+"__"+diameter+"']").removeClass("hidden");
+            });
+
+            //$(".sizes").each(function() {
+            //    var lis = $(this).children();
+            //    if (lis.size() < 2) {
+            //        $(this).parents("form").remove();
+            //    }
+            //});
+                       
+            // Remove results with no front
+            //$(".tbd").parents("form").remove();
+
+            // Remove the odd result
+            //if ($("form.cart").length % 2) {
+            //    $("form.cart").last().remove();
+            //};
+
+            // Prepare the view detail link
+            $(".view_details").live("click", function() {
+                var diameter = $(this).parents("form").find(".sizes input:checked").val();
+
+                var href = $(this).attr("href");
+                var front_sku = $(this).parents("form").find("[id='id_object_id_front_"+diameter+"']").val();
+                var rear_sku = $(this).parents("form").find("[id='id_object_id_rear_"+diameter+"']").val();
+
+                var path;
+
+                if (rear_sku)
+                    path = href + "" + front_sku + "/" + rear_sku + "/";
+                else
+                    path = href + "?s=" + front_sku;
+
+                window.location = path;
+                return false;
+            });
+
+            // Hide optional rear
+             //$("select[name=object_id_rear_"+get_selected_diameter()+"]").live("change", function() {
+             //if ($(this).val() === "")
+             //$(this).parent().find(".rear_display").hide();
+             //else
+             //$(this).parent().find(".rear_display").show();
+             //});
+
+            {% if not subdomain or current_user != subdomain_profile.user %}
+            // Add to Cart
+            SOFTY.csrf_token = "{{ csrf_token }}";
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+
+            $("input.add_to_cart").live('click', function(){
+				
+				var diameter = $(this).parents("form").find(".sizes input:checked").val();
+                var ctid = $(this).parents("form").find("input[name='content_type_id']").val();
+                var oid_0 = $(this).parents("form").find("select[name='object_id_front_"+diameter+"']").val();
+                var oid_1 = $(this).parents("form").find("select[name='object_id_rear_"+diameter+"']").val();
+                var qty = $(this).parents("form").find("input[name='quantity']").val();
+
+				
+
+                if (typeof oid_1 == "undefined" || oid_1 === "") {
+                    SOFTY.cart.Add(ctid, oid_0, 4);
+                } else {
+                    SOFTY.cart.Add(ctid, oid_0, qty);
+                    SOFTY.cart.Add(ctid, oid_1, qty);
+                }
+				
+				
+
+                /* Add TPMS */
+                var tpms_ctid = $("#id_tpms_form input[name='content_type_id']").val()
+                var tpms_oid = $("#id_tpms_form input[name='object_id']").val()
+                var tpms_qty = $("#id_tpms_form input[name='quantity']").val()
+                SOFTY.cart.Add(tpms_ctid, tpms_oid, tpms_qty);
+				
+				
+
+                return false;
+				
+				
+				
+            });
+
+            $("input.add_to_cart_shop_for_tires").live('click', function(){
+				
+                var diameter = $(this).parents("form").find(".sizes input:checked").val();
+                var ctid = $(this).parents("form").find("input[name='content_type_id']").val();
+                var oid_0 = $(this).parents("form").find("select[name='object_id_front_"+diameter+"']").val();
+                var oid_1 = $(this).parents("form").find("select[name='object_id_rear_"+diameter+"']").val();
+                var qty = $(this).parents("form").find("input[name='quantity']").val();
+
+                /* 
+			    var front_rec_tire = $(this).parents("form").find("input[name='front_recommended_tire']").val();
+                var rear_rec_tire = $(this).parents("form").find("input[name='rear_recommended_tire']").val();
+				*/
+
+                var size = $(this).parents("form").find(".sizes input[type=radio]:checked");
+                var front_rec_tire = $("[id='id_"+size.attr("name")+"__"+size.val()+"']").find("input[name='front_recommended_tire']").val();
+                var rear_rec_tire = $("[id='id_"+size.attr("name")+"__"+size.val()+"']").find("input[name='rear_recommended_tire']").val();
+
+
+                if (typeof oid_1 == "undefined" || oid_1 === "") {
+                    SOFTY.cart.Add(ctid, oid_0, 4);
+                } else {
+                    SOFTY.cart.Add(ctid, oid_0, qty);
+                    SOFTY.cart.Add(ctid, oid_1, qty);
+                }
+
+                /* Add TPMS */
+                var tpms_ctid = $("#id_tpms_form input[name='content_type_id']").val()
+                var tpms_oid = $("#id_tpms_form input[name='object_id']").val()
+                var tpms_qty = $("#id_tpms_form input[name='quantity']").val()
+                SOFTY.cart.Add(tpms_ctid, tpms_oid, tpms_qty);
+
+                if (rear_rec_tire != "" && rear_rec_tire != undefined && oid_1 != "") {
+                    window.location = rear_rec_tire;
+                } else {
+                    window.location = front_rec_tire;
+                }
+
+                return false;
+            });
+
+
+            // Stop form from submitting
+            $("form.cart").live('submit', function() {
+                return false;
+            })
+            {% else %}
+            $('#background').css('height', '' + Math.max($('#rightbox').height() + 150, $('#leftbox').height() + 170) + 'px');
+            {% endif %}
+
+        });
+    </script>
+    
+    	<script src="{% static "js/jquery-1.7.1.min.js" %}"></script>
+		<script src="{% static "js/jquery.opensource.min.js" %}"></script>
+        
+        <script src="{% static "plugins/fancybox2/jquery.fancybox-1.3.4.js" %}"></script>
+        <script> 
+		
+			// TPMS FancyBox
+			$(function(){ 
+  				$("a#tpms_info_open").live("click", function() {
+     				$(this).filter(':not(.fb)').fancybox({
+        				'autoDimensions'	: false,
+						'width'         	: 650,
+						'height'        	: 'auto',
+						'transitionIn'		: 'fade',
+						'transitionOut'		: 'fade',
+						'centerOnScroll'	: 'true'
+     				}).addClass('fb');
+     				$(this).triggerHandler('click');
+  				});
+			}); 
+
+		</script>
+
+{% endblock %}

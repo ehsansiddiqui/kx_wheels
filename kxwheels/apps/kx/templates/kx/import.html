@@ -1,0 +1,118 @@
+{% extends "kx/base.html" %}
+
+{% block left_col %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_10">
+        <h2>Import</h2>
+        <form action="" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+            {% csrf_token %}
+            <label for="file">File</label><input type="file" name="file" value="" id="file">
+            <p><input type="submit" value="Continue &rarr;"></p>
+        </form>
+
+        {% if tasks %}
+            <hr>
+            <div id="tasks">
+                {% for task in tasks %}
+                    <div id="{{ task.task }}">
+                        {{ task.task }} (<span class="status">X of Y</span>)
+                        <div id="progress">
+                            (PENDING)
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div id="errors" style="color:red;">
+            {% for error in errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    <style type="text/css" media="screen">
+        .total { width:275px; border:1px solid #ccc; padding:1px; }
+        .current { background: blue; width:0%; height:10px;}
+        #tasks > div { border:1px solid #333; margin:20px 0; width:400px; padding:10px; height:40px;}
+    </style>
+{% endblock %}
+
+{% block extra_js %}
+    {#% if tasks %#}
+    <script type="text/javascript" charset="utf-8">
+        // Using hardcoded url to access task status.
+        // We should use reverse url for celery-task_status.
+        tasks = new Array();
+
+        function addTask(task_id) {
+            $.getJSON('/cel/'+task_id+'/status/?'+Math.round(new Date().getTime()), function(data) {
+                //var progress = $('<div></div>').attr({'class': 'progress'});
+                var progress = $('#'+task_id+' div#progress');
+                var para = $('<p></p>').attr({'id': data.task.id }).append(data.task.id);
+                $('#tasks').append(para);
+
+                s = data.task.status;
+                if (s == "WORKING") {
+                    var total = $('<div></div>').attr({'class': 'total'});
+                    var current = $('<div></div>').attr({'class': 'current', 'id': 'current_'+task_id});
+                    total.append(current);
+                    progress.append(total);
+                    para.append(progress);
+                } else {
+                    para.append(progress);
+                }
+            });
+        }
+
+        function addProgressBar(task_id) {
+            var progress = $('#'+task_id+' div#progress');
+            var total = $('<div></div>').attr({'class': 'total'});
+            var current = $('<div></div>').attr({'class': 'current', 'id': 'current_'+task_id});
+            total.append(current);
+            progress.html(total);
+        }
+
+        function updateTaskStatus(task_id) {
+            $.getJSON('/cel/'+task_id+'/status/?'+Math.round(new Date().getTime()), function(data) {
+
+                s = data.task.status;
+                if (s == "PENDING") {
+                    $('#'+task_id+' div').text('(PENDING)');
+                } else if (s == "WORKING") {
+                    if ($('#'+task_id+' div#progress div.total').length < 1){
+                        addProgressBar(task_id);
+                    }
+                    var current = data.task.result.current;
+                    var total = data.task.result.total;
+                    var percentage = Math.round((current/total)*100);
+
+                    $('#'+task_id+" .status").text(current + " of " + total);
+                    $('#current_'+task_id).css({'width': percentage+'%'})
+
+                } else if (s == "SUCCESS") {
+                    var percentage = '100';
+                    $('#current_'+task_id).css({'width': percentage+'%'})
+                    $('#'+task_id+' div').text('(SUCCESS)');
+                    tasks[task_id] = window.clearInterval(tasks[task_id]);
+                    // Report back
+                    $.ajax({
+                        type: "GET",
+                        url: "/addressbook/finish_task/"+task_id+"/",
+                    });
+                }
+            });
+        }
+
+        $(function() {
+            {% for task in tasks %}
+                //addTask('{{ task.task }}');
+                tasks['{{ task.task }}'] = window.setInterval("updateTaskStatus('{{ task.task }}')", 1000);
+            {% endfor %}
+        })
+    </script>
+
+{% endblock %}

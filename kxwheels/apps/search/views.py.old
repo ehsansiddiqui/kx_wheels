@@ -1,0 +1,199 @@
+from haystack.views import SearchView
+from django.utils import simplejson
+from django.http import HttpResponse
+from django.core.urlresolvers import reverse
+
+from kx.models import TireSize, WheelSize
+from shop.templatetags.shop_filters import currency
+from search.decorators import csrf_token_required, api_access_required
+
+class WheelSizeSearchView(SearchView):
+    results_per_page = 36
+
+    def normalize(self, object_list):
+        results = []
+        for o in object_list:
+            wheelsize = {}
+
+            # Populate wheelsize
+            for key, value in o.get_stored_fields().items():
+                wheelsize[key] = value if str(value) else ''
+
+            # Price
+            if self.request.user.is_authenticated():
+                wheelsize_object = WheelSize.objects.get(pk=o.pk)
+                wheelsize['price'] = currency(wheelsize_object.get_price(self.request.user))
+            else:
+                wheelsize['price'] = currency(o.price)
+
+            wheelsize['permalink'] = reverse('wheel_wheelsize_detail', args=[o.manufacturer_slug, o.wheel_slug, o.pk])
+            del(wheelsize['text'])
+
+            results.append(wheelsize)
+        return results
+
+    @csrf_token_required
+    @api_access_required
+    def create_response(self):
+        """
+        Generates the actual HttpResponse to send back to the user.
+        """
+
+        (paginator, page) = self.build_page()
+        
+        context = {
+            'query': self.query,
+            'form': self.form,
+            'page': page,
+            'paginator': paginator,
+            'suggestion': None,
+        }
+
+
+        context.update(self.extra_context())
+        results = self.normalize(page.object_list)
+        info = {
+            'count': paginator.count,
+            'page': page.number,
+            'total_pages': paginator.num_pages, 
+        }
+        json = simplejson.dumps({'info': info, 'results': results})
+        return HttpResponse(json, mimetype="application/json")
+
+class VehicleSearchView(WheelSizeSearchView):
+    results_per_page = 10000
+
+class ModelSearchView(SearchView):
+    results_per_page = 100
+    
+    def normalize(self, object_list):
+        results = []
+        for o in object_list:
+            results.append({
+                'pk': o.pk,
+                'manufacturer': o.manufacturer,
+                'manufacturer_slug': o.manufacturer_slug,
+                'name': o.name,
+                'slug': o.slug,
+                'year': o.year,
+            })
+        return results
+
+    @csrf_token_required
+    @api_access_required
+    def create_response(self):
+        (paginator, page) = self.build_page()
+       
+        context = {
+            'query': self.query,
+            'form': self.form,
+            'page': page,
+            'paginator': paginator,
+            'suggestion': None,
+        }
+        
+        context.update(self.extra_context())
+        results = self.normalize(page.object_list)
+        info = {
+            'count': paginator.count,
+            'page': page.number,
+            'total_pages': paginator.num_pages, 
+        }
+        json = simplejson.dumps({'info': info, 'results': results})
+        return HttpResponse(json, "application/json")
+    
+class TireSizeSearchView(SearchView):
+    results_per_page = 1500
+    
+    def normalize(self, object_list):
+        results = []
+        for o in object_list:
+            tiresize = {}
+                      
+            # Populate tiresize
+            for key, value in o.get_stored_fields().items():
+                tiresize[key] = value if value else ''
+
+            # Add pk
+            tiresize['pk'] = o.pk
+
+            # Price
+            if self.request.user.is_authenticated():
+                tiresize_object = TireSize.objects.get(pk=o.pk)
+                tiresize['price'] = currency(tiresize_object.get_price(self.request.user))
+            else:
+                tiresize['price'] = currency(o.price)
+            
+            # Permalink
+            tiresize['permalink'] = reverse('tire_tiresize_detail', args=[o.manufacturer_slug, o.tire_slug, o.pk])
+
+            # Remove text key
+            del(tiresize['text'])
+            
+            results.append(tiresize)
+        return results
+
+    @csrf_token_required
+    @api_access_required
+    def create_response(self):
+        (paginator, page) = self.build_page()
+       
+        context = {
+            'query': self.query,
+            'form': self.form,
+            'page': page,
+            'paginator': paginator,
+            'suggestion': None,
+        }
+        
+        context.update(self.extra_context())
+        results = self.normalize(page.object_list)
+        info = {
+            'count': paginator.count,
+            'page': page.number,
+            'total_pages': paginator.num_pages, 
+        }
+        json = simplejson.dumps({'info': info, 'results': results})
+        return HttpResponse(json, "application/json")
+
+class StaggeredSearchView(SearchView):
+    results_per_page = 1000
+
+    def normalize(self, object_list):
+        results = []
+        for o in object_list:
+            tiresize = {}
+
+            # Populate tiresize
+            for key, value in o.get_stored_fields().items():
+                tiresize[key] = value if value else ''
+
+            # Remove text key
+            del(tiresize['text'])
+
+            results.append(tiresize)
+        return results
+
+    @csrf_token_required
+    @api_access_required
+    def create_response(self):
+        (paginator, page) = self.build_page()
+
+        context = {
+            'query': self.query,
+            'form': self.form,
+            'page': page,
+            'paginator': paginator,
+            'suggestion': None,
+        }
+
+        context.update(self.extra_context())
+        results = self.normalize(page.object_list)
+        info = {
+            'count': paginator.count,
+            'page': page.number,
+            'total_pages': paginator.num_pages,
+        }
+        json = simplejson.dumps({'info': info, 'results': results})
+        return HttpResponse(json, "application/json")
+

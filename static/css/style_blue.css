@@ -1,0 +1,576 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+body, td, th {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333;
+	line-height: 18px;
+}
+body {
+	background-color: #666;
+}
+a:link {
+	color: #04689B;
+	text-decoration: underline;
+}
+a:visited {
+	text-decoration: underline;
+	color: #04689B;
+}
+a:hover {
+	text-decoration: none;
+	color: #04689B;
+}
+a:active {
+	text-decoration: underline;
+	color: #04689B;
+}
+h1 {
+	font-size: 24px;
+	font-weight: normal;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999;
+	margin-bottom: 15px;
+}
+h2 {
+	font-size: 18px;
+	font-weight: bold;
+}
+h3 {
+	font-size: 14px;
+	font-weight: bold;
+}
+h5 {
+	font-size: 12px;
+	font-weight: bold;
+}
+#background {
+	color: #333333;
+	background-color: #FFF;
+	padding-bottom: 15px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #333;
+	height: auto !important;
+}
+#topbar {
+	background-color: #333;
+	padding: 7px;
+}
+#topbar_content {
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+}
+#topbar_content a {
+	color: #FFF;
+}
+#account_menu {
+	float: right;
+}
+#account_menu li {
+	float: left;
+	padding-left: 20px;
+}
+#mainbox {
+	width: 960px;
+	margin-right: auto;
+	margin-left: auto;
+	clear: both;
+	overflow: auto;
+}
+#logo {
+	float: left;
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+#vehiclebox {
+	float: right;
+	background-color: #0066CC;
+	padding-top: 7px;
+	padding-right: 12px;
+	padding-bottom: 7px;
+	padding-left: 12px;
+	color: #FFF;
+}
+#vehiclebox a {
+	color: #CEE7FF;
+}
+#menubox {
+	background-color: #333;
+	padding-top: 4px;
+	padding-right: 4px;
+	padding-bottom: 0px;
+	padding-left: 4px;
+	margin-bottom: 10px;
+}
+#menubox ul {
+}
+#menubox ul li {
+	float: left;
+	margin-top: 4px;
+	margin-bottom: 8px;
+}
+#menubox ul li a {
+	margin-right: 4px;
+	padding-top: 4px;
+	padding-right: 15px;
+	padding-bottom: 4px;
+	padding-left: 15px;
+	background-color: #0468CD;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFF;
+}
+#menubox ul li a:hover {
+	background-color: #666;
+}
+#mainimagebox {
+	padding: 9px;
+	border: 1px solid #D7D7D7;
+	margin-bottom: 10px;
+}
+#selectbox {
+	padding: 20px;
+	background-color: #CCC;
+}
+#selectbox h2 {
+	color: #333333;
+}
+#selectbox select {
+	font-size: 18px;
+	font-weight: normal;
+	padding: 4px;
+	width: 300px;
+}
+#selectbox input {
+	font-size: 18px;
+	font-weight: normal;
+	width: 220px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+}
+#footer {
+	width: 945px;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 15px;
+	clear:both;
+}
+#footer .grid_3 {
+	float: left;
+	width: 160px;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+#footer a {
+	color: #CCC;
+}
+#leftbox {
+	float: left;
+	width: 160px;
+	padding: 10px;
+}
+.cart_summary {
+	margin-bottom: 10px;
+}
+.cart_summary h4 {
+	background-color: #0468CD;
+	padding: 5px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFF;
+}
+.cart_sidebar {
+	background-color: #E9E9E9;
+	padding: 5px;
+}
+.cart_sidebar select {
+	width: 145px;
+	margin-bottom: 5px;
+}
+.cart_sidebar input {
+	width: 140px;
+	margin-bottom: 5px;
+}
+#rightbox {
+	padding: 10px;
+	width: 760px;
+	float: right;
+}
+#resultsbox {
+	width: 332px;
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+	float: left;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+#resultsbox h3 {
+	background-color: #0066CC;
+	font-size: 14px;
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 5px;
+}
+#resultsbox h4 {
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	background-color: #0066CC;
+	color: #CEE7FF;
+	font-size: 12px;
+	font-weight: normal;
+}
+#tirebox {
+	float: left;
+	width: 150px;
+	text-align: center;
+}
+#resultsbox div ul {
+	padding-top: 10px;
+	padding-right: 0px;
+	padding-bottom: 10px;
+	padding-left: 160px;
+}
+#fittment {
+	background-color: #E9E9E9;
+	padding: 5px;
+	margin-top: 5px;
+	line-height: 22px;
+}
+#fittment h5 {
+	background-color: #CCCCCC;
+	padding: 3px;
+	margin-bottom: 3px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #333;
+}
+#fitspace {
+	padding-left: 3px;
+}
+#tpms {
+	padding-top: 6px;
+	padding-right: 3px;
+	padding-bottom: 0px;
+	padding-left: 3px;
+}
+
+.ui-state-active a {
+	color:#0066CC !important;
+}
+
+/* grid adjustments */
+
+.main .grid_13 {
+    width: 760px;
+}
+#mainbox .grid_13 {
+    width: 760px;
+}
+.block {
+    border: 1px solid #CCCCCC;
+    display: block;
+    height: 210px;
+    line-height: 18px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    width: 140px;
+}
+.grid_13 h1, .grid_16 h1 {
+    border-bottom: 1px solid #CCCCCC;
+    margin: 0 0 0px;
+    padding: 0 0 10px;
+}
+#rightbox .grid_13 h1 {
+	width: 760px;
+}
+#mainbox .grid_16 {
+    width: 940px;
+	clear: both;
+}
+.pagination {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 10px 0;
+    padding: 3px 6px 3px 0;
+    text-align: right;
+	clear:both;
+}
+
+
+/* wheel */
+
+.wheel_vehicle_box h3 {
+	color: #FFFFFF !important;
+	font-size: 1em;
+	font-weight: bold;
+	line-height: 1.3em;
+	padding: 7px 7px 5px 15px;
+	background-color: #0066CC !important;
+	background-image: none !important;
+}
+.wheel_vehicle_box .thumbnail a {
+    color: #0066CC !important;
+    display: block;
+    font-weight: bold;
+    height: 170px;
+}
+
+/* tire */
+
+.tiresize h3 {
+    background-image: none !important;
+	background-color: #0066CC !important;
+    color: #FFFFFF !important;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+    margin: 0 0 5px;
+    padding: 7px 7px 5px 15px;
+}
+
+/* extra */
+
+    table.wheel_sizes th {
+        text-align: left;
+    }
+    .clear {
+        clear: both;
+        display: block;
+        overflow: hidden;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+    #tires_dropdown ul, #wheels_dropdown ul {
+	background-color: #666;
+	position: absolute;
+	margin-top: 3px;
+	padding-top: 3px;
+    }
+    #tires_dropdown li, #wheels_dropdown li {
+        float:none !important;
+		margin: 0px !important;
+        padding: 5px !important;
+    }
+    #tires_dropdown li a, #wheels_dropdown li a {
+        font-weight: bold !important;
+        font-size: 100% !important;
+        margin: 0px !important;
+        padding: 5px !important;
+        background-color: #666 !important;
+        text-decoration: none;
+    }
+    #tires_dropdown li:hover, #tires_dropdown li a:hover, #wheels_dropdown li:hover, #wheels_dropdown li a:hover {
+        background-color: #0468CD !important;
+    }
+	
+	
+/**** Wheel Vehicle Box ****/	
+	
+table.wheel_sizes {
+    width: 100%;
+}
+table.wheel_sizes tr:first-child {
+    background: #000;
+    border: none;
+}
+table.wheel_sizes tr {
+    border-bottom: 1px solid #e6e6e6
+}
+table.wheel_sizes th {
+    background-color: #e6e6e6;
+    color: #333;
+    padding: 8px 6px;
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+}
+table.wheel_sizes td {
+    padding: 6px;
+    vertical-align: middle;
+}
+
+
+.resultsbox {
+	border: 1px solid #b9b9b9;
+	margin-bottom: 10px;
+	width: 340px;
+	float:left;
+	display: inline;
+    float: left;
+    margin-right: 10px;
+}
+.resultsbox h3 {
+    font-size: 1em;
+    line-height: 1.3em;
+    background: #37383C url(../img/sr_title_bg.jpg) left top no-repeat;
+	padding:  7px 7px 5px 15px;
+	font-weight: bold;
+	color: #ffc11b;
+}
+.resultsbox h3 span {
+    font-weight: normal;
+    display: block;
+    color: #fff;
+    height: 13px;
+    overflow: hidden;
+}
+.resultsbox .thumbnail {
+    width: 150px;
+    text-align: center;
+    float: left;
+    /*border: 1px solid #ccc;*/
+}
+.resultsbox .thumbnail a {
+    color: #b60006;
+    font-weight: bold;
+    height: 170px;
+    display: block
+}
+.resultsbox .sizes {
+    float: right;
+    width: 170px;
+    margin-top: 10px;
+}
+.resultsbox .sizes li {
+    list-style: none;
+}
+.resultsbox .wheelsizes {
+    clear: both;
+    width: 340px;
+    height: 160px;
+    background: #e5e5e5;
+}
+.resultsbox .hidden {
+    display: none;
+}
+.resultsbox h4 {
+    margin: 4px 0;
+}
+.resultsbox .front,
+.resultsbox .both {
+    float: left;
+    padding:0 5px;
+    width: 160px;
+    height: 100%;
+    background: #e5e5e5;
+}
+.resultsbox .rear {
+    float: right;
+    padding:0 5px;
+    width: 159px;
+    background: #e1e1e1;
+    border-left: 1px solid #ccc;
+}
+.resultsbox .tpms {
+    margin-top: 5px;
+    width: 285px;
+    padding: 5px 0 5px 55px;
+    background: #e5e5e5 url(../img/tpms_bg.jpg) 3px no-repeat;
+}
+.resultsbox {
+    padding: 5px;
+}
+.resultsbox .shop_for_tires {
+    float: left;
+}
+.resultsbox .add_to_cart {
+    float: right;
+}
+
+#tpms_info {
+    width: 650px;
+    height: 218px;
+    text-align: justify;
+}
+#tpms_info img {
+    float: left;
+    margin: 26px;
+}
+.tpms_model {
+    background: #e1e1e1;
+}
+.tpms_model span {
+    float: right;
+    font-weight: bold;
+}
+
+/* Sidebar */
+
+#leftbox > div {
+    margin: 0 0 20px 0;
+    background-color: #e6e6e6;
+}
+#leftbox > div > div{
+    padding: 6px;
+}
+#leftbox h4 {
+    margin: 0;
+    color: #fff;
+    background-color: #666;
+    margin: 0 0 5px 0;
+    padding: 2px 0 2px 6px;
+}
+#leftbox input[type=text],
+#leftbox select {
+	width:140px;
+    margin: -8px 0 0 0;
+}
+#leftbox input[type=checkbox] {
+	vertical-align: middle;
+    margin: -5px 0 0 0;
+}
+
+
+a.logo {
+    display: block;
+    padding: 10px 0 5px 0;
+}
+.button {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-transition: all 0.1s linear 0s;
+    background-color: #ccc;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF 25%, #ccc);
+    background-repeat: no-repeat;
+    border-color: #999;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    line-height: normal;
+    padding: 5px 14px 6px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+
+.button:hover {
+    background-position: 0 -5px;
+    text-decoration: none;
+    color: #333333;
+}
+
+
+.staggered_tire h3 {
+	color: #FFFFFF !important;
+	background-color: #0066CC !important;
+	background-image: none !important;
+}

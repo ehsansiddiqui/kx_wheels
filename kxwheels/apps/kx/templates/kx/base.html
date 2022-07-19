@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load shop_tags staticfiles %}
+
+{% block extra_css %}
+    <style>@import url("{% static "css/tire.css" %}");</style>
+    <style>@import url("{% static "css/wheel.css" %}");</style>
+{% endblock %}
+
+{% block content %}
+    {% block sidebar %}
+        {% if not subdomain %}
+        <div class="grid_3">
+            <div class="sidebar left">
+                <div class="cart_summary">
+                    <h4>Cart Summary</h4>
+                    {% cart_sidebar %}
+                </div>
+        {% else %}
+            <div id="leftbox">
+                {% if current_user != subdomain_profile.user %}
+                <div class="cart_summary">
+                    <h4>Cart Summary</h4>
+                    {% cart_sidebar %}
+                </div>
+                {% endif %}
+        {% endif %}
+                <div class="filters">
+                    <h4>Filter Search Results</h4>
+                    <div class="search_sidebar">
+                        {% block search_filter %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        {% if not subdomain %}
+        </div><!-- grid_3 -->
+        {% endif %}
+    {% endblock %}
+
+    {% block main_content %}{% endblock %}
+    <div class="clear"></div>
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% load shop_tags shop_filters %}
+
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    
+    <table class="shop_list" width="100%">
+        <tr>
+            <td width="33%">
+                <strong>Bill to:</strong><br>
+                <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+                {{ order.billing_address_1 }}, <br>
+                {{ order.billing_city }}, {{ order.billing_province }} <br> 
+                {{ order.billing_postal_code }}<br>
+                {{ order.billing_country }}<br><br>
+                Phone: {{ order.billing_phone|telephone }}<br>
+            </td>
+            <td width="33%">
+                <strong>Ship to:</strong><br>
+                <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+                {{ order.shipping_address_1 }}, <br>
+                {{ order.shipping_city }}, {{ order.shipping_province }} <br> 
+                {{ order.shipping_postal_code }}<br>
+                {{ order.shipping_country }}<br><br>
+                Phone: {{ order.shipping_phone|telephone }}<br>
+            </td>
+            <td width="34%" align="right" valign="top">
+                <h1>Order #{{ order.id}}</h1>
+                Date: {{ order.created_at|date:"d M, Y"}}<br>
+                User: {{ order.customer }}<br>
+                {% if order.po %}PO: {{ order.po }}<br>{% endif %}
+            </td>
+        </tr>
+    </table>
+    
+    <p>
+        {% if order.customer_notes %}<p id="order_notes"><strong>Customer notes:</strong> 
+        {{ order.customer_notes }}</p><br>{% else %}<br><br>{% endif %}
+    </p>
+    
+    
+    <table class="shop_list" width="100%">
+        <thead><tr>
+            <th width="15%">SKU</th>
+            <th width="50%">Product</th>
+            <th width="12%">Unit Price</th>
+            <th width="11%">Qty.</th>
+            <th width="12%">Extended Price</th>
+        </tr></thead>
+        <tbody>
+    	{% for item in order.items.all %}
+    	<tr class="{% cycle 'odd_row' 'even_row' %}">
+    	  <td width="15%">{{ item.product.sku }}</td>
+    	  <td width="40%">
+    	      {{ item.product.name }}
+    	      <ul>{% for item_opt in item.options.all %}
+    	          <li>{{ item_opt.name }}: {{ item_opt.value }}
+    	              ({{ item_opt.price_adjustment|currency }})</li>{% endfor %}
+    	      </ul>
+    	  </td>
+    	  <td align="right">{{ item.get_price|currency }}</td>
+    	  <td width="10%" align="center">{{ item.qty }}</td>
+    	  <td align="right">{{ item.get_extended_price|currency }}</td>
+    	</tr>
+    	{% endfor %}
+    	
+    	<tr style="border-top:2px solid #ccc">
+    	    <td colspan="4" align="right">Subtotal:</td>
+    	    <td align="right"><strong>{{ order.get_subtotal|currency }}</strong></td>
+    	</tr>
+    	
+    	{% for tax in order.get_tax_summary %}
+	    <tr>
+	        <td colspan="4" align="right">{{ tax.0 }}:</td>
+	        <td align="right"><strong>{{ tax.1|currency }}</strong></td>
+	    </tr>
+	    {% endfor %}
+	    
+	    {% if order.discount %}
+	    <tr>
+	        <td colspan="4" align="right">{{ order.get_discount_summary.0 }}:</td>
+	        <td align="right"><strong>{{ order.get_discount_summary.1|currency }}</strong></td>
+	    </tr>
+	    {% endif %}
+	    
+	    <tr>
+	        <td colspan="4" align="right">{{ order.get_shipping_summary.0 }} ({{ order.get_shipping_summary.1}}):</td>
+	        <td align="right"><strong>{{ order.get_shipping_summary.2|currency }}</strong></td>
+	    </tr>
+	    
+	    <tr style="border-top:2px solid #ccc">
+	        <td colspan="4" align="right">Total payable:</td>
+	        <td align="right"><strong>{{ order.get_total|currency }}</strong></td>
+	    </tr>
+      </table>
+    
+    <!-- default stuff below -->
+    {% for line in fieldset %}
+        <div class="form-row{% if line.errors %} errors{% endif %}{% for field in line %} {{ field.field.name }}{% endfor %}">
+            {{ line.errors }}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:"1" %} class="field-box"{% endif %}>
+                    
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <p>{{ field.contents }}</p>
+
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.field.help_text %}
+                        <p class="help">{{ field.field.field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>

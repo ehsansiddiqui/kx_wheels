@@ -1,0 +1,1116 @@
+{% load staticfiles %}
+<!doctype html>
+{% block extra_microdata %}{% endblock %}
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. --><head id="www-kxwheels-com" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Custom Wheels Canada,Rims Canada,Wheels Canada,Wheels and Tires Packages{% endblock %}</title>
+    <meta name="title" content="{% block meta_title %}custom wheels,car rims canada,custom wheels canada,car mags canada,wheels and tires packages,wheels for sale,tires for sale canada{% endblock %}">
+    <meta name="description" content="{% block meta_description %}KX Wheels is Canada’s leading Online Distributor of Wheels-Rims-Wheel and Tire Packages in Canada. Huge selection of Rims, Custom wheels and Performance Tires.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}custom wheels canada,rims,wheels,wheel and tire packages,offroad wheels rims canada,mags canada,discount tires canada,custom wheels and tires,buy wheels rims online{% endblock %}" >
+	<meta name="robots" content="index, follow">
+	<meta name="distribution" content="Canada">
+	<meta name="abstract" content="Rims,Wheels,Tires,Alloys,Mags">
+    <meta name="author" content="Nav Aulakh, nav@shiftonline.com">
+    <meta name="Copyright" content="Copyright KXWheels.com 2014. All Rights Reserved.">
+    <meta name="google-site-verification" content="QfixGxPRl3SGj4_sysXolbDJ13AhGHdr43gCCumwMA0" />
+	<meta name="msvalidate.01" content="28EC0B7F48F1A57D1D7E22ED55B91ECC" />
+	<meta name="p:domain_verify" content="a36dac2bc07be37ae5e2bdcf941d2925"/>
+    <link rel="shortcut icon" href="{% static "img/favicon_tire.ico" %}">
+    <link rel="apple-touch-icon" href="{% static "img/apple-touch-icon.png" %}">
+    <link href="{% static "css/reset.css" %}" rel="stylesheet" type="text/css"/>
+
+    {% if not subdomain %}
+		<link href="{% static "css/960_16_col.css" %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static "css/loadbox01.css" %}" rel="stylesheet" type="text/css"/>
+    {% else %}
+    	<link href="{% static "css/960_16_col.css" %}" rel="stylesheet" type="text/css"/>
+    	<link href="{% static "css/style_blue.css" %}" rel="stylesheet" type="text/css"/>
+        <link href="{% static "css/loadbox02.css" %}" rel="stylesheet" type="text/css"/>
+    {% endif %}
+
+    <!-- Extras -->
+    {% block extra_css %}{% endblock %}
+
+	<!--<script src="{% static "js/startLoad.js" %}" LANGUAGE="JavaScript"></script>-->
+    <script>
+    function startKXLoad() {
+        $('#loadBox').css('left', '50%');
+        $('#loadBox').css('top', '50%');
+        $('#loadBox').css('marginLeft', '-200px');
+        $('#loadBox').css('marginTop', '-118px');
+        $('#loadBorder').css('left', '0px');
+        $('#loadBorder').css('top', '0px');
+        $('#loadBorder').css('right', '0px');
+        $('#loadBorder').css('buttom', '0px');
+        $('#loadBox').show();
+        $('#loadBorder').show();
+    }
+    function endKXLoad() {
+        $('#loadBox').hide();
+        $('#loadBorder').hide();
+    }
+    </script>
+
+    <style type="text/css">
+        #loginScreen input::-webkit-input-placeholder {
+            color: rgb(192, 192, 192);
+        }
+        #loginScreen input::-moz-placeholder {
+            color: rgb(192, 192, 192);
+        }
+
+      .slide-out-div {
+	        padding: 20px;
+	        width: 164px;
+	        border: 1px solid #29216d;
+	        color: #CCC;
+	        background-color: #333;
+      }
+	  .slide-out-div a{
+	        color: #CCCCCC;
+      }
+      .slide-out-div p {
+	        text-align: center;
+      }
+      .kx-search-bar {
+            float:right;
+            width:502px;
+            margin-top:20px;
+            position: relative;
+      }
+      .kx-search-bar input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #282828;
+            border: 1px solid #414141;
+            color: #a7a7a7;
+            border-radius: 3px;
+      }
+      .kx-search-bar a.kx-search {
+            position: absolute;
+            background: #83fa0f url(/static/img/kx-search-icon.png) no-repeat 13px;
+            top: 0;
+            right: 0;
+            width: 57px;
+            height: 40px;
+            background-size: 30px;
+            border-radius: 0 2px 2px 0;
+      }
+      #loginScreen {
+            height: 11px;
+            width: 700px;
+            top: -90%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 8;
+            display: none;
+            background: url(login.png) no-repeat;
+            right: 300px;
+      }
+      #loginScreen input {
+            vertical-align: top;
+            width: 667px;
+            height: 71px;
+            padding-right: 85px;
+            padding-left: 15px;
+            border-radius: 0;
+            box-sizing: border-box;
+            background: #fff;
+            font-size: 20px;
+            color: #5b5b5b;
+            outline: none;
+      }
+      #loginScreen a.cancel {
+            color: #fff;
+            top: 20px;
+            right: 14px;
+            background: none;
+            font-size: 40px;
+            height: 26px;
+            width: 23px;
+      }
+      #loginScreen a.cancel:hover {
+            color:#cd1d1f;
+      }
+      #loginScreen input.kx-popup-src-icon {
+            vertical-align: top;
+            width: 82px;
+            height: 69px;
+            padding: 0;
+            position: absolute;
+            background: #83fa0f url(/static/img/kx-popup-src-icon.png) no-repeat 26px 17px;
+            background-size: 33px;
+            border-radius: 0;
+            border: none;
+            right: 50px;
+            top: 1px;
+      }
+
+      #loginScreen .popup {
+            margin: 0;
+            top: 82px;
+            left: 0;
+            right: inherit;
+            position: absolute;
+      }
+
+      #loginScreen .popup .popuptext {
+            background-color: white;
+            color: #000;
+            padding: 8px 0;
+            position: absolute;
+            left: 0;
+            height: 500px;
+            top: 0;
+            width: 735px;
+            border-radius: 0;
+            overflow: auto;
+      }
+
+       #loginScreen .popup .popuptextt {
+            background-color: white;
+            color: #000;
+            padding: 8px 0;
+            position: absolute;
+            left: 0;
+            height: 60px;
+            top: 0;
+            width: 735px;
+            border-radius: 0;
+            overflow: auto;
+      }
+
+      #loginScreen .popup .popuptextt p.product-found {
+            color: #ff0000;
+            padding: 18px 258px;
+            font-size: 24px;
+      }
+
+
+      #loginScreen .popup ul.sub-menu {
+            width: 100%;
+            margin: 0;
+            padding: 0 20px;
+            max-height:inherit;
+            box-sizing: border-box;
+            overflow:inherit;
+            background: none;
+      }
+
+      #loginScreen .popup ul.sub-menuu {
+            width: 100%;
+            margin: 0;
+            padding: 0 20px;
+            box-sizing: border-box;
+            max-height:150px;
+            background: none;
+      }
+
+      #loginScreen .popup ul.sub-menu li:nth-child(2n),
+      #loginScreen .popup ul.sub-menuu li:nth-child(2n) {
+            margin-right: 0;
+      }
+
+      #loginScreen .popup ul.sub-menu li,
+      #loginScreen .popup ul.sub-menuu li {
+            padding: 0;
+            height: 80px;
+            width: 332px;
+            margin: 0;
+            margin-right: 15px;
+            margin-bottom: 15px;
+      }
+      #loginScreen .popup ul.sub-menu li a,
+      #loginScreen .popup ul.sub-menuu li a {
+            float:left;
+            width:100%;
+            height:100%;
+      }
+
+      #loginScreen .popup ul.sub-menu li a img,
+      #loginScreen .popup ul.sub-menuu li a img {
+            float:left;
+            width:75px;
+      }
+
+      #loginScreen .popup ul.sub-menu#search_list1 li a img,
+      #loginScreen .popup ul.sub-menuu#search_list1 li a img {
+            height:100%;
+      }
+
+      #loginScreen .popup ul.sub-menu li:hover a {
+            background:#f1f1f1;
+      }
+      #loginScreen .popup ul.sub-menu li a p,
+      #loginScreen .popup ul.sub-menuu li a p {
+            width: 246px;
+            float: right;
+            margin-top: 20px;
+            color: #5b5b5b;
+            font-size: 13px;
+            text-align: left;
+            font-weight: bold;
+            margin-left: 10px;
+      }
+
+      #loginScreen .popup ul.sub-menu#brands li {
+            width: 163px;
+            margin: 0 6px 6px 1px;
+            height: auto;
+      }
+
+
+
+      #loginScreen .popup ul.sub-menu#brands li a,
+       #loginScreen .popup ul.sub-menuu#brands li a{
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ebebeb;
+      }
+
+      #loginScreen .popup ul.sub-menu#brands li:hover a,
+       #loginScreen .popup ul.sub-menuu#brands li:hover a {
+            background: transparent;
+            border: 1px solid #23527c;
+      }
+
+      #loginScreen .popup ul.sub-menu#brands li a img,
+       #loginScreen .popup ul.sub-menuu#brands li a img{
+            width: auto;
+            height: 55px;
+      }
+
+      #loginScreen .popup ul.sub-menu#brands li a p,
+       #loginScreen .popup ul.sub-menuu#brands li a p {
+            width: 100%;
+            text-align: center;
+            margin: 2px 0 0 0;
+            height: 38px;
+            line-height: 38px;
+            font-size: 0.9em;
+            font-weight: normal;
+      }
+
+      #loginScreen .popup ul.sub-menu#brands li:hover a p,
+       #loginScreen .popup ul.sub-menuu#brands li:hover a p {
+            color: #cd1d1f;
+      }
+
+      #loginScreen .popup .popuptext a#close {
+            display:none;
+      }
+
+      #loginScreen .popup .popuptext h1 {
+            float: left;
+            width: 100%;
+            margin: 0;
+            color: #5b5b5b;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            background: #f1f1f1;
+            margin-bottom: 5px;
+      }
+      #loginScreen .popup ul.sub-menu li a span {
+            float: left;
+            width: 226px;
+            margin: 10px;
+            text-align: left;
+            color: #83fa0f;
+            font-weight: bold;
+      }
+      #loginScreen .popup ul.sub-menu li a span p {
+            width: auto;
+            float: left;
+            margin: 0;
+            margin-right:3px;
+      }
+      #loginScreen .login-area{
+            -webkit-transition: -webkit-transform .3s ease-out;
+    -o-transition: -o-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    -webkit-transform: translate(0,-25%);
+    -ms-transform: translate(0,-25%);
+    -o-transform: translate(0,-25%);
+    transform: translate(0,-25%);
+      }
+      #loginScreen .login-area.loginscreen  {
+
+       -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0);
+      }
+    .color{
+            font-size: 18px;
+            color: white;
+    }
+    .hide{
+        display:none;
+    }
+
+    /* Popup container - can be anything you want */
+    .popup {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        margin-top:492px;
+        margin-left: -600px;
+    }
+
+    /* The actual popup */
+    .popup .popuptext {
+        visibility: hidden;
+        width: 800px;
+        background-color: white;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: -150px;
+        left: 50%;
+        <!--margin-left: -500px;-->
+    }
+
+    /* Popup arrow */
+
+    /* Toggle this class - hide and show the popup */
+    .popup .show {
+        visibility: visible;
+        -webkit-animation: fadeIn 1s;
+        animation: fadeIn 1s;
+    }
+
+    /* Add animation (fade in the popup) */
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity:1 ;}
+    }
+
+    table, th, td {
+        border: 1px solid white;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 5px;
+    }
+
+    .sub-menu li {
+        font-size: 1em;
+        padding: .25em 1em;
+        line-height: 1em;
+    }
+
+    .sub-menu {
+        padding: 0;
+        max-height: 30em; /* 1.5 x 3 */
+        overflow-y: auto;
+    }
+    .sub-menuu li {
+        font-size: 1em;
+        padding: .25em 1em;
+        line-height: 1em;
+    }
+
+    .sub-menuu {
+        padding: 0;
+        max-height: 15em; /* 1.5 x 3 */
+        overflow-y: auto;
+
+    }
+     /* .container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 90%;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.5s ease;
+  }
+  
+   .container:hover .overlay {
+    display: block;
+    background: rgba(0, 0, 0, .3);
+  }
+  
+  /* img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 0;
+  } */
+  
+  /* .container:hover .title {
+    top: 90px;
+  } */
+  
+  /* .button {
+    position: absolute;
+    width: 100%;
+    left:0;
+    right:0; 
+    top: 10px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  
+  .button a {
+    width: 10px;
+    text-align: center;
+    color: white;
+    border: solid 2px white;
+    z-index: 1;
+  }
+  
+  .container:hover .button {
+    opacity: 1;
+  }  */
+
+  .container {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: auto;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: #484e57;
+  color: white;
+  font-size: 10px;
+  padding: 8px 16px;
+  z-index: 1;
+}
+
+
+</style>
+<style type="text/css">
+.button
+{
+	width: 150px;
+	padding: 10px;
+	background-color: #FF8C00;
+	box-shadow: -8px 8px 10px 3px rgba(0,0,0,0.2);
+    font-weight:bold;
+	text-decoration:none;
+}
+#cover{
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    z-index:5;
+    width:100%;
+    height:100%;
+    display:none;
+}
+#loginScreen
+{
+   height: 38px;
+    width: 784px;
+    top: -90%;
+    margin:0 auto;
+    position:relative;
+    z-index:8;
+    display:none;
+	background: url(login.png) no-repeat;
+	<!--border:5px solid #cccccc;-->
+	<!--border-radius:10px;-->
+}
+#loginScreen:target, #loginScreen:target + #cover{
+    display:block;
+    opacity:2;
+}
+.cancel
+{
+    display:block;
+    position:absolute;
+    top:3px;
+    right:2px;
+    <!--background:rgb(245,245,245);-->
+    <!--color:black;-->
+    height:30px;
+    width:35px;
+    font-size:60px;
+    text-decoration:none;
+    text-align:center;
+    font-weight:bold;
+}
+
+.close
+{
+    width: 30px;
+    position: absolute;
+    right: 25px;
+    top: 5px;
+    height: 30px;
+ }
+
+ p.product-found {
+    color: #ff0000;
+    padding: 8px 0;
+}
+
+    </style>
+    <script src="{% static "js/modernizr-1.7.min.js" %}"></script>
+
+<meta name="google-site-verification" content="QfixGxPRl3SGj4_sysXolbDJ13AhGHdr43gCCumwMA0" />
+
+</head>
+
+<body onUnload="" {% block extra_body %}{% endblock %}>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div id="loadBorder"></div>
+<div id="loadBox"><img src="{% static "img/kx_load_ani.gif" %}" width="126" height="22" style="padding-top:190px"/></div>
+{% block extra_linecode %}<div class="container_16">{% endblock %}
+{% if not subdomain %}
+
+    <header>
+
+        <div class="grid_7">
+            <a href="/" class="logo"><img src="{% static "img/logo_kxwheels.png" %}" alt="KX Wheels"></a>
+        </div>
+
+        <div class="grid_9">
+            {% include "account/menu.html" %}
+            <ol id="vehicle_specification">
+                {% if selected_vehicle %}
+                <li><a href="{% url "vehicle_model_search" %}" class="select_vehicle">[Change vehicle]</a></li>
+                <li><strong>{{ selected_vehicle }}</strong></li>
+                {% else %}
+                <li><a href="{% url "vehicle_model_search" %}" class="select_vehicle">Select a vehicle</a></li>
+                {% endif %}
+            </ol>
+
+
+
+            <div class="kx-search-bar">
+                 <form class="navbar-form navbar-left" role="search" action="{{ request.META.HTTP_NAME }}/search/search/" id="quick_searchh">
+                     <input type="hidden" name="csrfmiddlewaretoken" id="token" value="{{ csrf_token }}">
+                     <input type="search" id="search_value" value="" placeholder="Search By Product, Type, Part #, Size or Brand..." readonly/>
+                        <a href="javascript:void(0)" class="kx-search" id="search_logo"></a>
+                                <!--Search Task Html zaheer-->
+                                <a href="javascript:void(0)" class="button hide"><input type="button" id="btnclick" /></a>
+
+                            <div id="loginScreen">
+                                <div class="login-area">
+                                <a href="javascript:void(0)" id="cancel" class="cancel">&times;</a>
+                                <input type="text" name="search" placeholder="Search By Product, Product Type, Part Number, Size, or Brand..." name="searched_item" id="searchresult" onkeyup="countChar(this)"/>
+                            <input type="button" value="" id="searchbtn" class="kx-popup-src-icon"/>
+                        <div class="popup hide" id="hide_popup">
+                           </div>
+                                    <div class="popup hide" id="hide_popup1">
+                           </div>
+                        </div>
+                 </div>
+                <div id="cover" >
+                </div>
+
+                     <!-- /--end seach html--/ -->
+                 </form>
+            </div>
+
+
+
+
+
+
+        </div>
+    </header>
+    <div class="clear"></div>
+
+    <nav>
+        <div class="grid_16">
+        <ul>
+            <!--<li><a href="http://tirexperts.wheels-canada.com/">Home</a></li>-->
+            <li class="first" id="nav_tires" style="margin-right:8px">
+                <a href="{% url "tire_landing" %}">Tires</a>
+                <ul>
+                    <li><a href="{% url "tire_manufacturer_list" %}" onClick="startKXLoad()">Browse All Tires</a></li>
+                    <li><a href="{% url "tire_tiresize_search" %}" onClick="startKXLoad()">Search Tire Sizes</a></li>
+                    <li><a href="{% url "tire_vehicle_search" %}" onClick="startKXLoad()">Search Tires By Vehicle</a></li>
+                    <li><a href="{% url "tire_staggered_search" %}" onClick="startKXLoad()">Staggered Tire Sizes</a></li>
+                </ul>
+            </li>
+            <li id="nav_wheels" style="margin-right:8px">
+                <a href="{% url "wheel_landing" %}">Wheels</a>
+                <ul>
+                    <li><a href="{% url "wheel_featured_list" %}" onClick="startKXLoad()">Featured Brands</a></li>
+                    <li><a href="{% url "wheel_manufacturer_list" %}" onClick="startKXLoad()">Browse All Wheels</a></li>
+                    <li><a href="{% url "wheel_wheelsize_search" %}" onClick="startKXLoad()">Search Wheel Sizes</a></li>
+                    <li><a href="{% url "wheel_vehicle_search" %}" onClick="startKXLoad()">Search Wheels By Vehicle</a></li>
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url "csv_import" %}" onClick="startKXLoad()">Import Wheels</a></li>
+                    <li><a href="{% url "import_images" %}" onClick="startKXLoad()">Import Images</a></li>
+                    <li><a href="{% url "vehicle_import" %}" onClick="startKXLoad()">Import Vehicles</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li id="nav_accessories" style="margin-right:12px">
+                <a href="{% url "accessories" %}" >Accessories</a>
+            </li>
+            <li id="nav_dealer" style="margin-right:8px"><a href="{% url "auth_dealer_create" %}">Dealer Pricing</a>
+                <ul>
+                     {% if request.user.is_superuser %}
+                    <li style="margin-right:10px"><a id="download_excel_dealer" href="{% url "auth_dealer_download" %}">Export Dealer Pricing</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <li style="margin-right:10px"><a href="/content/experts/">The Experts</a></li>
+            <li class="last"><a href="/content/contact-us/">Contact Us</a></li>
+			
+        </ul><div id="socialbox" style="float:right"><div style="margin-right:7px; margin-top:7px; float:left"><div class="g-plusone" data-annotation="none"></div></div><!--<div class="fb-follow" data-href="https://www.facebook.com/kxwheels" data-colorscheme="light" data-layout="button_count" data-show-faces="true" style="margin-right:10px; margin-top:8px; vertical-align: top;"></div>--><a href="//plus.google.com/share?app=110&url=https%3A%2F%2Fkxwheels.com%2F" target="_blank"><img src="/static/img/googleplus1.png" alt="Facebook" style="margin-right: 7px;margin-top: 6px;width: 25px;float: left;"></a> <a href="https://www.facebook.com/kxwheels" target="_blank"><img src="/static/img/fb_kx_360.png" alt="Facebook" style="margin-right: 7px;margin-top: 6px;width: 25px;float: left;"></a><a href="https://twitter.com/kxwheels" target="_blank"><img src="/static/img/tw_kx_360.png" alt="Twitter" style="margin-right: 7px;margin-top: 6px;width: 25px;float: left;"></a></div>
+        </div>
+        
+    </nav>
+    <div class="clear"></div>
+    
+    {% else %}
+    <div id="topbar">
+        <div id="topbar_content">
+            {% include "account/menu.html" %}
+        </div>
+        <br clear="all" />
+    </div>
+    <div id="background" class="test">
+    <div id="mainbox">
+     <div id="header">
+        {% if subdomain_profile.dealer_logo %}
+        <a href="/"><img src="{{ MEDIA_URL }}{{ subdomain_profile.dealer_logo }}" width="366" height="67" id="logo" /></a>
+        {% else %}
+        <img src="{% static "img/logo_kxwheels.png" %}" width="366" height="67" id="logo" />
+        {% endif %}
+        <div id="vehiclebox">
+            {% if selected_vehicle %}
+            <a href="{% url "vehicle_model_search" %}" class="select_vehicle">[Change vehicle]</a>
+            &nbsp;&nbsp;&nbsp;{{ selected_vehicle }}
+            {% else %}
+            <a href="{% url "vehicle_model_search" %}" class="select_vehicle">Select a vehicle</a>
+            {% endif %}
+        </div>
+        <br clear="all" />
+     </div>
+     <div id="menubox">
+          <ul>
+            <li id='tires_dropdown'><a href="{% url "tire_landing" %}">Tires</a>
+                <ul id='tires_menu'>
+                    <li><a href="{% url "tire_manufacturer_list" %}" onClick="startKXLoad()">Browse All Tires</a></li>
+                    <li><a href="{% url "tire_tiresize_search" %}" onClick="startKXLoad()">Search Tire Sizes</a></li>
+                    <li><a href="{% url "tire_vehicle_search" %}" onClick="startKXLoad()">Search Tires By Vehicle</a></li>
+                    <li><a href="{% url "tire_staggered_search" %}" onClick="startKXLoad()">Staggered Tire Sizes</a></li>
+                </ul>
+            </li>
+            <li id='wheels_dropdown'><a href="{% url "wheel_landing" %}">Wheels</a>
+                <ul id='wheels_menu'>
+                    <li><a href="{% url "wheel_manufacturer_list" %}" onClick="startKXLoad()">Browse All Wheels</a></li>
+                    <li><a href="{% url "wheel_wheelsize_search" %}" onClick="startKXLoad()">Search Wheel Sizes</a></li>
+                    <li><a href="{% url "wheel_vehicle_search" %}" onClick="startKXLoad()">Search Wheels By Vehicle</a></li>
+                </ul>
+            </li>
+            <li><a href="/content/accessories/"></a></li>
+            <li><a href="/kx/contact-us/">Contact</a></li>
+          </ul>
+          <br clear="all" />
+     </div>
+    
+    {% endif %}
+
+    <div class="clear"></div>
+    <!-- Here be the dragons -->
+    {% block content %}{% endblock %}
+
+    {% if subdomain %}
+    </div>
+    </div>
+    <div id="footer">
+    {% else %}
+    <footer>
+    {% endif %}
+        <div class="grid_1">&nbsp;</div>
+        
+        {% if not subdomain %}
+        <div class="grid_3">
+            <h5>My KX Wheels</h5>
+            {% include "account/menu.html" with for_footer="true"%}
+        </div>
+        <div class="grid_3">
+            <h5>Information</h5>
+            <ul>
+                <li><a href="/content/fitment-guarantee/">Fitment Guarantee</a></li>
+                <li><a href="/content/shipping-costs/">Shipping Costs</a></li>
+                <li><a href="/content/placing-orders/">Placing an Order</a></li>
+                <li><a href="/content/payment-options/">Payment Options</a></li>
+                <li><a href="/content/wheel-manufactures/">The Lines</a></li>
+            </ul>
+        </div>
+        <div class="grid_3">
+            <h5>Order Information</h5>
+            <ul>
+                <li><a href="/content/order-cancellation/">Order Cancellation</a></li>
+                <li><a href="/content/inspecting-your-order/">Inspecting Your Order</a></li>
+                <li><a href="/content/returns/">Returns</a></li>
+                <li><a href="/content/warranty/">Warranty Information</a></li>
+                <li><a href="/content/privacy/">Privacy</a></li>
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div class="grid_3 last">
+            <h5>Popular Links</h5>
+            <ul>
+                <li><a href="{% url "tire_tire_calculator" %}">Tire Size Calculator</a></li>
+                <li><a href="{% url "wheel_backspace_calculator" %}">Wheel Offset Calculator</a></li>
+                <li><a href="/content/tire-wheel-installation/">Wheel Install Guide</a></li>
+                <li><a href="/content/wheel-torq-specs/">Wheel Torq Specs</a></li>
+				<li><a href="http://kxwheels.com/kxwheels-brands-video/">Brand Videos</a></li>
+            </ul>
+        </div>
+        <div class="grid_3 last">
+            <h5>Articles</h5>
+            <ul>
+                <li><a href="http://kxwheelscanada.blogspot.com/" target="_blank">Wheels</a></li>
+                <li><a href="/content/cars/">Cars Specific Wheels</a></li>
+                <!-- <li><a href="/content/articles-tire-tech/">Tire Tech Articles</a></li>
+                <li><a href="/content/articles-wheel-tech/">Wheel Tech Articles</a></li> -->
+            </ul>
+        </div>
+        <div class="clear"></div>
+
+        <div class="grid_16">
+
+        </div>
+        <div class="clear"></div>
+    {% if subdomain %}
+    </div>
+    {% else %}
+    </ >
+    {% endif %}
+<!--	
+<center><h1><strong>Custom Wheels in Canada</strong> - Hot Sellers</h1>
+<p>
+<hr />
+<div class="clear"></div><p>
+    <p><div class="grid_4">
+                <a href="http://kxwheels.com/kx/wheel/fuel-offroad-wheels-rims-canada/" alt="Fuel Offroad Wheels | Fuel Offroad Rims">Fuel Offroad Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/american-racing-atx-wheels-canada/" alt="American Racing ATX Series Wheels Canada">American Racing ATX Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/2-crave-extreme-wheels/" alt="2 Crave Extrem Offroad Wheels Canada">2 Crave Extrem Offroad Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/strada-wheels/" alt="Strada Wheels">Strada Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/diablo-wheels/" alt="Diablo Wheels">Diablo Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/2-crave-mach-wheels/" alt="2 Crave Mach Wheels">2 Crave Mach Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/method-race-wheels-canada/" alt="Method Race Wheels">Method Race Rims Canada</a><br>
+</div>
+		<div class="grid_4">
+				<a href="http://kxwheels.com/kx/wheel/kmc-xd-series-wheels-canada/" alt="KMC XD Series Wheels | KMC XD Series Rims">XD Series Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/ballistic-wheels-canada-ballistic-offroad/" alt="Ballistic Offroad Wheels Canada">Ballistic Offroad Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/moto-metal-wheels/" alt="Moto Metal Offroad Truck Wheels Canada">Moto Metal Offroad Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/vct-wheels/" alt="VCT Wheels">VCT Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/giovanna-wheels/" alt="Giovanna Wheels">Giovanna Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/axis-wheels/" alt="Axis Wheels">Axis Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/tsw-alloy-wheels/" alt="TSW Wheels">TSW Rims Canada</a><br>
+</div>
+<div class="grid_4">
+				<a href="http://kxwheels.com/kx/wheel/rbp-wheels-canada/" alt="RBP Wheels | RP Rims">RBP Offroad Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/bmf-wheels-canada/" alt="BMF Offroad Wheels Canada">BMF Offroad Wheels Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/hostile-offroad-rims-wheels-canada/" alt="Hostile Offroad Wheels Canada">Hostile Offroad Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/kmc-wheels-canada/" alt="KMC Wheels Canada">KMC Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/2-crave-wheels-canada/" alt="2 Crave Wheels">2 Crave Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/drag-wheels/" alt="Drag Tuner Wheels">Drag Tuner Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/motegi-wheels-canada/" alt="Motegi Tuner Wheels">Motegi Tuner Rims Canada</a><br>
+</div>
+<div class="grid_4">
+				<a href="http://kxwheels.com/kx/wheel/gear-alloy-wheels-canada/" alt="Gear Alloy Wheels | Gear Alloy Rims">Gear Alloy Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/rmr-wheels/" alt="RMR Offroad Wheels Canada">RMR Offroad Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/monster-offroad-wheels/" alt="Monster Offroad Truck Wheels Canada">Monster Offroad Truck Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/helo-wheels/" alt="Helo Wheels Canada">Helo Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/lexani-wheels-canada/" alt="Lexani Wheels">Lexani Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/enkei-wheels-canada/" alt="Enkei Wheels">Enkei Rims Canada</a><br>
+				<a href="http://kxwheels.com/kx/wheel/mrr-wheels/" alt="MRR Wheels">MRR Rims Canada</a><br>
+</div>
+</center>	
+-->
+    <!-- Javascript goes here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{% static "js/common.js" %}"></script>
+    <script type="text/javascript">
+        $(function(){
+          endKXLoad();
+          $('#tires_menu').hide();
+          $('#wheels_menu').hide();
+          $('#tires_dropdown').hover(function(){$('#tires_menu').show();}, function(){$('#tires_menu').hide();});
+          $('#wheels_dropdown').hover(function(){$('#wheels_menu').show();}, function(){$('#wheels_menu').hide();});
+        });
+    </script>
+
+    {% if not subdomain or current_user != subdomain_profile.user %}
+    <script src="{% static "js/softy.js" %}"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+            SOFTY.cart.display();
+        })
+    </script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1070442778;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+var google_conversion_label = "iabyCPzzvAkQmtK2_gM";
+
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1070442778/?value=0&amp;guid=ON&amp;script=0"/>
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1070442778/?label=iabyCPzzvAkQmtK2_gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4735321-1', 'kxwheels.com');
+  ga('require', 'linkid', 'linkid.js');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+
+</script>
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-Dt-0mVD7SgNjd"
+});
+</script>
+
+<noscript>
+<div style="display:none;">
+<img src="//pixel.quantserve.com/pixel/p-Dt-0mVD7SgNjd.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+</noscript>
+<!-- End Quantcast tag -->
+
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+{% if not subdomain %}
+</div> <!-- .container_16 -->
+{% endif %}
+
+
+
+
+
+
+
+
+<!--slide out box-->
+
+<script src="{% static "js/jquery.tabSlideOut.v1.3.js" %}"></script><!--http://tab-slide-out.googlecode.com/files/jquery.tabSlideOut.v1.3.js-->
+
+    <script type="text/javascript">
+    $(function(){
+        $('.slide-out-div').tabSlideOut({
+            tabHandle: '.handle',                     //class of the element that will become your tab
+            pathToTabImage: '{% static "img/contact_tab.jpg" %}', //path to the image for the tab //Optionally can be set using css
+            imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
+            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+            speed: 300,                               //speed of animation
+            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+            topPos: '50px',                          //position from the top/ use if tabLocation is left or right
+            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
+            fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
+        });
+
+    });
+
+    </script>
+
+<!-- end slide out box-->
+
+<div class="slide-out-div" style="width: 100%; text-align: center; margin: 0px; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; padding-top: 10px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
+      <!--      <a class="handle" href="http://link-for-non-js-users.html">Content</a>
+  start http://www.livehelpnow.net  -->
+
+<!--This DIV object will show the live chat button, have it placed in the location on your website where you would like the live chat button to show-->
+
+<div id="lhnContainer" style="text-align: center;">
+
+                <div id="lhnChatButton"></div>
+
+                <div style="text-align:center;font-size:10px;"><a title="custom wheels,car rims canada,custom wheels canada,car mags canada,wheels and tires packages,wheels for sale,tires for sale canada" href="http://kxwheels.com" style="font-size:10px;" target="_blank">Custom wheels,Car rims Canada,Custom wheels Canada,Wheel and Tire Packages,Rims for sale,Tires for sale,Offroad Wheels</a></div>
+
+</div>
+
+<!--You may install the following code in an external JavaScript file if you like-->
+
+<script type="text/javascript">
+
+                // Misc Options
+                $(function(){
+                    $('#tabs').tabs();
+                });
+                var lhnAccountN = 15197; //LiveHelpNow account #
+
+                var lhnButtonN = 40; //Button #
+
+                var lhnVersion = 5.3; //LiveHelpNow version #
+
+                // Chat Options
+
+                var lhnJsHost = (("https:" == document.location.protocol) ? "https://" : "http://"); //to force secure chat replace this line with: var lhnJsHost = 'https://';
+
+                var lhnInviteEnabled = 1; //Invite visitor to chat automatically
+
+                var lhnInviteChime = 0; //1 = disable invite beep sound,0 = keep invite beep sound enabled
+
+                var lhnWindowN = 0; //Chat window #, leave 0 to open default window setup for your account
+
+                var lhnDepartmentN = 0; //Department #, leave 0 to not route by department
+
+                var lhnCustomInvitation = ''; //change to 1 to use custom invitation, see this article for customization instructions: http://help.livehelpnow.net/article.aspx?cid=1&aid=1739
+
+                var lhnCustom1 = ''; //Custom1 feed value please use encodeURIComponent() function to encode your values
+
+                var lhnCustom2 = ''; //Custom2 feed value please use encodeURIComponent() function to encode your values
+
+                var lhnCustom3 = ''; //Custom3 feed value please use encodeURIComponent() function to encode your values
+
+                var lhnTrackingEnabled = 't'; //change to 'f' to disable visitor tracking
+
+                // Options End
+
+                var lhnScriptSrc = lhnJsHost + 'www.livehelpnow.net/lhn/scripts/livehelpnow.aspx?lhnid=' + lhnAccountN + '&iv=' + lhnInviteEnabled + '&d=' + lhnDepartmentN + '&ver=' + lhnVersion + '&rnd=' + Math.random();
+
+                var lhnScript = document.createElement("script"); lhnScript.type = "text/javascript";lhnScript.src = lhnScriptSrc;
+
+                if (window.addEventListener) {
+
+                                window.addEventListener('load', function () { document.getElementById('lhnContainer').appendChild(lhnScript); }, false);
+
+                }
+
+                else if (window.attachEvent) {
+
+                                window.attachEvent('onload', function () { document.getElementById('lhnContainer').appendChild(lhnScript); });
+
+                }
+
+</script>
+
+<!--end http://www.livehelpnow.net  -->
+<p>&nbsp;</p>
+<p>Our Hours are 8am to 5pm PST Monday to Friday. (888) 596-3122 | sales@kxwheels.com</p>
+<p>&nbsp;</p>
+</div>
+<!--<a href="http://www.freesitemapgenerator.com/">Free xml sitemap generator</a>-->
+
+<!--&lt;!&ndash; Google+ +1 button tag. &ndash;&gt;-->
+<!--<script type="text/javascript">-->
+  <!--(function() {-->
+    <!--var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;-->
+    <!--po.src = 'https://apis.google.com/js/platform.js';-->
+    <!--var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);-->
+  <!--})();-->
+<!--</script>-->
+
+</body>
+    <!--<script>-->
+        <!--$('body').delegate("#download_excel_dealer", "click" , function(){-->
+           <!--$.ajax({    //create an ajax request to display.php-->
+            <!--type: "GET",-->
+            <!--url: "{% url "auth_dealer_download" %}",-->
+            <!--&lt;!&ndash;data: "csrfmiddlewaretoken={{ csrf_token }}",   //expect html to be returned&ndash;&gt;-->
+            <!--success: function(response){-->
+                <!--alert(response);-->
+            <!--}-->
+
+        <!--});-->
+        <!--});-->
+
+    <!--</script>-->
+
+</html>

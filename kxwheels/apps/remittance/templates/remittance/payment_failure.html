@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    An error occured while processing your payment. Please click the back button
+    of your brower and try again.
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

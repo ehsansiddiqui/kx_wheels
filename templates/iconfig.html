@@ -1,0 +1,285 @@
+{% load staticfiles %}
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>KX Wheels</title><meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/iconfig.css" %}" media="all" />
+
+<script>
+// IMPORTANT!!!!!!!! ///////////////////////////
+// Raname this file to the correct Server Technology
+// and un comment the coorrosponding code for the server language and 
+// remove the all others  
+//
+//Coldfusion  
+
+/*<cfoutput>
+var strClientIP = '#cgi.REMOTE_ADDR#';
+</cfoutput>
+
+*/
+// PHP
+//
+/*
+var strClientIP = '<?php echo $_SERVER['REMOTE_ADDR']?>';
+*/
+
+
+//'Classic ASP
+//
+/*
+'var strClientIP = '<%= Request.ServerVariables("REMOTE_ADDR")%>';
+*/
+
+// dotNET
+//
+/*
+var strClientIP = '<%= Request.UserHostAddress %>';
+*/
+
+/*
+//JSP
+//
+var strClientIP = '<%=request.getRemoteAddr()%>';
+*/
+</script>  
+<script>
+/// for item tracking purposes
+// use server side means to obtain the client ip adress
+// and assign this to the variable below..
+  var strClientIP = '127.0.0.1'
+</script>
+
+  <!-- include jQuery library -->
+  <script type="text/javascript" src="http://ver1.iconfigurators.com/src/jquery-latest.pack.js"></script>
+  <script src="http://ver1.iconfigurators.com/json/settings.cfm?ky=9005KX@!" type="text/javascript"></script>
+  <script src="{% static "js/configscript_jso.js" %}" type="text/javascript"></script>
+  <script src="{% static "js/jquery.iconfig_jso.js" %}" type="text/javascript"></script>
+  </head>
+  <body>
+<div id="iconfig_page" >
+  <div id="iconfig_pageContent" >
+    <div id="iconfig_info" >
+      <div class="iconfig_top_sel_text" ><span align="left" class="iconfig_item_info" id="iconfig_item_color" ></span> <span align="left" class="iconfig_item_info" id="iconfig_item_make" ></span> <span align="left" class="iconfig_item_info" id="iconfig_item_model"></span> <span align="left" class="iconfig_item_info" id="iconfig_item_sub_model"></span> <span align="left" class="iconfig_item_info" id="iconfig_item_year"></span> <span align="left" class="iconfig_item_info" id="iconfig_item_wheel"></span> </div>
+    </div>
+    <!-- info!-->
+    <div id="iconfig_divWheel" align="center"></div>
+    <div id="iconfig_divColorBox" align="center" >
+      <div><img src="http://ver1.iconfigurators.com/images/box-top.png" width="708" height="13" /></div>
+      <div class="iconfig_divColorBoxChild">
+        <div id="iconfig_divColor" align="center" ></div>
+      </div>
+      <div id="iconfig_pClose"><img src="http://ver1.iconfigurators.com/images/close.png"  /></div>
+      <div><img src="http://ver1.iconfigurators.com/images/box-bot-wht.png" width="708" height="13" /></div>
+    </div>
+    <div  align="center" id="iconfig_detail" >
+      <div><img src="http://ver1.iconfigurators.com/images/box-top.png" width="708" height="13" /></div>
+      <div id="iconfig_sumBox">
+        <div class="iconfig_sumBoxChild">
+          <div id="iconfig_detailDiv">
+            <div align="center" id="iconfig_display_image_area"> <img src="" width="300" height="300" id="iconfig_wheel_display_image" /> </div>
+            <div align="center" id="iconfig_display_area">
+              <div align="left" class="iconfig_display_area_child">
+                <div class="iconfig_display display_area_child_inner" align="center"><img src=""  id="iconfig_wheel_display_brand_image" /></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead">Brand:</span> <span id="iconfig_wheel_display_brand_name"></span></div>
+                <div class="iconfig_display display_bottom_border"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead">Style:</span> <span id="iconfig_wheel_display_style_name"></span></div>
+                <div class="iconfig_display display_bottom_border"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead">Finish:</span> <span id="iconfig_wheel_display_finish_name"></span></div>
+                <div class="iconfig_display display_bottom_border"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead" >Specs:</span> <a href="" id="iconfig_wheel_display_specs" ></a></span></div>
+                <div class="iconfig_display display_bottom_border"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead" >Description:</span> <span id="iconfig_wheel_display_desc"></span></div>
+                <br />
+                <br />
+              </div>
+            </div>
+          </div>
+          <div id="iconfig_dClose"><img src="http://ver1.iconfigurators.com/images/close.png" /></div>
+        </div>
+      </div>
+      <div><img src="http://ver1.iconfigurators.com/images/box-bot-wht.png" width="708" height="13" /></div>
+    </div>
+    <!--Error popup -->
+    <div align="center" id="iconfig_error_detail" style="display: none;">
+      <div><img height="13" width="708" src="http://ver1.iconfigurators.com/images/box-top.png"></div>
+      <div id="iconfig_sumBox_er">
+        <div class="iconfig_sumBoxChild">
+          <div class="iconfig_err_msg_popup">
+          <p class="iconfig_er_msg"></p>
+            <p>Above Error Occured. Please contact <a href="mailto:support@icon-media.com">support@icon-media.com</a> 
+            </p>
+            
+          </div>
+          <div id="iconfig_erClose"><img src="http://ver1.iconfigurators.com/images/close.png"></div>
+        </div>
+      </div>
+      <div><img height="13" width="708" src="http://ver1.iconfigurators.com/images/box-bot-wht.png"></div>
+
+    </div>
+    
+    <!-- Tire DEtail -->
+    <div  align="center" id="iconfig_tire_detail"  >
+      <div><img src="http://ver1.iconfigurators.com/images/box-top.png" width="708" height="13" /></div>
+      <div id="iconfig_sumBox">
+        <div class="iconfig_sumBoxChild">
+          <div id="iconfig_detailDiv">
+            <div align="center" id="iconfig_display_image_area"> <img src=""  id="iconfig_tire_display_image" /> </div>
+            <div align="center" id="iconfig_display_area" >
+              <div align="left"  class="iconfig_display_area_child" >
+                <div class="iconfig_display display_area_child_inner" align="center" ><img src=""  id="iconfig_tire_display_brand_image" /></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead">Brand:</span> <span id="iconfig_tire_display_brand_name"></span></div>
+                <div class="iconfig_display display_bottom_border" ></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead">Style:</span> <span id="iconfig_tire_display_style_name"></span></div>
+                <div class="iconfig_display display_bottom_border"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead" >Specs:</span> <a href="" id="iconfig_tire_display_specs" ></a></span></div>
+                <!--div class="iconfig_display" style="border-bottom:dashed 1px #999;"></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead" >Save:</span>&nbsp;<a href="" id="iconfig_tire_display_PDF" target="_blank" >Download Page</a></span></div-->
+                <div class="iconfig_display display_bottom_border" ></div>
+                <div class="iconfig_display" ><span class="iconfig_displayHead" >Description:</span> <span id="iconfig_tire_display_desc"></span></div>
+                <br />
+                <br />
+              </div>
+            </div>
+          </div>
+          <div id="iconfig_tdClose"><img src="http://ver1.iconfigurators.com/images/close.png" /></div>
+        </div>
+      </div>
+      <div><img src="http://ver1.iconfigurators.com/images/box-bot-wht.png" width="708" height="13" /></div>
+    </div>
+    <!-- accessories tab -->
+    <div  align="center" id="iconfig_access_detail_div"  >
+      <div><img src="http://ver1.iconfigurators.com/images/box-top.png" width="708" height="13" /></div>
+      <div id="iconfig_sumBox" style="min-height:300px">
+        <div class="iconfig_sumBoxChild">
+          <div id="iconfig_accessdetailDiv">
+          </div>
+          <div class="iconfig_closeButton"><img src="http://ver1.iconfigurators.com/images/close.png" /></div>
+        </div>
+      </div>
+      <div><img src="http://ver1.iconfigurators.com/images/box-bot-wht.png" width="708" height="13" /></div>
+    </div>
+    
+    
+    <div  align="center" id="iconfig_vehicleStart" >
+      <div><img src="http://ver1.iconfigurators.com/images/box-top.png" width="708" height="13" /></div>
+      <div class="iconfig_vehicleStartChild">
+        <div class="iconfig_vehicleStartChildInner">
+          <div align="left" class="iconfig_vehicleHead">
+            <h1>VEHICLE</h1>
+            <div class="iconfig_box-text" >Start your search by selecting your vehicle information below:</div>
+          </div>
+          <div  id="iconfig_vehicleContainer"  >
+            <div id="iconfig_vehicle"  >
+              <div  align="center">
+                <div class="iconfig_selects" align="left"  >
+                  <h2>MAKE</h2>
+                  <div  align="center"  id="iconfig_divMake" >
+                    <select id="iconfig_make" name="makes"  >
+                      <option selected="" value="0">SELECT MAKE</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="iconfig_selects" align="left" >
+                  <h2>MODEL</h2>
+                  <div  align="center"  id="iconfig_divModel" >
+                    <select id="iconfig_model" name="models" disabled="disabled" >
+                      <option selected="" value="0">SELECT MODEL</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="iconfig_selects" align="left" id="iconfig_trim" >
+                  <h2>TRIM</h2>
+                  <div  align="center"  id="iconfig_divSubModel" >
+                    <select id="iconfig_submodel" name="submodels" disabled="disabled" >
+                      <option selected="" value="0">SELECT TRIM</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="iconfig_selects" align="left" >
+                  <h2>YEAR</h2>
+                  <div  align="center"  id="iconfig_divYear" >
+                    <select id="iconfig_year" name="years" disabled="disabled">
+                      <option selected="" value="0">SELECT YEAR</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- Vehicle -->
+            </div>
+            <!--vehicleContainer-->
+          </div>
+        </div>
+      </div>
+      <div><img src="http://ver1.iconfigurators.com/images/box-bot.png" width="708" height="13" /></div>
+    </div>
+    <!-- vehicleStart -->
+    <div id="iconfig_content" >
+      <div id="iconfig_vehicleback" ><img src="" height="420" width="960" id="iconfig_vehiclebackimg"  /></div>
+      <div id="iconfig_vehiclefront" ><img src="" height="420" width="960" id="iconfig_vehiclefrontimg" /></div>
+      <div id="iconfig_wheelrear"><img src="" id="iconfig_wheelR" /></div>
+      <div id="iconfig_wheelfront"><img src="" id="iconfig_wheelF"/></div>
+      <div id="iconfig_access"><img src="" id="iconfig_accessImg"  style="z-index:0;" /> </div>
+      <!-- content -->
+      <div id="iconfig_brand" >
+        <div id="iconfig_brand_image_div"> <img src="" id="iconfig_detail_image" border="0"/> </div>
+        <div id="iconfig_wheel_brand_image_div"> <img src="" id="iconfig_wheel_detail_image" border="0"/> </div>
+      </div>
+    </div>
+    <!-- brand-->
+    <div id="iconfig_loader" style="filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);" align="center" ><img src="http://ver1.iconfigurators.com/images/ajax-loader.gif"/></div>
+    <div id="iconfig_divWheelScrollContent">
+      <div id="iconfig_divWheelScrollArea">
+        <div id="iconfig_navTabs">
+          <div id="iconfig_vehicleTab" class="iconfig_navTab" align="center">VEHICLE</div>
+          <div id="iconfig_wheelTab" class="iconfig_navTab" align="center">WHEELS</div>
+          <div id="iconfig_paintTab" class="iconfig_navTab" align="center">
+            <div>PAINT</div>
+          </div>
+          <div id="iconfig_accessTab" class="iconfig_navTab" align="center">
+            <div>ACCESSORIES</div>
+          </div>
+          <div id="iconfig_tireTab" class="iconfig_navTab" align="center">
+            <div>TIRES</div>
+          </div>
+          <div id="iconfig_paging"  align="center"></div>
+        </div>
+        <!-- navTabs -->
+        <div class="iconfig_itemContent" >
+          <div id="iconfig_leftScrollArrow"><img src="http://ver1.iconfigurators.com/images/arrow-left.jpg" width="23" height="182" /></div>
+          <div  id="iconfig_divWheelScroll" align="center"> </div>
+          <div id="iconfig_rightScrollArrow"><img src="http://ver1.iconfigurators.com/images/arrow-right.jpg" width="23" height="182" /></div>
+        </div><div id="iconfig_div_overlay" class="iconfig_div_overlayBG"></div>
+        <!-- itemContent-->
+      </div>
+      <!-- divWheelScrollArea -->
+      <br clear="all" />
+      <div id="iconfig_rightBotNav"  align="right">
+        <div class="iconfig_rightBotNavChild" align="right">
+          <div class="iconfig_botButton" id="iconfig_botNavSummary">SUMMARY</div>
+          <a href="javascript:" id="iconfig_save_PDF" >
+          <div class="iconfig_botButton" id="iconfig_botNavSave">SAVE PDF</div>
+          </a>
+		   <a href="javascript:" id="iconfig_share" >
+           <div class="iconfig_botButton" id="iconfig_botNavShare">SHARE</div>
+          </a>
+           <a href="javascript:" id="iconfig_botNavButton1" >
+           <div class="iconfig_botButton" id="iconfig_botNavButtonHTML1">Button One</div>
+          </a>
+          <a href="javascript:" id="iconfig_botNavButton2" >
+          <div class="iconfig_botButton" id="iconfig_botNavButtonHTML2">Button Two</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- divWheelScrollContent -->
+  </div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
+

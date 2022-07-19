@@ -1,0 +1,234 @@
+{% extends "kx/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Canada’s Only Online Staggered Tire Search{% endblock %}
+{% block meta_description %}Canada's online staggered tire search engine, we offer staggered wheels and tires at sale prices.  Get your car or truck rim and tire package today.{% endblock %}
+{% block meta_keywords %}high performance tires, Staggered car and truck tires{% endblock %}
+
+{%  load shop_tags thumbnail kx_tags kx_filters %}
+
+{% block search_filter %}
+    <form id="id_tire_staggered_search" name="tire_staggered_search" action="" method="post">
+        {% csrf_token %}
+        <p><strong>Front</strong></p>
+        <p>{{ form.prefix_front.label_tag }}{{ form.prefix_front }}</p>
+        <p>{{ form.treadwidth_front.label_tag }}{{ form.treadwidth_front }}</p>
+        <p>{{ form.profile_front.label_tag }}{{ form.profile_front }}</p>
+        <p>{{ form.diameter_front.label_tag }}{{ form.diameter_front }}</p>
+        <br>
+
+        <p><strong>Rear</strong></p>
+        <p>{{ form.prefix_rear.label_tag }}{{ form.prefix_rear }}</p>
+        <p>{{ form.treadwidth_rear.label_tag }}{{ form.treadwidth_rear }}</p>
+        <p>{{ form.profile_rear.label_tag }}{{ form.profile_rear }}</p>
+        <p>{{ form.diameter_rear.label_tag }}{{ form.diameter_rear }}</p>
+        {{ form.q }}
+        <br>
+        <input type="submit" value="Staggered Search" class="button">
+    </form>
+{% endblock %}
+
+{% block main_content %}
+    <div class="grid_13">
+        <h1>Staggered Search</h1>
+    </div>
+
+    <div class="grid_13" id="sortThis">
+        {% if not results %}
+            <p align="center"><img src="{% static "img/tiresize_staggered_search.jpg" %}"></p>
+        {% else %}
+            {% for tires in results %}
+
+                <div class="staggered_tire" id="{{ tires.0.tire.manufacturer }}">
+                    <h3>
+                        {{ tires.0.tire.manufacturer }}<br><span>{{ tires.0.tire }}</span>
+                        <div class="horizontal_category_icon {{ tires.0.tire.category.slug }}" style="float:right; margin-top:-8px;"></div>
+                    </h3>
+
+                    <div class="grid_2 alpha">
+                        <div class="pictures">
+                            {% kxthumbnail tires.0.tire.pictures.all.0 "med" as im %}
+                                <img src="{{ im.path }}" alt="{{ tires.0.name }}" align="center" />
+                            {% endkxthumbnail %}
+                        </div>
+                        <!--
+                        <p class="rating_info">&#9733;&#9733;&#9733;&#9733;&#9733;</p>
+                        <p class="reviews_info">(12 reviews)</p>
+                        -->
+                    </div>
+
+                    <div class="grid_8">
+                        <table>
+                            <tr>
+                                <td><strong>Front: {{ tires.0.tpd }}</strong></td>
+
+                                <td></td>
+                                <td><strong>Price: {% get_price tires.0 user subdomain %}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Part #: {{ tires.0.sku }}</td>
+                                <td>UTQG: {{ tires.0.utgq_rating }}</td>
+                                <td>Ply: {{ tires.0.ply }}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Load rating: {{ tires.0.load_rating }}</td>
+                                <td>Speed rating: {{ tires.0.speed_rating }}</td>
+                                <td>Sidewall: {{ tires.0.sidewall_style }}</td>
+                            </tr>
+                        </table>
+
+                        <hr>
+                        <table>
+                            <tr>
+                                <td><strong>Rear: {{ tires.1.tpd }}</strong></td>
+                                <td></td>
+                                <td><strong>Price: {% get_price tires.1 user subdomain %}</strong></td>
+                            </tr>
+                            <tr>
+
+                                <td>Part #: {{ tires.1.sku }}</td>
+                                <td>UTQG: {{ tires.1.utgq_rating }}</td>
+                                <td>Ply: {{ tires.1.ply }}</td>
+                            </tr>
+                            <tr>
+                                <td>Load rating: {{ tires.1.load_rating }}</td>
+                                <td>Speed rating: {{ tires.1.speed_rating }}</td>
+
+                                <td>Sidewall: {{ tires.1.sidewall_style }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="grid_3 omega">
+                        <div class="cart" id="form_{{ tires.0.sku }}" >
+
+                            <form action="{% url "shop_cartitem_create" %}" class="form_front" method="post">
+                                {% csrf_token %}
+                                {% add_to_cart_form tires.0 as form %}
+                                {{ form.content_type_id }}
+                                {{ form.object_id }}
+                                Front:
+                                <select name="quantity">
+
+                                    <option value="1">1</option>
+                                    <option value="2" selected="selected">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+
+                                </select>
+                            </form>
+
+
+                            <form action="{% url "shop_cartitem_create" %}" class="form_rear" method="post">
+                                {% csrf_token %}
+                                {% add_to_cart_form tires.1 as form %}
+                                {{ form.content_type_id }}
+                                {{ form.object_id }}
+                                Rear:
+                                <select name="quantity">
+                                    <option value="1">1</option>
+                                    <option value="2" selected="selected">2</option>
+
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </form>
+
+                            <p>
+                                <br><strong>Set of 4:</strong> <span class="set_of_4">{% get_price tires.0 user subdomain %}+{% get_price tires.1 user subdomain %}</span><br>
+                                <br><input type="submit" name="submit" value="Buy Tires" class="button add_to_cart" id="{{ tires.0.sku }}">
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    </div> <!-- .grid_13 -->
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static "js/softy.js" %}"></script>
+    <script>
+
+        $(function() {
+            /** Add to Cart **/
+            SOFTY.csrf_token = "{{ csrf_token }}";
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+
+            $("input.add_to_cart").live('click', function(){
+				
+				var btnId = $(this).attr("id");
+				
+                var front_ctid = $("#form_"+btnId+" .form_front #id_content_type_id").val();
+                var front_oid = $("#form_"+btnId+" .form_front #id_object_id").val();
+                var front_qty = $("#form_"+btnId+" .form_front select[name=quantity]").val();
+                SOFTY.cart.Add(front_ctid, front_oid, front_qty);
+
+                var rear_ctid = $("#form_"+btnId+" .form_rear #id_content_type_id").val();
+                var rear_oid = $("#form_"+btnId+" .form_rear #id_object_id").val();
+                var rear_qty = $("#form_"+btnId+" .form_rear select[name=quantity]").val();
+                SOFTY.cart.Add(rear_ctid, rear_oid, rear_qty);
+
+                return false;
+
+            });
+
+        });
+    </script>
+
+
+    <script>
+        $(function(){
+            // Check if querystring exists and form has not been submitted
+            {% if not form.is_valid %}
+                var url_parts = location.href.split('?');
+                if (url_parts.length > 1)
+                    if (url_parts[1].length > 2)
+                        $("#id_tire_staggered_search").submit();
+            {% endif %}
+
+
+            {% if results %}
+                // Fix the set of 4 price
+                $(".set_of_4").each(function() {
+                    var text = $(this).html().replace(/[^\d.+]/g, "").split("+");
+                    var curr
+                    $(this).html("$"+(parseFloat(text[0])*2+parseFloat(text[1])*2).toFixed(2));
+                });
+            {% endif %}
+        });
+    </script>
+    
+    
+        <script src="{% static "js/jquery-1.7.1.min.js" %}"></script>
+		<script src="{% static "js/jquery.opensource.min.js" %}"></script>
+		<script src="{% static "js/jquery.tinysort.js" %}"></script>
+        <script>$('div#sortThis>div').tsort({attr:'id'});</script>
+        
+        
+{% endblock %}

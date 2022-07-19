@@ -1,0 +1,249 @@
+table.tire_sizes {
+    width: 100%;
+}
+table.tire_sizes tr:first-child {
+    background: #000;
+    border: none;
+}
+table.tire_sizes tr {
+    border-bottom: 1px solid #e6e6e6
+}
+table.tire_sizes th {
+    text-align: left;
+    background-color: #e6e6e6;
+    color: #333;
+    padding: 8px 6px;
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+}
+table.tire_sizes td {
+    padding: 6px;
+    vertical-align: middle;
+}
+
+.vertical_category_icon {
+    width: 18px;
+    height: 200px;
+    position: relative;
+    left: -10px;
+    top: -10px;
+    margin-right: -18px;
+    float:left;
+}
+.horizontal_category_icon {
+    width: 170px;
+    height: 18px;
+    position: relative;
+}
+.vertical_category_icon.ALL-TERRAIN-WINTER {
+    background: url(../img/tire_categories_v.png) -18px bottom no-repeat;
+}
+.vertical_category_icon.PERFORMANCE-SUMMER {
+    background: url(../img/tire_categories_v.png) -126px bottom no-repeat;
+}
+.vertical_category_icon.ALL-SEASON {
+    background: url(../img/tire_categories_v.png) -108px bottom no-repeat;
+}
+.vertical_category_icon.ALL-TERRAINS {
+    background: url(../img/tire_categories_v.png) 0 bottom no-repeat;
+}
+.vertical_category_icon.MUD-TIRE {
+    background: url(../img/tire_categories_v.png) -90px bottom no-repeat;
+}
+.vertical_category_icon.winter {
+    background: url(../img/tire_categories_v.png) -54px bottom no-repeat;
+}
+.vertical_category_icon.RACING-TIRE {
+    background: url(../img/tire_categories_v.png) -36px bottom no-repeat;
+}
+.vertical_category_icon.RUN-FLAT {
+    background: url(../img/tire_categories_v.png) -72px bottom no-repeat;
+}
+
+/***/
+.horizontal_category_icon.ALL-TERRAIN-WINTER {
+    background: url(../img/tire_categories_h.png) left -18px no-repeat;
+}
+.horizontal_category_icon.PERFORMANCE-SUMMER {
+    background: url(../img/tire_categories_h.png) left -126px no-repeat;
+}
+.horizontal_category_icon.ALL-SEASON {
+    background: url(../img/tire_categories_h.png) left -108px no-repeat;
+}
+.horizontal_category_icon.ALL-TERRAINS {
+    background: url(../img/tire_categories_h.png) left 0 no-repeat;
+}
+.horizontal_category_icon.MUD-TIRE {
+    background: url(../img/tire_categories_h.png) left -90px no-repeat;
+}
+.horizontal_category_icon.winter {
+    background: url(../img/tire_categories_h.png) left -54px no-repeat;
+}
+.horizontal_category_icon.RACING-TIRE {
+    background: url(../img/tire_categories_h.png) left -36px no-repeat;
+}
+.horizontal_category_icon.RUN-FLAT {
+    background: url(../img/tire_categories_h.png) left -72px no-repeat;
+}
+
+
+
+/*** Tiresize box **/
+.tiresize {
+    width: 235px;
+	padding: 5px;
+	border: 1px solid #dbdbdb;
+    background-color: #fff;
+	font-size: 12px;
+	line-height: 18px;
+	float: left;
+    margin: 5px 6px 5px 0;
+}
+.tiresize h3 {
+    background: #37383C url(../img/sr_title_bg.jpg) left top no-repeat;
+	padding:  7px 7px 5px 15px;
+	margin: 0 0 5px 0;
+    font-size: 12px;
+	font-weight: bold;
+	color: #ffc11b;
+	line-height: 12px;
+}
+.tiresize h3 span {
+    font-weight: normal;
+    display: inline-block;
+    font-size: 11px;
+	line-height: 14px;
+	color: #E6E6E6;
+}
+.tiresize .pictures {
+    width: 100px;
+    float: left;
+    margin: 0 15px 0 0;
+}
+.tiresize img.logo {
+    height: 35px;
+    margin: 0;
+    display:block;
+}
+.tiresize img.thumbnail {
+    height: 150px;
+}
+.tiresize .price {
+    clear:both;
+    margin-top: 10px;
+    font-size: 1.2em;
+    text-align: center;
+}
+.tiresize .availability {
+    text-align: center;
+}
+
+.tiresize ul  {
+	float: right;
+	margin: 0;
+}
+.tiresize li {
+	font-size: 11px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	list-style-type: none;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	font-family: Arial, Helvetica, sans-serif;
+    line-height: 14px;
+}
+.tiresize li:last-child {
+    border: none;
+}
+.tiresize li label {
+    font-weight: bold;
+}
+.tiresize ul.ts_info {
+    width: 120px;
+}
+.ts_category {
+    width: 120px;
+    height: 30px;
+    overflow: hidden;
+}
+.tiresize .footer {
+    background-color: #ccc;
+    padding: 5px;
+}
+
+.tiresize .addtocart {
+    margin: 2px 6px 0 0;
+}
+
+.tiresize .ts_quantity {
+    float: left;
+}
+.tiresize .ts_quantity select {
+    width: 100px;
+}
+.tiresize .footer .button {
+    margin-top: 8px;
+    float: right;
+}
+
+
+/* Staggered tire */
+
+.staggered_tire {
+    padding: 10px 0;
+}
+
+.staggered_tire h3 {
+    background: #37383C url(../img/sr_title_bg.jpg) left top no-repeat;
+	padding:  7px 7px 5px 15px;
+	margin: 0 0 5px 0;
+    font-size: 12px;
+	font-weight: bold;
+	color: #ffc11b;
+	line-height: 12px;
+}
+.staggered_tire h3 span {
+    font-weight: normal;
+    display: inline-block;
+    font-size: 11px;
+	line-height: 14px;
+	color: #E6E6E6;
+}
+.staggered_tire table {
+    margin:0 0 5px 0;
+    width: 100%;
+}
+.staggered_tire td {
+    width: 200px;
+}
+.staggered_tire .pictures {
+    text-align: center;
+}
+.staggered_tire .cart {
+    background: #e6e6e6;
+    padding: 10px;
+}
+.staggered_tire li {
+    margin: 12px 0;
+}
+.btn_buy_tires {
+    display: block;
+    text-align: center;
+}
+
+.tire_vehicle {
+
+}
+.tire_vehicle a {
+    display: block;
+    padding: 4px;
+    border: 1px solid #ccc;
+    background: #e6e6e6;
+    color: #000;
+}
+.tire_vehicle a span {
+    float: right;
+    font-weight: bold;
+}
+

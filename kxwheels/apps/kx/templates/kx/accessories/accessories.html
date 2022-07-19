@@ -1,0 +1,36 @@
+{% extends "kx/base.html" %}
+
+{% load thumbnail %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>Accessories</h1>
+    </div>
+
+    {% for accessorie in accessories %}
+        <div class="grid_3">
+            <div class="block" style="height:100px; vertical-align:middle;">
+
+                <table width="100%" height="100%" border="1" cellspacing="0" cellpadding="0" style="width:100%; height:100%">
+                    <tr>
+                        <td valign="middle" align="center" style="text-align:center; vertical-align:middle">
+                            <div align="center">
+                                    <a href="{{ accessorie.get_absolute_url }}" style="display: table-cell; vertical-align: middle;">
+                                    {% thumbnail accessorie.picture "125x80" as im %}
+                                        <img src="{{ im.url }}">
+                                    {% empty %}
+                                        <img src="{{ MEDIA_URL }}media/ina_sm.jpg" alt="Image Unavailable">
+                                    {% endthumbnail %}
+                                    <br>
+                                    <span>{{ accessorie }}</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

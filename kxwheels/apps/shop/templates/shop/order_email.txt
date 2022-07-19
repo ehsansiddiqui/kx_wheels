@@ -1,0 +1,45 @@
+{% load shop_tags shop_filters %}
+Customer: {{ order.user.first_name }} {{ order.user.last_name }}
+Email: {{ order.user.email }}
+Username: {{ order.user.username }}
+Vehicle Selected: {{ order.selected_vehicle }}
+
+Order #: {{ order.id }}
+Date: {{ order.created_at|date:"d M, Y" }}
+
+{% if order.dealer %}
+  Dealer: {{ order.dealer }}
+{% endif %}
+
+Address:
+{{ order.billing_address_1 }}
+{{ order.billing_city }}, {{ order.billing_province }}
+{{ order.billing_postal_code }}
+{{ order.billing_country }}
+
+{% if order.po %}PO: {{ order.po }}{% endif %}
+
+{% if order.notes %}Customer notes: {{ order.notes }}{% endif %}
+
+Thank you for your order! Your order will be confirmed by a Paramount Tire sales representative, then picked, processed, and shipped.
+
+Listed below are the items you ordered and other details of your order.
+
+SKU     PRODUCT                 EXT. PRICE          QTY         ITEM TOTAL{% for item in order.items.all %}
+{{ item.product.sku }}      {{ item.product }}      {{ item.price|currency }}          {{ item.qty }}              {{ item.item_total|currency }}
+{% endfor %}
+Please note all orders are subject to GST and freight charges (unless otherwise specified)
+
+If you have any questions about the products you have ordered or the order itself, please call our sales department at: {{ phone }}. Please use your name and the order number for reference.
+
+Thank you again for this opportunity to serve you.
+
+Sincerely,
+
+Your Paramount Tire Team
+{{ sender|safe }}
+http://www.{{ site.domain }}
+Dealer subdomain {{ order.dealer.get_profile.subdomain }}
+
+This communication is for the exclusive use of the addressee and may contain proprietary, confidential or privileged information. If you are not the intended recipient any use, copying, disclosure, dissemination or distribution is strictly prohibited.
+

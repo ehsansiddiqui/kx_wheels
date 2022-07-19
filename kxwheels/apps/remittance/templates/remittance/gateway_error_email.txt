@@ -1,0 +1,10 @@
+We apologize for not being able to process payment for your order at this time.
+However, we have saved your order information (except credit card). If you
+would like to try placing order again, please click on the following link.
+
+        http://{{ domain}}{{ url }}
+
+Regards,
+
+Your Company
+

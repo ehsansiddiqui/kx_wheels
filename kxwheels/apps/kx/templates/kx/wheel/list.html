@@ -1,0 +1,58 @@
+{% extends "kx/base.html" %}
+{% load thumbnail kx_tags markdown_deux_tags %}
+
+{% block title %}{{ wheel_manufacturer }}{% endblock %}
+
+{% block meta_title %}{{ wheel_manufacturer.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ wheel_manufacturer.meta_keywords }}{% endblock %}
+{% block meta_description %}{{ wheel_manufacturer.meta_description }}{% endblock %}
+
+{% block sidebar%}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>{{ wheel_manufacturer }}</h1>
+    </div>
+
+    <div class="grid_3">
+        {% if wheel_manufacturer.picture %}
+            {% thumbnail wheel_manufacturer.picture "125x80" as im %}
+                <img src="{{ im.url }}" alt="{{ tire.name }}">
+            {% endthumbnail %}
+        {% endif %}
+    </div>
+    <div class="grid_13">
+
+    </div>
+
+    <div class="clear"></div><br />
+
+    <div class="grid_16">
+        {% include "kx/pagination.html"%}
+    </div>
+
+    {% for wheel in wheel_list %}
+        <div class="grid_3">
+            <div class="block">
+                <a href="{{ wheel.get_absolute_url }}">
+                    {% kxthumbnail wheel.pictures.all.0 "med" as im %}
+                        {% if im.path %}
+                            <img src="{{ im.path }}" alt="{{ wheel.name }}">
+                        {% else %}
+                            <img src="/static/img/accord_honda_2013_wheel_lg.jpg" alt="{{ wheel.name }}" width="125">
+                        {% endif %}
+                    {% endkxthumbnail %}
+                    {{ wheel }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="clear"></div>
+
+    <div class="grid_16">
+        {% include "kx/pagination.html" %}
+    </div>
+    <div class="grid_16" style="font-size: 12px; line-height: 16px; padding-top: 10px; padding-bottom: 10px;">
+        {{ wheel_manufacturer.description|markdown:"safe" }}
+    </div>
+{% endblock %}

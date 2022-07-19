@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+      ul.data li {
+        display: block;
+        float: left;
+        width: 300px;
+      }
+    </style>
+{% endblock %}
+
+{% block content %}
+  
+  <div style="padding: 10px">
+    <h1>List of {{ manufacturer }} Vehicle Models</h1>
+    
+    <p>Choose the model</p>
+    <ul class='data'>
+    {% for model in object_list %}
+      <li>
+        {{ model }}
+        
+        <a href="/vehicle/model_browse/{{ manufacturer.slug }}/{{ model.slug }}">
+          <button>select vehicle</button>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+    <div style="clear:both"></div>
+  </div>
+  
+{% endblock %}

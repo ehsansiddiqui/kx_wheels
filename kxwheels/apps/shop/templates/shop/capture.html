@@ -1,0 +1,8 @@
+<form action="{% url "shop_payment_capture" %}" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    {{ capture_form.as_p }}
+    <p>
+        <input type="submit" name="submit" value="Submit" id="submit">
+        <input type="button" name="cancel" value="Cancel" id="cancel">
+    </p>
+</form>

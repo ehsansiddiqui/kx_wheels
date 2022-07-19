@@ -1,0 +1,224 @@
+{% extends "kx/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Online Tires in Canada-Offroad Tires-Car Tires-Truck Tires-Snow Tires-All Season Tires{% endblock %}
+{% block meta_description %}KX is your online source to find great deals on tires in Canada. Huge Tire Selections at wholesale prices.{% endblock %}
+{% block meta_keywords %}tires canada,truck tires,car tires,all season car tires,wholesale winter tires Canada,tire wholesales,offroad tires{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        
+        {% if not subdomain %} <img src="{% static "img/sp_title_chooseyourtiresearch.png" %}" class="sp_title"/> {% else %}
+  <h1>Choose Your Tire Search Preference</h1>
+  {% endif %}
+    </div>
+
+
+    <div class="grid_16">
+        <div class="searchpagebox">
+            <h2><img src="{% static "img/sp_title_equipmenttiresearch.png" %}" width="263" height="16"></h2>
+            <div class="sp_mainbox">
+                <p>
+                    <strong>Search Tires By Vehicle</strong> –  Find OE and Staggered OE Tire sizes via our Vehicle Search Engine.
+                    <br><br>
+                </p>
+                {% if not subdomain %}
+      <p> <img src="{% static "img/sp_subtitle_vehiclemake.png" %}" width="260" height="17" /> </p>
+      {% else %}
+      <h2>Select Vehicle Make & Model</h2>
+      {% endif %}
+                <form method="post" id="tire_vehicle_search" action="{% url "vehicle_model_search" %}">
+                    {% csrf_token %}
+                    <p>
+                        <input id="id_make" name="make">
+                        <input id="id_year" name="year">
+                        <input id="id_model" name="model">
+                    </p>
+                    <p>
+                        <input type="hidden" name="return_path" id="quick_return_path">
+                        <input type="hidden" name="q" value="*">
+                        &nbsp;
+                    </p>
+                    <p>
+                        <a id="vehicle_search" href="{% url "tire_vehicle_search" %}">
+                            {% if not subdomain %}
+                                <img src="{% static "img/sp_btn_searchvehicle.jpg" %}">
+                            {% else %}
+                                <img src="{% static "img/sp_btn_searchvehicle_blue.jpg" %}">
+                            {% endif %}</a>
+                    </p>
+                </form>
+                {% if subdomain %}<hr />{% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="grid_16">
+        <div class="searchpagebox">
+            <h2><img src="{% static "img/sp_title_onesizetiresearch.png" %}"></h2>
+            <div class="sp_mainbox">
+                <p>
+                    <strong>Search Tires By Size – </strong>Filter Treadwidth, Profile, and Diameter. Same tire size front and rear.
+                    <br><br>
+                </p>
+
+
+{% if not subdomain %}
+      <p> <img src="{% static "img/sp_subtitle_tiresizes.png" %}" width="145" height="17" /> </p>
+      {% else %}
+      <h2>Select Tire Sizes</h2>
+      {% endif %}
+                {% with tiresize_search_form as form %}
+                <form method="get" id="tiresize_search" action="{% url "tire_tiresize_search" %}">
+                    {{ form.treadwidth }}
+                    {{ form.profile }}
+                    {{ form.diameter }}
+                    <div>
+                        {% if not subdomain %}
+                            <input type="image" src="{% static "img/sp_btn_searchtiresize.jpg" %}" name="image" class="sp_btn">
+                        {% else %}
+                            <input type="image" src="{% static "img/sp_btn_searchtiresize_blue.jpg" %}" name="image" class="sp_btn">
+                        {% endif %}</div>
+                </form>
+                {% endwith %}
+
+                <br clear="all" />
+                {% if subdomain %}<hr />{% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="grid_16">
+        <div class="searchpagebox">
+            <h2><img src="{% static "img/sp_title_staggeredtiresearch.png" %}"></h2>
+            
+            
+            <div class="sp_mainbox">
+                <p>
+                    <strong>Search Staggered Tires  – </strong>Front and rear tires filtered by  Category, Treadwidth, Profile and Diameter.
+                    <br><br>
+                </p>
+
+                <p>
+                    <a href="{% url "tire_staggered_search" %}">
+                        {% if not subdomain %}
+                            <img src="{% static "img/sp_btn_staggeredsearch.jpg" %}" alt="Tire Staggered Search">
+                        {% else %}
+                            <img src="{% static "img/sp_btn_staggeredsearch_blue.jpg" %}" alt="Tire Staggered Search">
+                        {% endif %}</a>
+                </p>
+                <br clear="all" />
+                {% if subdomain %}<hr />{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid_16">
+        <div class="searchpagebox">
+            <h2><img src="{% static "img/sp_subtitle_catalogtiresearch.png" %}"></h2>
+            <div class="sp_mainbox">
+                <p>
+                    <strong>Search Tires by Catalog View – </strong>Visual  browsing experience.
+                    <br><br>
+                </p>
+
+                <p>
+                    <a href="{% url "tire_manufacturer_list" %}">
+                        {% if not subdomain %}
+                            <img src="{% static "img/sp_btn_tirecatalog.jpg" %}" alt="Tire Catalog">
+                        {% else %}
+                            <img src="{% static "img/sp_btn_tirecatalog_blue.jpg" %}" alt="Tire Catalog">
+                        {% endif %}</a>
+                </p>
+
+                <br clear="all" />
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+    <script type="text/javascript">
+        /** Quick Search **/
+        var quick_search = function(return_path) {
+            $("#quick_return_path").val(return_path);
+            $("#tire_vehicle_search").submit();
+            return false;
+        };
+
+        $(function() {
+
+
+            $("#vehicle_search").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            /** Vehicle Selector **/
+            $.ajax({
+                url: '{% url "vehicle_model_search" %}',
+                success: function(data) {
+                    s = $(data).find('select');
+                    $("#id_make").replaceWith(s[0]);
+                    $("#id_year").replaceWith(s[1]);
+                    $("#id_model").replaceWith(s[2]);
+
+                    $("#id_year").attr("disabled", "disabled");
+                    $("#id_model").attr("disabled", "disabled");
+
+                    $('#id_model')
+                            .prepend($("<option></option>")
+                            .attr("value", "0")
+                            .attr("selected", "selected")
+                            .text("- Model -"));
+
+                    $("#id_make").change(function () {
+                        if ($(this).val() == "0") {
+                            $("#id_year").attr("disabled", "disabled");
+                        } else {
+                            $("#id_year").removeAttr("disabled");
+                        }
+                        $("#id_model").attr("disabled", "disabled");
+                    });
+
+                    $("#id_year").change(function () {
+                        getModels($("#id_make").val(), $("#id_year").val());
+                        $("#id_model").removeAttr("disabled")
+                    });
+
+                }
+            });
+
+            function getModels(make, year) {
+                $.ajax({
+                    url: "{% url "search_vehicle_model" %}",
+                    data: "q=*&make="+make+"&year="+year+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}",
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        $('#id_model').children().remove();
+
+                        $.each(data.results, function(i, result) {
+                            $('#id_model')
+                                    .append($("<option></option>")
+                                    .attr("value", result.name)
+                                    .attr("id", "id_model_" + result.pk)
+                                    .text(result.name))
+                        });
+                    }
+                });
+            };
+        });
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,283 @@
+table.wheel_sizes {
+    width: 100%;
+}
+table.wheel_sizes tr:first-child {
+    background: #000;
+    border: none;
+}
+table.wheel_sizes tr {
+    border-bottom: 1px solid #e6e6e6
+}
+table.wheel_sizes th {
+    background-color: #e6e6e6;
+    color: #333;
+    padding: 8px 6px;
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+}
+table.wheel_sizes td {
+    padding: 6px;
+    vertical-align: middle;
+}
+
+
+
+/**** Wheel Vehicle Box ****/
+.wheel_vehicle_box {
+	border: 1px solid #b9b9b9;
+	margin-bottom: 10px;
+}
+.wheel_vehicle_box h3 {
+    font-size: 1em;
+    line-height: 1.3em;
+    background: #37383C url(../img/sr_title_bg.jpg) left top no-repeat;
+	padding:  7px 7px 5px 15px;
+	font-weight: bold;
+	color: #ffc11b;
+}
+.wheel_vehicle_box h3 span {
+    font-weight: normal;
+    display: block;
+    color: #fff;
+    height: 13px;
+    overflow: hidden;
+}
+.wheel_vehicle_box .thumbnail {
+    width: 150px;
+    text-align: center;
+    float: left;
+    /*border: 1px solid #ccc;*/
+}
+.wheel_vehicle_box .thumbnail a {
+    color: #b60006;
+    font-weight: bold;
+    height: 170px;
+    display: block
+}
+.wheel_vehicle_box .sizes {
+    float: right;
+    width: 170px;
+    margin-top: 10px;
+}
+.wheel_vehicle_box .sizes li {
+    list-style: none;
+}
+.wheel_vehicle_box .wheelsizes {
+    clear: both;
+    width: 340px;
+    height: 160px;
+    background: #e5e5e5;
+}
+.wheel_vehicle_box .hidden {
+    display: none;
+}
+.wheel_vehicle_box h4 {
+    margin: 4px 0;
+}
+.wheel_vehicle_box .front,
+.wheel_vehicle_box .both {
+    float: left;
+    padding:0 5px;
+    width: 160px;
+    height: 100%;
+    background: #e5e5e5;
+}
+.wheel_vehicle_box .rear {
+    float: right;
+    padding:0 5px;
+    width: 159px;
+    background: #e1e1e1;
+    border-left: 1px solid #ccc;
+}
+.wheel_vehicle_box .tpms {
+    margin-top: 5px;
+    width: 285px;
+    padding: 5px 0 5px 55px;
+    background: #e5e5e5 url(../img/tpms_bg.jpg) 3px no-repeat;
+}
+.wheel_vehicle_box_footer {
+    padding: 5px;
+}
+.wheel_vehicle_box .shop_for_tires {
+    float: left;
+}
+.wheel_vehicle_box .add_to_cart {
+    float: right;
+}
+
+#tpms_info {
+    width: 650px;
+    height: 218px;
+    text-align: justify;
+}
+#tpms_info img {
+    float: left;
+    margin: 26px;
+}
+.tpms_model {
+    background: #e1e1e1;
+}
+.tpms_model span {
+    float: right;
+    font-weight: bold;
+}
+
+
+
+/*** Wheelsize box **/
+.wheelsize {
+	width: 238px;
+	padding: 5px;
+	border: 1px solid #dbdbdb;
+	font-size: 12px;
+	line-height: 18px;
+	float: left;
+	margin-bottom: 10px;
+	margin-right: 3px;
+}
+
+.wheelsize h3 {
+    width: 218px; /* to compensate for padding */
+    padding:  7px 7px 5px 15px;
+    background: #37383C url(../img/sr_title_bg.jpg) left top no-repeat;
+	margin: 0 0 5px 0;
+    font-size: 12px;
+	font-weight: bold;
+	color: #ffc11b;
+	line-height: 12px;
+}
+.wheelsize h3 span {
+    font-weight: normal;
+    display: inline-block;
+    height: 12px;
+    overflow: hidden;
+    font-size: 11px;
+	line-height: 14px;
+	color: #E6E6E6;
+}
+.wheelsize img {
+    width: 100px;
+	float: left;
+}
+
+.wheelsize ul  {
+	float: right;
+	padding-left: 7px;
+	width: 130px;
+	margin: 0px;
+}
+.wheelsize li {
+	font-size: 11px;
+	line-height: 14px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	list-style-type: none;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.wheelsize li span {
+    overflow: hidden;
+}
+.wheelsize li:last-child {
+    border: none;
+}
+.wheelsize li.ws_finish {
+    height: 26px;
+    width: 130px;
+    display: block;
+    overflow: hidden;
+}
+
+.wheelsize .footer {
+    height: 25px;
+    background-image: url(../img/sr_footer_bg.jpg);
+    margin-top: 5px;
+}
+.wheelsize .price {
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px 0 0 5px;
+}
+.wheelsize .addtocart {
+    float: right;
+    margin: 2px 6px 0 0;
+}
+
+
+/***************** form****** popup style*****************/
+
+
+#buy-wheel-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.31);
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+#buy-wheel-popup #window {
+    position: absolute;
+    width: 715px;
+    text-align: left;
+    top: 20%;
+    padding: 0;
+    background:#fff;
+    display:block;
+}
+
+#buy-wheel-popup #window span.show_model_cancel {
+    color: #5b5b5b;
+    font-size: 40px;
+    font-weight: bold;
+    float: right;
+    margin-right: 15px;
+    margin-top: 9px;
+    cursor: pointer;
+}
+
+#buy-wheel-popup #window span:hover {
+    color:#cd1d1f;
+}
+
+#buy-wheel-popup #window h3 {
+    text-align: left;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    color: #5b5b5b;
+    background: #f1f1f1;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#buy-wheel-popup #window p.value {
+    float: left;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#buy-wheel-popup #window select {
+    width: 226px !important;
+    height: 35px;
+    margin-bottom: 10px;
+    background: transparent;
+}
+
+#buy-wheel-popup #window input.button {
+    float: right;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+
+
+/***************** form****** popup style*****************/
+
+
+
+

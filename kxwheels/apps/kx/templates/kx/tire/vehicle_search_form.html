@@ -1,0 +1,65 @@
+{% extends "kx/base.html" %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>Search tires for your vehicle</h1>
+    </div>
+
+    <div class="grid_4 tire_vehicle">
+        {% if vehicle.get_oe_tire_sizes %}
+            <h2>OE Tire Sizes</h2>
+            {% for ts in vehicle.get_oe_tire_sizes %}
+                <a href="{% url "tire_tiresize_search" %}?{{ ts.querystring }}">
+
+                    Tire Size {{ forloop.counter }}
+                    <span>{{ ts.tpd }}</span></a>
+                <hr>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="grid_4 tire_vehicle">
+        {% if vehicle.get_oe_staggered_tire_sizes %}
+            <h2>OE Staggered</h2>
+            {% for oests in vehicle.get_oe_staggered_tire_sizes %}
+                <a href="{% url "tire_staggered_search" %}?{{ oests.querystring }}">
+
+                    Staggered {{ forloop.counter }}
+                    <span>
+                    Front: {{ oests.front_tpd }}<br>
+                    Rear: {{ oests.rear_tpd }}
+                    </span>
+                    <br class="clear">
+                </a><hr>
+
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% comment %}
+    <div class="grid_4">
+        {% if vehicle.get_plus_tire_sizes %}
+            <h2>Plus Tire Sizes</h2>
+            {% for ts in vehicle.get_plus_tire_sizes %}
+            <a href="{% url "tire_tiresize_search" %}?{{ ts.querystring }}">
+                {{ ts }}</a><br>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="grid_4">
+        {% if vehicle.get_plus_staggered_tire_sizes %}
+            <h2>Plus Staggered</h2>
+            {% for psts in vehicle.get_plus_staggered_tire_sizes %}
+                <a href="{% url "tire_staggered_search" %}?{{ psts.querystring }}">
+                    Front: {{ psts.front_tpd }}<br>
+                    Rear: {{ psts.rear_tpd }}
+                </a><br>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% endcomment %}
+{% endblock %}

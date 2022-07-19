@@ -1,0 +1,35 @@
+{% extends "account/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+    <div class="grid_16">
+
+        <h2>Login</h2>
+
+
+        <form method="post" id="login" action="{% url "login_user" %}">
+            Email: <input type="text" name="email" value="" />
+            password: <input type="text" name="password" value="" />
+            <!--{% include "account/form_snippet.html" with form=form %}-->
+
+            <input type="hidden" name="next" value="/">
+
+            <div class="form_row">
+                <div class="grid_3 alpha">{% csrf_token %}&nbsp;</div>
+                <div class="grid_5">
+                    <input type="submit" name="submit" value="Login">
+                    <p>&nbsp;</p>
+                    <p><a href="{% url "auth_password_reset" %}">Forgot your password?</a></p>
+                    <p><a href="{% url "registration_register" %}">Create an account</a>.</p>
+                    
+                </div>
+                <div class="clear"></div>
+            </div>
+<p><a href="http://eepurl.com/YxqQb" target="_blank">Sign Up for our Newsletter to receive Product Information, KX News, Discount Coupons & Promotions.</a></p>
+        </form>
+    </div>
+    <div class="clear"></div>
+
+{% endblock %}

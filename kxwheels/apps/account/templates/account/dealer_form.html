@@ -1,0 +1,56 @@
+{% extends "account/base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "plugins/tipsy/tipsy.css" %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<div class="grid_16 shopping-cart-sec">
+    <h2>Guidelines for Dealer Account:</h2>
+    <div id="shopping-cart">
+        <h3 style="font-size:17px;"> These are Some Instruction Which you have to Keep in Mind before creating a dealer account.</h3><br>
+        <strong> 1.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</strong><br>
+        <strong> 2.It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</strong><br>
+    </div>
+    </div>
+    <div class="grid_16 shopping-cart-sec">
+        <h2>Dealer Pricing</h2>
+        <form action="" method="post" id='id_profile' accept-charset="utf-8" class="shopping-cart-form">
+            {% include 'account/form_snippet.html' with form=form %}
+            <div class="form_row">
+                <div class="grid_3 alpha">{% csrf_token %}&nbsp;</div>
+                </div>
+                <div class="grid_16 form-row">
+                    <input type="submit" name="submit" value="Submit" class="button ">
+                </div>
+                <div class="clear"></div>
+
+        </form>
+    </div>
+    <div class="clear"></div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type='text/javascript' src="{% static "plugins/tipsy/jquery.tipsy.js" %}"></script>
+    <script type="text/javascript" language="javascript" charset="utf-8">
+        $(function(){
+            $(".error_tip").tipsy({gravity: 'w'});
+
+            // Add an empty li
+            $("#{{ form.business_kind.auto_id }}_0").parents("ul").append($("<li></li>"));
+
+            $("#{{ form.business_kind_other.auto_id }}").parents(".form_row").hide();
+            $("#{{ form.business_kind_other.auto_id }}")
+                    .appendTo($("#{{ form.business_kind.auto_id }}_0")
+                        .parents("ul")
+                        .children("li")
+                        .last());
+
+        });
+    </script>
+<script>
+    $("div:has(p)")
+</script>
+{% endblock %}

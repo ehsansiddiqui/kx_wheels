@@ -1,0 +1,58 @@
+{% extends "kx/base.html" %}
+{% load thumbnail kx_tags markdown_deux_tags %}
+
+{% block title %}{{ accessories_manufacturer }}{% endblock %}
+
+{% block meta_title %}{{ accessories_manufacturer.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ accessories_manufacturer.meta_keywords }}{% endblock %}
+{% block meta_description %}{{ accessories_manufacturer.meta_description }}{% endblock %}
+
+{% block sidebar%}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>{{ accessories_manufacturer }}</h1>
+    </div>
+
+    <div class="grid_3">
+        {% if accessories_manufacturer.picture %}
+            {% thumbnail accessories_manufacturer.picture "125x80" as im %}
+                <img src="{{ im.url }}" alt="{{ tire.name }}">
+            {% endthumbnail %}
+        {% endif %}
+    </div>
+    <div class="grid_13">
+
+    </div>
+
+    <div class="clear"></div><br />
+
+    <div class="grid_16">
+        {% include "kx/pagination.html"%}
+    </div>
+    {% for accessories in accessories_list %}
+        <div class="grid_3">
+            <div class="block">
+                <a href="{{ accessories.get_absolute_url }}">
+                    {% kxthumbnail accessories.pictures.all.0 "med" as im %}
+                    {{ im.path }}
+                        {% if im.path %}
+                            <img src="{{ accessories.picture }}" alt="{{ accessories.name }}">
+                        {% else %}
+                            <img src="{{ MEDIA_URL }}media/ina.jpg"  width="125">
+                        {% endif %}
+                    {% endkxthumbnail %}
+                    {{ accessories }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="clear"></div>
+
+    <div class="grid_16">
+        {% include "kx/pagination.html" %}
+    </div>
+    <div class="grid_16" style="font-size: 12px; line-height: 16px; padding-top: 10px; padding-bottom: 10px;">
+        {{ accessories_manufacturer.description|markdown:"safe" }}
+    </div>
+{% endblock %}

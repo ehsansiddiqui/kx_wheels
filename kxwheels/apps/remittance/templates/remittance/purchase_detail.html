@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style type="text/css">
+#shopping_cart td {
+	padding: 7px;
+}
+.underdot {
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCC;
+}
+.extraSpace {
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+}
+#billbox {
+	padding: 10px;
+	border: 1px solid #CCC;
+}
+.form_row {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top-width: 1px;
+	border-top-style: dotted;
+	border-top-color: #CCC;
+}
+.form_row input {
+	float: right;
+}
+.form_row select {
+	float: right;
+}
+#placeorderbox {
+	background-color: #EAEAEA;
+	padding: 5px;
+}
+#placeorderbox button {
+	font-weight: bold;
+	float: right;
+	padding-top: 7px;
+	padding-right: 20px;
+	padding-bottom: 7px;
+	padding-left: 20px;
+}
+
+#paySelector {
+	background-color: #FDBA05;
+	padding: 5px;
+	font-weight: bold;
+}
+
+#payby_id_name { display: none }
+#payby_id_type { display: none }
+#payby_id_number { display: none }
+#payby_id_exp_month { display: none }
+#payby_id_exp_year { display: none }
+#payby_id_cvd { display: none }
+#payby_id_notes { display: none }
+#placeorderbox { display: none }
+
+
+</style>
+{% endblock %}
+{% load remittance_filters %}
+
+{% block content %}
+<div class="grid_16">
+    <h2>Purchase Information</h2>
+    <table width="940" id="shopping_cart">
+        <thead>
+        <tr>
+            <td width="120" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item #</strong>
+            </th>
+            <td width="553" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item name</strong>
+            </th>
+            <td width="111" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Unit Price</strong>
+            </th>
+            <td width="41" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Qty</strong>
+            </th>
+            <td width="111" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item total</strong>
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in purchase_items %}
+        <tr>
+            <td class="underdot extraSpace">{{ item.sku }}</td>
+            <td class="underdot extraSpace">{{ item.name|linebreaks }}</td>
+            <td class="underdot extraSpace">{{ item.unit_price|currency:purchase.currency }}</td>
+            <td class="underdot extraSpace">{{ item.qty }}</td>
+            <td class="underdot extraSpace">{{ item.ext_price|currency:purchase.currency }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan="4" style="text-align: right;">Subtotal:</td>
+            <td class="align_right">{{ purchase.subtotal|currency:purchase.currency }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right;">Tax:</td>
+            <td class="align_right">{{ purchase.tax|currency:purchase.currency }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right;">Discount:</td>
+            <td class="align_right">{{ purchase.discount|currency:purchase.currency }}</td>
+
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right;">Shipping:</td>
+            <td class="align_right">{{ purchase.shipping|currency:purchase.currency }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right;"><strong>Amount payable: </strong></td>
+            <td class="align_right"><strong>{{ purchase.total|currency:purchase.currency }}</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="clear"></div>
+<br>
+
+<div class="grid_4">
+    <div id="billbox">
+        <strong>Billing information</strong><br>
+        {{ buyer.billing_first_name }} {{ buyer.billing_last_name }}<br>
+        {{ buyer.billing_address_1 }}, <br>
+        {{ buyer.billing_city }}, {{ buyer.billing_province }} <br>
+        {{ buyer.billing_postal_code }}<br>
+        {{ buyer.billing_country }}<br>
+        Phone: {{ buyer.billing_phone }}<br>
+    </div>
+</div>
+
+<div class="grid_4">
+    <div id="billbox">
+        <strong>Shipping information:</strong><br>
+        {{ buyer.shipping_first_name }} {{ buyer.shipping_last_name }}<br>
+        {{ buyer.shipping_address_1 }}, <br>
+        {{ buyer.shipping_city }}, {{ buyer.shipping_province }} <br>
+        {{ buyer.shipping_postal_code }}<br>
+        {{ buyer.shipping_country }}<br>
+        Phone: {{ buyer.shipping_phone }}<br>
+    </div>
+</div>
+<div class="grid_8">
+    <form action="" name="paySelector" id="paySelector">
+        <label for="pyBySelect">Pay by: </label>
+        <select name="pyBySelect" id="pyBySelect" onchange="paySelected()">
+            <option value="0" selected="selected">Please select a payment method</option>
+            <option value="0"> -----------------------</option>
+            <option value="1">Credit Card</option>
+            {% if not subdomain %}
+            <option value="2">PayPal</option>
+            {% endif %}
+        </select>
+    </form>
+</div>
+<div>
+    <h1>Click The Button to Pay by PayPal</h1>
+    <!-- writes out the form tag automatically -->
+    {{ form.render }}
+</div>
+<div class="clear"></div>
+
+<style>
+    .pp { background-color:#fff;
+        position:absolute; top:300px; left:35%; z-index: 100; border:1px solid #333;
+        padding:30px; font:13px arial, helvetica, sans-serif; font-weight: bold;
+    }
+
+</style>
+<script type="text/javascript">
+    function capture_payment() {
+        document.getElementsByName("submit")[0].disabled = true;
+        var _body = document.getElementsByTagName('body')[0];
+        var _div = document.createElement("div");
+        _div.setAttribute("class", "pp");
+        _div.appendChild(document.createTextNode("Processing payment, please wait..."));
+        _body.appendChild(_div);
+        return true;
+    }
+
+function paySelected() {
+
+	payBy_val = document.paySelector.pyBySelect.value;
+if (payBy_val == 1){
+    //$("#cc").attr("action", "{% url "remittance_payment_process" %}")
+	document.getElementById('payby_id_name').style.display = 'block';
+	document.getElementById('payby_id_type').style.display = 'block';
+	document.getElementById('payby_id_number').style.display = 'block';
+	document.getElementById('payby_id_exp_month').style.display = 'block';
+	document.getElementById('payby_id_exp_year').style.display = 'block';
+	document.getElementById('payby_id_cvd').style.display = 'block';
+
+	document.getElementById('payby_id_notes').style.display = 'none';
+	document.getElementById('id_notes').value = '';
+
+	document.getElementById('placeorderbox').style.display = 'block';
+
+    $("[id^='id_']").val('')
+
+} else if (payBy_val == 2) {
+    	$("#paypal_button").removeAttr("style");
+    //$("#cc").attr("action", "{% url "remittance_paypal_process" %}")
+//	document.getElementById('payby_id_name').style.display = 'none';
+  //  $("#id_name").val('PayPal Order');
+//
+//	document.getElementById('payby_id_type').style.display = 'none';
+  //  $("#id_type").val('Visa');
+//
+//	document.getElementById('payby_id_number').style.display = 'none';
+  //  $("#id_number").val(4242424242424242);
+//
+//	document.getElementById('payby_id_exp_month').style.display = 'none';
+//
+//	document.getElementById('payby_id_exp_year').style.display = 'none';
+  //  $("#id_exp_year").val('30');
+//
+//	document.getElementById('payby_id_cvd').style.display = 'none';
+  //  $("#id_cvd").val('235');
+	//
+//	document.getElementById('payby_id_notes').style.display = 'block';
+
+//	document.getElementById('placeorderbox').style.display = 'block';
+//
+} else {
+
+	document.getElementById('payby_id_name').style.display = 'none';
+	document.getElementById('payby_id_type').style.display = 'none';
+	document.getElementById('payby_id_number').style.display = 'none';
+	document.getElementById('payby_id_exp_month').style.display = 'none';
+	document.getElementById('payby_id_exp_year').style.display = 'none';
+	document.getElementById('payby_id_cvd').style.display = 'none';
+
+	document.getElementById('payby_id_notes').style.display = 'none';
+
+	document.getElementById('placeorderbox').style.display = 'none';
+
+}
+
+}
+
+
+</script>
+
+{% endblock %}

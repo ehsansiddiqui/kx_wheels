@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load markdown_deux_tags %}
+
+{% block content %}
+    {% block sidebar %}
+
+    {% endblock %}
+
+    {% block main_content %}
+        <div class="grid_16">
+        <h1>{{ flatpage.title }}</h1>
+
+        {{ flatpage.content }}
+
+        </div>
+    {% endblock %}
+    <div class="clear"></div>
+{% endblock %}

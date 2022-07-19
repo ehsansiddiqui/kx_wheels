@@ -1,0 +1,377 @@
+{% extends "kx/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Online Tire Search for Car and AT Truck Tires{% endblock %}
+{% block meta_description %}Canada's online discount tire search, we offer wheels and snow tires at sale prices.  Get your car or truck rim and tire package today.{% endblock %}
+{% block meta_keywords %}Discount tires, all season tire, snow tires Canada, cheap online tires wholesale{% endblock %}
+
+{% block extra_css %}
+    <style>@import url("{% static "css/tire.css" %}");</style>
+
+<script type="text/javascript" src="{% static "js/virtualpaginate.js" %}">
+
+/***********************************************
+* Virtual Pagination script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+</script>
+
+<style type="text/css">
+
+/*Sample CSS used for the Virtual Pagination Demos. Modify/ remove as desired*/
+
+.paginationstyle{ /*Style for demo pagination divs*/
+	text-align: right;
+	background-color: #f8f8f8;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCC;
+	padding-top: 4px;
+	padding-right: 20px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 15px;
+	margin-left: 0px;
+}
+
+.paginationstyle select{ /*Style for demo pagination divs' select menu*/
+border: 1px solid #CCC;
+margin: 0 15px;
+}
+
+.paginationstyle a{ /*Pagination links style*/
+padding: 0 5px;
+text-decoration: none;
+
+}
+
+.paginationstyle a:hover, .paginationstyle a.selected{
+color: #000;
+background-color: #FEE496;
+}
+
+.paginationstyle a.disabled, .paginationstyle a.disabled:hover{ /*Style for "disabled" previous or next link*/
+
+cursor: default;
+color: #929292;
+border-color: transparent;
+}
+
+.paginationstyle a.imglinks{ /*Pagination Image links style (class="imglinks") */
+border: 0;
+padding: 0;
+}
+
+.paginationstyle a.imglinks img{
+vertical-align: bottom;
+border: 0;
+}
+
+.paginationstyle a.imglinks a:hover{
+background: none;
+}
+
+.paginationstyle .flatview a:hover, .paginationstyle .flatview a.selected{ /*Pagination div "flatview" links style*/
+color: #000;
+background-color: yellow;
+}
+
+</style>
+
+{% endblock %}
+
+{% block search_filter %}
+    <form method="get" id="tiresize_search" action="{% url "search_tire_tiresize" %}" onsubmit="startKXLoad();">
+        <div>{{ form.category.label_tag }}{{ form.category }}</div>
+        <div>{{ form.manufacturer.label_tag }}<br>{{ form.manufacturer }}</div>
+        <div>{{ form.prefix.label_tag }}{{ form.prefix }}</div>
+        <div>{{ form.treadwidth.label_tag }}{{ form.treadwidth }}</div>
+        <div>{{ form.profile.label_tag }}{{ form.profile }}</div>
+        <div>{{ form.diameter.label_tag }}{{ form.diameter }}</div>
+        <div id="speed_rating">{{ form.speed_rating.label_tag }}{{ form.speed_rating}}</div>
+        <div>{{ form.ply.label_tag }}{{ form.ply }}</div>
+        <div><input type="submit" value="Search"></div>
+    </form>
+{% endblock %}
+
+{% block main_content %}
+    <div class="main">
+        <div class="grid_13">
+            <img src="{% static "img/ajax_load.gif" %}" id="ajax_load" align="right" width="20">
+            <h1>Search Results</h1>
+        </div>
+
+        <div class="grid_13">
+            <div class="pagination2">
+<!--                <span class="prev">&laquo; Prev</span>
+                <span class="page">Page 1 of 10</span>
+                <span class="next">Next &raquo;</span>-->
+
+<div id="listingpaginate" class="paginationstyle">
+<a href="#" rel="previous" class="imglinks">&laquo; Prev</a> <select></select> <a href="#" rel="next" class="imglinks">Next &raquo;</a></div>
+
+            </div>
+        </div>
+
+        <div class="grid_13">
+            <div id="search_results">
+                <p align="center"><img src="{% static "img/tiresize_search.jpg" %}"></p>
+            </div>
+        </div>
+
+        <div class="grid_16">
+            <br>
+            <div class="pagination2">
+<!--                <span class="prev">&laquo; Prev</span>
+                <span class="page">Page 1 of 10</span>
+                <span class="next">Next &raquo;</span>-->
+
+<div id="listingpaginate2" class="paginationstyle">
+<a href="#" rel="previous" class="imglinks" onclick="javascript:scroll(0,0)">&laquo; Prev</a> <select></select> <a href="#" rel="next" class="imglinks">Next &raquo;</a></div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static "js/jquery.tmpl.js" %}"></script>
+
+    <script type="text/html" id="results_tmpl">
+        <div class="tiresize" id="<%= manufacturer %>">
+            <h3><%= manufacturer %><br><span><%= tire %></span></h3>
+            <div class="pictures">
+
+                <a href="<%=permalink %>">
+                    <img class="lazy" data-original="<%= thumbnail_med %>">
+                </a>
+                <div class="price"><%= price %></div>
+                <div class="availability"></div>
+            </div>
+
+            <ul style="width:120px; height:218px;">
+                <li>Size: <%= prefix %><%= treadwidth %>/<%= profile %><%= additional_size %><%= diameter %></li>
+                <li class="ts_category">Category: <%= category %></li>
+                <li>Part #: <%= sku %></li>
+                <li>UTQG: <%= utgq_rating %></li>
+                <li>Ply: <%= ply %></li>
+                <li>Load Rating: <%= load_rating %></li>
+                <li>Speed Rating: <%= speed_rating %></li>
+                <li>Sidewall Style: <%= sidewall_style %></li>
+                <li><a href="<%=permalink %>">View tire details</a></li>
+            </ul>
+            <div class="clear"></div>
+
+            {% if not subdomain or current_user != subdomain_profile.user %}
+            <div class="footer">
+
+                <div class="addtocart">
+                    <form action="{% url "shop_cartitem_create" %}" method="post" class="cart" name="tiresize_<%= sku %>">
+                        <input type="hidden" value="{{ csrf_token }}" name="csrfmiddlewaretoken">
+                        <input type="hidden" name="content_type_id" value="{{ content_type_id }}">
+                        <input type="hidden" name="object_id" value="<%= tiresize_id %>">
+
+                        <div class="ts_quantity">
+                            <strong>Quantity</strong><br>
+                            <select name="quantity">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4" selected="selected">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+
+                        <input class="button" type="submit" value="Buy Tire">
+                    </form>
+                </div>
+                <div class="clear"></div>
+            </div><!-- .cart -->
+            {% endif %}
+        </div>
+    </script>
+
+
+
+    <script>
+        function replace_in_querystring(url, param, value) {
+
+            var re = new RegExp("([?|&])" + param + "=.*?(&|$)","i");
+            if (url.match(re))
+                return url.replace(re,'$1' + param + "=" + value + '$2');
+            else
+                return url + '&' + param + "=" + value;
+        }
+
+        function display_pagination(data) {
+            $(".pagination").show();
+
+            // Pagination starts
+            page = data.info.page;
+            total_pages = data.info.total_pages;
+
+            $('.page').text('Page '+page+' of '+total_pages);
+
+            if (page > 1) {
+                var prev_page = parseInt(page)-1;
+                var prev_link = $('<a></a>').attr({
+                    'href': replace_in_querystring(window.location.hash, 'page', prev_page)
+                }).html('&laquo; Prev');
+                $('.prev').html(prev_link);
+            } else {
+                $('.prev').html('&laquo; Prev');
+            }
+
+            if (page < total_pages) {
+                var next_page = parseInt(page)+1;
+                var next_link = $('<a></a>').attr({
+                    'href': replace_in_querystring(window.location.hash, 'page', next_page)
+                }).html('Next &raquo;');
+                $('.next').html(next_link);
+            } else {
+                $('.next').html('Next &raquo;');
+            }
+            // Pagination ends
+        }
+
+        function display_results(data) {
+
+            var results = data.results;
+            var template = $("#results_tmpl").html();
+            var html = "";
+            for (var i=0; i<results.length; i++) {
+                html += tmpl(template, results[i]);
+            }
+            $("#search_results").html(html);
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+			sortstuff();
+        }
+
+        function search(query) {
+            query += "&q=*";
+
+            $('#ajax_load')
+                    .hide()  // hide it initially
+                    .ajaxStart(function() {
+                        $(this).show();
+                    })
+                    .ajaxStop(function() {
+                        $(this).hide();
+                    });
+
+            $.ajax({
+                url: "{% url "search_tire_tiresize" %}",
+                data: query,
+                dataType: "json",
+                async: false,
+                success: function(data) {
+                    // Display pagination
+                    display_pagination(data);
+
+                    // Display results
+                    display_results(data);
+                }
+            });
+            return false;
+        }
+
+        $(function(){
+            var current_hash = false;
+            setInterval(function(){
+                if(window.location.hash != current_hash) {
+                    current_hash = window.location.hash;
+                    search(current_hash.replace('#', ''));
+                }
+            }, 100);
+
+            // Bind form field changes to form submit
+            $('#tiresize_search :input').each(function() {
+                $(this).change(function() {
+                    $("#tiresize_search").submit();
+                });
+            });
+
+            $("#tiresize_search").submit(function(){
+                window.location = '#'+$("#tiresize_search").serialize()+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}";
+                return false;
+            });
+
+            // Check if querystring exists
+            var url_parts = location.href.split('?');
+            if (url_parts.length > 1)
+                if (url_parts[1].length > 2)
+                    $("#tiresize_search").submit();
+
+
+            {% if not subdomain or current_user != subdomain_profile.user %}
+            // Ajax add to cart
+            SOFTY.csrf_token = "{{ csrf_token }}";
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+            $("form.cart").live('submit', function(){
+                ctid = $(this).find("input[name='content_type_id']").val();
+                oid = $(this).find("input[name='object_id']").val();
+                qty = $(this).find("select[name='quantity']").val();
+                SOFTY.cart.Add(ctid, oid, qty);
+                return false;
+            });
+            {% endif %}
+
+        });
+    </script>
+
+        <script src="{% static "js/jquery-1.7.1.min.js" %}"></script>
+		<script src="{% static "js/jquery.opensource.min.js" %}"></script>
+		<script src="{% static "js/jquery.tinysort.js" %}"></script>
+		<script src="{% static "js/jquery.lazyload.js" %}"></script>
+
+<script>
+
+ 
+
+
+
+function sortstuff() {
+
+$('div#search_results>div').tsort({attr:'id'});
+
+ <!-- Initialize Virtual Paginator -->
+var whatsnew=new virtualpaginate({
+	piececlass: "tiresize",
+	piececontainer: 'div', //Let script know you're using "p" tags as separator (instead of default "div")
+	pieces_per_page: 15,
+	defaultpage: 0,
+	wraparound: false,
+	persist: false
+});
+
+whatsnew.buildpagination(["listingpaginate", "listingpaginate2"]);
+
+//last function end loading screen
+endKXLoad();
+
+$(function() {          
+     $("img").lazyload({
+         event : "sporty"
+     });
+ });
+
+//start loading thumbnails
+     var timeout = setTimeout(function() { $("img").trigger("sporty") }, 10);
+
+}
+</script>
+
+
+{% endblock %}

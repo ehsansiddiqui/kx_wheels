@@ -1,0 +1,301 @@
+{% extends "kx/base.html" %}
+{% load markdown_deux_tags shop_filters shop_tags thumbnail kx_tags kx_filters staticfiles %}
+
+{% block extra_microdata %}<!-- Microdata markup added by Google Structured Data Markup Helper. -->{% endblock %}
+
+{% block title %}{{ wheel.manufacturer.name }} - {{ wheel.name }}{% endblock %}
+
+{% block meta_title %}{{ wheel.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ wheel.meta_keywords }}{% endblock %}
+{% block meta_description %}{{ wheel.meta_description }}{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "plugins/jqueryui/ui-lightness/jquery-ui-1.8.16.custom.css" %}">
+    <link rel="stylesheet" href="{% static "plugins/fancybox/jquery.fancybox.css?v=2.0.3" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "plugins/stars/jquery.ui.stars.css" %}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <span itemscope itemtype="http://schema.org/Product" itemref="_review1 _offers3 _description7 _image8"><h1 itemprop="name">
+            {% thumbnail wheel.manufacturer.picture "125x80" as im %}
+                <img itemprop="logo" src="{{ im.url }}" alt="{{ wheel.name }}">
+            {% empty %}{% endthumbnail %}
+            {{ accessories.manufacturer.name }} - {{ accessories.name }}
+        </h1><span itemprop="brand" itemscope itemtype="http://schema.org/Brand"></span></span>
+    </div>
+
+    <div class="grid_5">
+        {% kxthumbnail accessories.pictures.all.0 "lg" as im %}
+            <img id="_image8" itemprop="image" src="{{ im.path }}" alt="{{ accessories.name }}" name="lgImg">
+        {% endkxthumbnail %}
+    </div>
+    <div class="grid_5">
+        {% for picture in accessories.pictures.all %}
+            {% kxthumbnail picture "lg" as im %}
+                <a href="#"><img src="{{ im.path }}" alt="{{ accessories.name }}" width="125" onmouseover="imageChange('{{ im.path }}')"></a>
+            {% endkxthumbnail %}
+        {% endfor %}
+    </div>
+    <div class="grid_6">
+    	{% if accessories.description %}
+            <p class="description" id="_description7" itemprop="description">{{ accessories.description|markdown:"safe" }}</p>
+            <p>&nbsp;</p>
+        {% endif %}
+        <p>{% include "kx/add_this.html" %}</p>
+        <p>&nbsp;</p>
+        {% if accessories.get_num_reviews > 0 %}
+        <div class="hreview-aggregate">
+          <p class="item">
+            <b class="fn">Reviews of {{ accessories.manufacturer.name }} - {{ accessories.name }}</b>
+          </p>
+          {% if accessories.description %}
+              <p class="description summary"><small>{{ accessories.description }}</small></p>
+          {% endif %}
+          <div class="ctrlHolder">
+            <ul>
+              <li style="display: none;"><label for="id_rating_0"> Sucks</label></li>
+              <li style="display: none;"><label for="id_rating_1"> Meh</label></li>
+              <li style="display: none;"><label for="id_rating_2"> OK-ish blah blah blah</label></li>
+              <li style="display: none;"><label for="id_rating_3"> Good</label></li>
+              <li style="display: none;"><label for="id_rating_4"> Dope</label></li>
+            </ul><span id="rating_msg"></span>
+            <div class="ui-stars-star"><a href="#reviews" title="">1</a></div>
+            <div class="ui-stars-star"><a href="#reviews" title="">2</a></div>
+            <div class="ui-stars-star"><a href="#reviews" title="">3</a></div>
+            <div class="ui-stars-star"><a href="#reviews" title="">4</a></div>
+            <div class="ui-stars-star"><a href="#reviews" title="">5</a></div>
+            <input type="hidden" name="rating" value="0" disabled="">
+          </div>
+          <div style="clear:both"></div>
+          <p>(
+            <span class="rating">{{ accessories.get_average_review }}</span> out of 5
+            based on <span class="count">{{ accessories.get_num_reviews }}</span> reviews
+          )</p>
+        </div>
+        {% else %}
+          <p>This product has not been <a href="#reviews">reviewed</a> yet.</p>
+        {% endif %}
+    </div>
+    <div class="clear"></div>
+
+
+    <div id="tabs" class="grid_16">
+        <div class="grid_16 alpha omega">
+            <ul>
+                <li><a href="#specs">Specs / Pricing</a></li>
+                <li><a id="_review1" itemprop="review" itemscope itemtype="http://schema.org/Review" href="#reviews"><span itemprop="reviewBody">Reviews</span></a></li>
+                <li><a href="#warranty">Warranty</a></li>
+                <li><a href="#coupons">Coupons / Rebates</a></li>
+                <li><a href="#customer_media">Customer Pictures/Videos</a></li>
+            </ul>
+        </div>
+
+        <div class="grid_16 alpha omega tab_body" id="specs">
+            <table class="wheel_sizes">
+                <tr>
+                    <th width="">Part #</th>
+                    <!--<th width="">Size</th>-->
+                    <!--<th width="">Width</th>-->
+                    <!--<th width="">BP1</th>-->
+                    <!--<th width="">BP2</th>-->
+                    <!--<th width="">Off</th>-->
+                    <!--<th width="">CB</th>-->
+                    <!--<th width="">Finish</th>-->
+                    <!--<th width="">Availability</th>-->
+                    <th width="">Per Wheel</th>
+                    {% if not subdomain or current_user != subdomain_profile.user %}
+                    <th width="">Add to cart</th>
+                    {% endif %}
+                </tr>
+                {% if wheelsize %}
+                    {% with ws=wheelsize %}
+                        <tr id="wheel_{{ ws.sku }}">
+                            <td>{{ ws.sku }}</td>
+                            <!--<td>{{ ws.diameter }}</td>-->
+                            <!--<td>{{ ws.wheelwidth }}</td>-->
+                            <!--<td>{{ ws.boltpattern_1 }}</td>-->
+                            <!--<td>{{ ws.boltpattern_2 }} </td>-->
+                            <!--<td>{{ ws.offset }}</td>-->
+                            <!--<td>{{ ws.centerbore }}</td>-->
+                            <!--<td>{{ ws.finish }}</td>-->
+                            <!--<td>{{ ws.get_availability_display }}</td>-->
+                            <td id="_offers3" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{% get_price ws user subdomain %}</span></td>
+                            {% if not subdomain or current_user != subdomain_profile.user %}
+                            <td align="right">
+                                <form action="{% url "shop_cartitem_create" %}" method="post">
+                                    {% csrf_token %}
+                                    {% add_to_cart_form ws as form %}
+                                    {{ form.content_type_id }}
+                                    {{ form.object_id }}
+                                    <select name="quantity">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4" selected="selected">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    <input type="submit" class="button" value="Buy Wheels">
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endwith %}
+                {% else %}
+                    {% for ws in wheel.sizes.all %}
+                        <tr id="wheel_{{ ws.sku }}">
+                            <td>{{ ws.sku }}</td>
+                            <!--<td>{{ ws.get_diameter }}</td>-->
+                            <!--<td>{{ ws.get_wheelwidth }}</td>-->
+                            <!--<td>{{ ws.boltpattern_1 }}</td>-->
+                            <!--<td>{{ ws.boltpattern_2 }}</td>-->
+                            <!--<td>{{ ws.offset }}</td>-->
+                            <!--<td>{{ ws.centerbore }}</td>-->
+                            <!--<td>{{ ws.finish }}</td>-->
+                            <!--<td>{{ ws.get_availability_display }}</td>-->
+                            <td id="_offers3" itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{% get_price ws user subdomain %}</span></td>
+                            {% if not subdomain or current_user != subdomain_profile.user %}
+                            <td align="right">
+                                <form action="{% url "shop_cartitem_create" %}" method="post">
+                                    {% csrf_token %}
+                                    {% add_to_cart_form ws as form %}
+                                    {{ form.content_type_id }}
+                                    {{ form.object_id }}
+                                    <select name="quantity">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4" selected="selected">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                    <input type="submit" class="button" value="Buy Wheels">
+                                </form>
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+
+        <div class="grid_16 alpha omega tab_body" id="reviews">
+            {% if auth_and_active_user %}
+              <a href="{% url "wheel_reviews" wheel.pk %}" id="add_a_review" class="fancybox.iframe tabs_link">
+                  Tell us and others what you think of {{ wheel.manufacturer }} {{ wheel }}. Write a review.
+              </a>
+            {% else %}
+              <br/>
+              <br/>
+            {% endif %}
+
+            <!-- reviews -->
+            {% include "kx/review_display.html" with reviews=reviews type="wheel" %}
+        </div>
+        <div class="clear"></div>
+
+        <div class="grid_16 alpha omega tab_body" id="warranty">
+            <div class="padding_20px">
+                {% if wheel.manufacturer.warranty %}
+                    {{ wheel.manufacturer.warranty|markdown }}
+                {% else %}
+                    <p>See Manufacturer's website or contact manufacturer for warranty information.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="clear"></div>
+
+        <div class="grid_16 alpha omega tab_body" id="coupons">
+            <div class="padding_20px">Coupons</div>
+        </div>
+
+        <div class="grid_16 alpha omega tab_body" id="customer_media">
+            <a href="{% url "wheel_customer_media" wheel.pk %}" id="add_media" class="fancybox.iframe tabs_link">
+                Send us your action shot or a video
+            </a>
+
+            <!-- Customer media -->
+            {% include "kx/customer_media_display.html" with customer_media=customer_media %}
+        </div>
+        <div class="clear"></div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static "plugins/jqueryui/jquery-ui-1.8.16.custom.min.js" %}"></script>
+    <script src="{% static "plugins/fancybox/jquery.fancybox.pack.js?v=2.0.3" %}"></script>
+    <script src="{% static "js/jquery.text-to-stars.js" %}"></script>
+    <script>
+        $(function() {
+            
+            // lightup the stars.
+            $('.ui-stars-star').each(function(){
+              var rating = parseInt($(this).text());
+              if (rating <= {{ wheel.get_average_review }}) $(this).addClass('ui-stars-star-on');
+            });
+            // done stars.
+            
+            var hash = document.location.hash;
+            if (hash) $('#wheel_'+hash.replace('#', '')).addClass('highlight');
+
+            $('#tabs').tabs();
+
+            $(".fancybox").fancybox();
+
+            $(".tabs_link").fancybox({
+                openSpeed   : 100,
+                closeSpeed  : 100,
+                width       : 750,
+                autoSize: false
+            });
+
+            $("a.video").fancybox({
+                openSpeed   : 100,
+                closeSpeed  : 100,
+                width       : 640,
+                height      : 480,
+                autoSize: false
+            })
+
+            $(".star_rating").text_to_stars();
+            /*
+            $(".star_rating").each(function() {
+                var rating_score = $(this).text().split("/")[0];
+                var total_score = $(this).text().split("/")[1];
+
+                $(this).text('');
+
+                for (var i=0; i<total_score; i++) {
+                    var rating_span = $("<span></span>");
+                    if (i <= rating_score-1)
+                        rating_span.addClass("star_on");
+                    $(this).append(rating_span);
+                }
+            })
+            */
+
+        });
+		
+		function imageChange(img) {
+
+			window.document.lgImg.src = img;
+
+		}
+    </script>
+{% endblock %}

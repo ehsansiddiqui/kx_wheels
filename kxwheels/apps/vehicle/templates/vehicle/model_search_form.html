@@ -1,0 +1,69 @@
+
+
+    <form method="post" action="{% url "vehicle_model_search" %}" id="vehicle_model_search">
+      {% csrf_token %}
+      {{ form.make }}
+        {{ form.year }}
+        {{ form.model }}
+        <input type="hidden" name="q" value="*">
+      <input type="submit" value="Select" ><!--onclick="startKXLoad()"-->
+    </form>
+
+
+  <script>
+    $(function () {
+      $("#{{ form.year.auto_id }}").attr("disabled", "disabled");
+      $("#{{ form.model.auto_id }}").attr("disabled", "disabled");
+
+      $('#{{ form.model.auto_id }}')
+      .prepend($("<option></option>")
+      .attr("value", "0")
+      .attr("selected", "selected")
+      .text("- Model -"));
+
+      $("#{{ form.make.auto_id }}").change(function () {
+        if ($(this).val() == "0") {
+          $("#{{ form.year.auto_id }}").attr("disabled", "disabled");
+        } else {
+          $("#{{ form.year.auto_id }}").removeAttr("disabled");
+        }
+        $("#{{ form.model.auto_id }}").attr("disabled", "disabled");
+      });
+
+      $("#{{ form.year.auto_id }}").change(function () {
+        getModels($("#{{ form.make.auto_id }}").val(), $("#{{ form.year.auto_id }}").val());
+        $("#{{ form.model.auto_id }}").removeAttr("disabled")
+      });
+
+      $("#vehicle_model_search").submit(function(){
+              var query = $("#vehicle_model_search").serialize();
+        $.post("{% url "vehicle_model_search" %}", query, function(data) {
+          if (data == 'OK') {	location.reload(true); }
+        })
+        return false;
+      });
+
+    });
+
+    function getModels(make, year) {
+      $.ajax({
+        url: "{% url "search_vehicle_model" %}",
+        data: "q=*&make="+make+"&year="+year+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}",
+        dataType: "json",
+        async: false,
+        success: function(data) {
+          $('#{{ form.model.auto_id }}').children().remove();
+
+          $.each(data.results, function(i, result) {
+            $('#{{ form.model.auto_id }}')
+            .append($("<option></option>")
+            .attr("value", result.name)
+            .attr("id", "{{ form.model.auto_id }}_" + result.pk)
+            .text(result.name))
+              });
+        }
+      });
+    };
+
+
+  </script>

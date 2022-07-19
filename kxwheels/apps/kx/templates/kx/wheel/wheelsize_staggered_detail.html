@@ -1,0 +1,255 @@
+{% extends "kx/base.html" %}
+{% load staticfiles %}
+{% load shop_filters shop_tags thumbnail kx_tags kx_filters %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "plugins/jqueryui/ui-lightness/jquery-ui-1.8.16.custom.css" %}">
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    {% with wheel=front.wheel %}
+        <div class="grid_16">
+            <h1>
+                {% thumbnail wheel.manufacturer.picture "125x80" as im %}
+                    <img src="{{ im.url }}" alt="{{ wheel.name }}">
+                {% empty %}{% endthumbnail %}
+
+                {{ wheel.manufacturer.name }} - {{ wheel.name }}
+            </h1>
+        </div>
+        <div class="clear"></div>
+
+
+        <div class="grid_5">
+
+            {% kxthumbnail wheel.pictures.all.0 "lg" as im %}
+                <img src="{{ im.path }}" alt="{{ wheel.name }}">
+            {% endkxthumbnail %}
+
+        </div>
+        <div class="grid_4">
+            {% for picture in wheel.pictures.all %}
+
+                {% kxthumbnail picture "sm" as im %}
+                    <img src="{{ im.path }}" alt="{{ wheel.name }}" style="margin:0 8px">
+                {% endkxthumbnail %}
+
+            {% endfor %}
+        </div>
+        <div class="grid_7">
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="2"><strong>Part #:</strong> {{ front.sku }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Wheel Size:</strong> {{ front.diameter }}</td>
+                    <td><strong>Wheel Width:</strong>  {{ front.wheelwidth }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Boltpattern 1:</strong> {{ front.boltpattern_1 }}</td>
+                    <td><strong>Boltpattern 2:</strong> {% if front.boltpattern_2 %}{{ front.boltpattern_2 }}{% else %} - {% endif %}</td>
+                </tr>
+                <tr>
+                    <td><strong>Offset:</strong> {{ front.offset }}</td>
+                    <td><strong>Center Bore:</strong> {{ front.centerbore }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Finish:</strong> {{ front.finish }}</td>
+                    <td><strong>Availability:</strong> {{ front.get_availability_display }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Recommended Tires:</strong> <a href="{% url "tire_staggered_search" %}?{{ rear.recommended_tires.0.querystring }}">
+                        {{ rear.recommended_tires.1.front_tpd }}</a>
+			{{ front.recommended_tires }} <br>
+			{{ rear.recommended_tires }}
+		    </td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="2"><strong>Part #:</strong> {{ rear.sku }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Wheel Size:</strong> {{ rear.diameter }}</td>
+                    <td><strong>Wheel Width:</strong>  {{ rear.wheelwidth }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Boltpattern 1:</strong> {{ rear.boltpattern_1 }}</td>
+                    <td><strong>Boltpattern 2:</strong> {% if rear.boltpattern_2 %}{{ rear.boltpattern_2 }}{% else %} - {% endif %}</td>
+                </tr>
+                <tr>
+                    <td><strong>Offset:</strong> {{ rear.offset }}</td>
+                    <td><strong>Center Bore:</strong> {{ rear.centerbore }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Finish:</strong> {{ rear.finish }}</td>
+                    <td><strong>Availability:</strong> {{ rear.get_availability_display }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>Recommended Tires:</strong> <a id="recommeneded_tires" href="{% url "tire_staggered_search" %}?{{ rear.recommended_tires.0.querystring }}">
+                        {{ rear.recommended_tires.1.rear_tpd }}</a></td>
+                </tr>
+            </table>
+
+           <!-- <div class="a2c">
+                <form action="{% url "shop_cartitem_create" %}" method="post">
+                    {% csrf_token %}
+                    {% add_to_cart_form front as form %}
+                    {{ form.content_type_id }}
+                    {{ form.object_id }}
+
+                    <span class="right">
+                    Quantity:
+                    <select name="quantity_0">
+                        <option value="1">1</option>
+                        <option value="2" selected="selected">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <br>
+                    Quantity:
+                    <select name="quantity_1">
+                        <option value="1">1</option>
+                        <option value="2" selected="selected">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </span>
+                    <h4>Front: <strong>{% get_price front user subdomain %}</strong> (ea.)</h4>
+                    <h4>Rear: <strong>{% get_price rear user subdomain %}</strong> (ea.)</h4>
+                    <br>
+                    <input type="button" class="button left add_to_cart_shop_for_tires" value="Buy Wheel & Shop for Tires">
+                    <input type="button" class="button right add_to_cart" value="Buy Wheels">
+                    <br>
+                </form>
+            </div>-->
+
+
+        </div>
+        <div class="clear"></div>
+
+        <br>
+
+        <!--<div id="tabs" class="grid_16">
+            <div class="grid_16 alpha omega">
+                <ul>
+                    <li><a href="#tab_specs">Specs / Pricing</a></li>
+                    <li><a href="#tab_reviews">Reviews</a></li>
+                    <li><a href="#tab_warranty">Warranty</a></li>
+                    <li><a href="#tab_coupons">Coupons / Rebates</a></li>
+                    <li><a href="#tab_customer_content">Customer Pictures/Videos</a></li>
+                </ul>
+            </div>
+
+            <div class="grid_16 alpha omega tab_body" id="tab_specs">
+
+            </div>
+
+            <div class="grid_16 alpha omega tab_body" id="tab_reviews">
+                Reviews
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_16 alpha omega tab_body" id="tab_warranty">
+                Warranty
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_16 alpha omega tab_body" id="tab_coupons">
+                Coupons
+            </div>
+
+            <div class="grid_16 alpha omega tab_body" id="tab_customer_content">
+                Customer generated content
+            </div>
+            <div class="clear"></div>
+
+            <div class="clear"></div>
+        </div>-->
+    {% endwith %}
+
+   <!-- <div class="cart_sidebar">
+
+        There are no items in your cart.
+
+    </div>-->
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static "js/softy.js" %}"></script>
+    <script src="{% static "plugins/jqueryui/jquery-ui-1.8.16.custom.min.js" %}"></script>
+    <script>
+        $(function() {
+            $('#tabs').tabs();
+
+
+
+            /** Add to Cart **/
+            SOFTY.csrf_token = "{{ csrf_token }}";
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+
+            $("input.add_to_cart").live('click', function(){
+                ctid = $(this).parents("form").find("input[name=content_type_id]").val();
+                oid_0 = "{{ front.pk }}";
+                oid_1 = "{{ rear.pk }}";
+                qty_0 = $(this).parents("form").find("select[name='quantity_0']").val();
+                qty_1 = $(this).parents("form").find("select[name='quantity_1']").val();
+
+                if (oid_1 === undefined) {
+                    SOFTY.cart.Add(ctid, oid_0, qty_0);
+                } else {
+                    SOFTY.cart.Add(ctid, oid_0, qty_0);
+                    SOFTY.cart.Add(ctid, oid_1, qty_1);
+                }
+                return false;
+            });
+
+            $("input.add_to_cart_shop_for_tires").live('click', function(){
+                ctid = $(this).parents("form").find("input[name=content_type_id]").val();
+                oid_0 = "{{ front.pk }}";
+                oid_1 = "{{ rear.pk }}";
+                qty_0 = $(this).parents("form").find("select[name='quantity_0']").val();
+                qty_1 = $(this).parents("form").find("select[name='quantity_1']").val();
+
+                if (oid_1 === undefined) {
+                    SOFTY.cart.Add(ctid, oid_0, qty_1);
+                } else {
+                    SOFTY.cart.Add(ctid, oid_0, qty_0);
+                    SOFTY.cart.Add(ctid, oid_1, qty_1);
+                }
+
+                window.location = $("#recommeneded_tires").attr("href");
+                return false;
+            });
+
+        });
+
+
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,594 @@
+{% extends "shop/base.html" %}
+{% load shop_tags shop_filters staticfiles %}
+{% block extra_microdata %}<!-- Microdata markup added by Google Structured Data Markup Helper. -->{% endblock %}
+{% load thumbnail %}
+{% block extra_css %}
+    {{ block.super }}
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    .align{
+        margin-left:35px;
+    }
+</style>
+<style>
+    dialog {
+    width: 70%;
+    background:#e8e8e8;
+    border: 1px solid #dadada;
+    font-family:sans-serif;
+    padding: 5px 10px 20px 20px;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+{% if cart.items.all %}
+<div class="grid_16 shopping-cart-sec">
+    {% csrf_token %}
+    <h2>Shopping Cart</h2>
+    <table width="940" id="shopping_cart">
+
+        <thead>
+
+            <tr>
+                <th width="">Item #</th>
+                <th width="">Item name</th>
+                <th width="">Unit Price</th>
+                <th width="">Make</th>
+                <th width="">Year</th>
+                <th width="">Model</th>
+                <th width="">Qty</th>
+                <th width="">Item total</th>
+                <th width=""></th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            {% for item in cart.items.all %}
+            <tr>
+    	        <td>{{ item.product.sku }}</td>
+                <td width="10px"><nobr>
+        			{{ item.product.name|truncatewords:4 }}
+        			<ul>{% for item_opt in item.options.all %}
+                        <li>
+                            {{ item_opt.name }}: {{ item_opt.value }}
+                            {% if item_opt.price_adjustment > 0 %}
+                            ({{ item_opt.price_adjustment|currency }})
+                            {% endif %}
+                        </li>{% endfor %}
+        			</ul></nobr>
+
+                <td class="">{{ item.get_price|currency }}</td>
+                </td>
+                <td>
+                    {{ item.make }}
+                </td>
+                <td>
+                    {{item.year}}
+
+                </td>
+                <td>
+                    {{item.make}}
+
+                </td>
+
+                <td class=""><nobr>
+        			<form action="{% url "shop_cartitem_update" %}" method="post"> {% csrf_token %}
+        				<input type="hidden" name="return_path" value="{% url "shop_cart" %}">
+        				<input type="hidden" name="object_id" value="{{ item.pk }}">
+        				<input type="text" name="quantity" value="{{ item.qty }}" size="2" />
+        				<input name="update_item" value="Update" type="submit">
+        			</form></nobr>
+                </td>
+                <td class="">{{ item.get_extended_price|currency }}</td>
+                <td><nobr>
+                    <form action="{% url "shop_cartitem_delete" %}" method="post"> {% csrf_token %}
+                        <input type="hidden" name="object_id" value="{{ item.pk }}">
+                        <input name="delete_item" value="" type="submit" class="del">
+                    </form></nobr>
+        		</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="8" class="align_right">Subtotal</td>
+                <td class="align_right">{{ cart.get_subtotal|currency }}</td>
+            <tr>
+
+
+            {% for tax in cart.get_tax_summary %}
+                        <tr>
+                            <td colspan="8" class="align_right">{{ tax.0 }}: </td>
+                            <td class="align_right">{{ tax.1|currency }}</td>
+                        </tr>
+            {% endfor %}
+
+                        {% if cart.discount %}
+                        <tr>
+                            <td colspan="8" class="align_right">Discount ({{ cart.discount.short_desc }}): </td>
+                            <td class="align_right">{{ cart.get_discount_summary.1|currency }}</td>
+                        </tr>
+                        {% endif %}
+
+                        {% comment %}
+                        {% if cart.is_valid_shipping_address and cart.get_total %}
+                        <tr>
+                            <td colspan="8" class="align_right total"><strong>Total (S &amp; H not included):</strong></td>
+                            <td class="align_right total-a"><strong>{{ cart.get_total|currency }}</strong></td>
+                        </tr>
+                    {% endif %}
+                    {% endcomment %}
+                    </tbody>
+                </table>
+
+</div>
+<div class="clear"></div>
+<!-- Billing and Shipping address -->
+{% if user.is_authenticated and user.is_active %}
+    {% if address_formset.non_form_errors %}
+    <div class="grid_16">
+        <ul class="error_msg">{% for error in address_formset.non_form_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    <form action="{% url "shop_cart" %}" class="shopping-cart-form" id="cart" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    {{ address_formset.management_form }}
+
+    <div class="grid_16 margin-btn" style="text-align: center">
+        <input type="button" value="Shipping address same as billing address" id="copy_billing_shipping">
+    </div>
+
+    <p>&nbsp;</p>
+
+    <div class="grid_12">
+        <div class="grid_12">
+        <h3>Billing Information</h3>
+        <div class="form_row">
+            <label>Billing profile</label>
+            {% if user.is_authenticated and user.is_active %}
+            <select id="billing_address">
+                <option value="0"> - Select profile - </option>{% for profile in user.profiles.all %}
+                <option value="{{ profile.name }}">{{ profile.name|title }}</option>{% endfor %}
+            </select>
+            {% endif %}
+        </div>
+
+        {% include "shop/form_snippet.html" with form=address_formset.0 %}
+        </div>
+
+        <div class="grid_12">
+        <h3>Shipping Information</h3>
+        <div class="form_row">
+            <label>Shipping profile</label>
+            {% if user.is_authenticated and user.is_active %}
+            <select id="shipping_address">
+                <option value="0"> - Select profile - </option>{% for profile in user.profiles.all %}
+                <option value="{{ profile.name }}">{{ profile.name|title }}</option>{% endfor %}
+            </select>
+            {% endif %}
+        </div>
+
+        {% include "shop/form_snippet.html" with form=address_formset.1 %}
+    </div>
+    </div>
+
+
+     <div class="grid_4">
+        <div class="form_row">
+            {% for field in discount_code_form %}
+            {{ field.label_tag }}{{ field }}
+            <div class="margin-btn"><button type="submit" form="cart" value="Submit">Apply</button></div>
+            {% if field.errors %}
+            <ul>{% for error in field.errors %}
+                <li>{{ error|striptags }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+        	{% endfor %}
+    	</div>
+
+        {% if subdomain %}
+            {# no shipping for subdomain purchases #}
+        {% else %}
+          <div class="form_row">
+              {% if cart.is_valid_shipping_address %}
+                  Shipping:
+                  {% for field in shipping_form %}
+                    {{ field }}
+                    {% for error in field.errors %}
+                    {{ error|striptags }}
+                    {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    Enter shipping information to estimate shipping and handling charges.
+                {% endif %}
+          </div>
+        {% endif %}
+         {% if cart.is_valid_shipping_address or subdomain %}
+        <button class="margin-btn" type="button" form="cart" value="Submit" id="finalize_cart">
+                Review Order &rarr;
+        {% else %}
+        <button class="margin-btn" type="submit" form="cart" value="Submit" id="finalize_cart">
+                Estimate Shipping
+            {% endif %}
+        </button>
+        <div id="buy-wheel-popup" style="display: none;">
+            <dialog id="window" >
+                <div><h3>Alert To CheckOut the Accessories:</h3></div>
+                 <p class="value">
+                    <strong> Do you have essential installation kit for tyres & wheels ? </strong>
+                 </p>
+                    <a href="http://old.kxwheels.com/kx/accessories/"><input type="button" id="accesories" class="button submit_email" value="No Want To Buy" /></a>
+                    <input type="submit" id="cart_submit" class="button submit_email" value="Yes I Have" />
+
+            </dialog>
+        </div>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+
+              </div>
+
+              <!-- Left and right controls -->
+              <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+              </a>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    </form>
+{% else %}
+    <!-- Billing and Shipping address -->
+    {% if address_formset.non_form_errors %}
+    <div class="grid_16">
+        <ul class="error_msg">{% for error in address_formset.non_form_errors %}<li>{{ error }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+
+    <form class="shopping-cart-form" action="{% url "shop_cart" %}" id="cart" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+    {{ address_formset.management_form }}
+
+    <div class="grid_16 margin-btn" style="text-align: center">
+        <input type="button" value="Shipping address same as billing address" id="copy_billing_shipping">
+    </div>
+    <p>&nbsp;</p>
+<div class="grid_12">
+    <div class="grid_12">
+        <h3>Billing Information</h3>
+        <div class="form_row">
+            <label>Billing profile</label>
+            <select id="billing_address">
+                <option value="0"> - Select profile - </option>
+                <option value="1">Billing</option>
+                <option value="2">Shipping</option>
+                <option value="{{ profile.name }}">{{ profile.name|title }}</option>
+            </select>
+        </div>
+
+        {% include "shop/form_snippet.html" with form=address_formset.0 %}
+    </div>
+
+    <div class="grid_12">
+        <h3>Shipping Information</h3>
+        <div class="form_row">
+            <label>Shipping profile</label>
+            <select id="shipping_address">
+                <option value="0"> - Select profile - </option>
+                <option value="1">Billing</option>
+                <option value="2">Shipping</option>
+                <option value="{{ profile.name }}">{{ profile.name|title }}</option>
+            </select>
+        </div>
+        {% include "shop/form_snippet.html" with form=address_formset.1 %}
+</div>
+
+
+
+    </div>
+
+    <div class="grid_4">
+        <div class="form_row">
+            {% for field in discount_code_form %}
+            {{ field.label_tag }}{{ field }}
+            <div class="margin-btn"><button type="submit" form="cart" value="Submit">Apply</button></div>
+            {% if field.errors %}
+            <ul>{% for error in field.errors %}
+                <li>{{ error|striptags }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+        	{% endfor %}
+    	</div>
+
+        {% if subdomain %}
+            {# no shipping for subdomain purchases #}
+        {% else %}
+          <div class="form_row">
+              {% if cart.is_valid_shipping_address %}
+                  Shipping:
+                  {% for field in shipping_form %}
+                    {{ field }}
+                    {% for error in field.errors %}
+                    {{ error|striptags }}
+                    {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    Enter shipping information to estimate shipping and handling charges.
+                {% endif %}
+          </div>
+        {% endif %}
+        {% if cart.is_valid_shipping_address or subdomain %}
+            <button class="margin-btn" type="button" form="cart" value="Submit" id="finalize_cart">
+                Review Order &rarr;
+            {% else %}
+                <button class="margin-btn" type="submit" form="cart" value="Submit" id="finalize_cart">
+                Estimate Shipping
+            {% endif %}
+        </button>
+          <div id="buy-wheel-popup" style="display: none;">
+            <dialog id="window" >
+                <div><h3>Alert To CheckOut the Accessories:</h3></div>
+                 <p class="value">
+                    <strong> Do you have essential installation kit for tyres & wheels ? </strong>
+                 </p>
+                    <a href="http://old.kxwheels.com/kx/accessories/"><input type="button" id="accesories" class="button submit_email" value="No Want To Buy" /></a>
+                    <input type="submit" id="cart_submit" class="button submit_email" value="Yes I Have" />
+
+            </dialog>
+        </div>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+
+              <!-- Wrapper for slides -->
+              <div class="carousel-inner">
+
+              </div>
+
+              <!-- Left and right controls -->
+              <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+              </a>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    </form>
+
+{% endif %}
+
+
+
+
+{% else %}
+
+<div class="grid_16 align_center shopping-cart-sec ">
+    <h2>Your shopping cart is empty.</h2>
+    <img src="{% static "img/cart_empty.jpg" %}">
+</div>
+{% endif %}
+
+    <div class="clear"></div>
+{% endblock %}
+
+{% block extra_js %}
+    {{ block.super }}
+    {% if user.is_authenticated and user.is_active %}
+    <script type="text/javascript" charset="utf-8">
+    $(function() {
+        $("#billing_address").change(function(){
+           form_id = "id_form-0-";
+           if ($(this).val() == "0") return false;
+           $.getJSON('/account/profile/'+$(this).val()+'/?format=json', function(data) {
+               $.each(data, function(key, val) {
+                   $("#"+form_id+key).val(val);
+               });
+           });
+        });
+        $("#shipping_address").change(function(){
+           form_id = "id_form-1-";
+           if ($(this).val() == "0") return false;
+           $.getJSON('/account/profile/'+$(this).val()+'/?format=json', function(data) {
+               $.each(data, function(key, val) {
+                   $("#"+form_id+key).val(val);
+               });
+           });
+        });
+
+        // Populate shipping address
+        $("#copy_billing_shipping").click(function() {
+            $("[id^=id_form-0]").each(function() {
+                var field = $(this).attr("id").replace("id_form-0-", "");
+                $("#id_form-1-"+field).val($(this).val());
+            });
+        });
+    });
+    <!--$( "input[name='submit']" ).on( "click", function() {-->
+        <!--$( "input[name='delete_item']" ).trigger( "click" );-->
+        <!--});-->
+    </script>
+    {% else %}
+          <script type="text/javascript" charset="utf-8">
+    $(function() {
+        $("#billing_address").change(function(){
+           form_id = "id_form-0-";
+           if ($(this).val() == "0") return false;
+           $.getJSON('/account/profile/'+$(this).val()+'/?format=json', function(data) {
+               $.each(data, function(key, val) {
+                   $("#"+form_id+key).val(val);
+               });
+           });
+        });
+        $("#shipping_address").change(function(){
+           form_id = "id_form-1-";
+           if ($(this).val() == "0") return false;
+           $.getJSON('/account/profile/'+$(this).val()+'/?format=json', function(data) {
+               $.each(data, function(key, val) {
+                   $("#"+form_id+key).val(val);
+               });
+           });
+        });
+
+        // Populate shipping address
+        $("#copy_billing_shipping").click(function() {
+            $("[id^=id_form-0]").each(function() {
+                var field = $(this).attr("id").replace("id_form-0-", "");
+                $("#id_form-1-"+field).val($(this).val());
+            });
+        });
+    });
+    <!--$( "input[name='submit']" ).on( "click", function() {-->
+        <!--$( "input[name='delete_item']" ).trigger( "click" );-->
+        <!--});-->
+    </script>
+    {% endif %}
+    <script>
+        /** Quick Search **/
+        var quick_search = function(return_path) {
+            $("#quick_return_path").val(return_path);
+
+            if ($("#id_make").val() === '' || $("#id_year").val() === '' || $("#id_model").val() === '') {
+
+				/* ------- no vehicle selected ------- */
+				var tempVehicle = "{{ selected_vehicle }}";
+				if (tempVehicle){
+					var SplitVehicle = tempVehicle.split(" ");
+					$("#id_make").val() = SplitVehicle[1];
+					$("#id_year").val() = SplitVehicle[0];
+					$("#id_model").val() = SplitVehicle[2];
+				} else {
+					endKXLoad();
+					alert("Please select a vehicle.");
+				}
+				/* ------- End no vehicle selected ------- */
+
+            } else {
+                $("#quick_search").submit();
+            }
+
+            return false;
+        };
+
+        $(function() {
+
+            $("#quick_search_wheeltire").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            $("#quick_search_wheel").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            $("#quick_search_tire").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            /** Vehicle Selector **/
+            $.ajax({
+                url: '{% url "vehicle_model_search" %}',
+                success: function(data) {
+                    s = $(data).find('select');
+                    $("#id_make").replaceWith(s[0]);
+                    $("#id_year").replaceWith(s[1]);
+                    $("#id_model").replaceWith(s[2]);
+
+                    $("#id_year").attr("disabled", "disabled");
+                    $("#id_model").attr("disabled", "disabled");
+
+                    $('#id_model')
+                    .prepend($("<option></option>")
+                    .attr("value", "0")
+                    .attr("selected", "selected")
+                    .text("- Model -"));
+
+                    $("#id_make").change(function () {
+                        if ($(this).val() == "0") {
+                            $("#id_year").attr("disabled", "disabled");
+                        } else {
+                            $("#id_year").removeAttr("disabled");
+                        }
+                        $("#id_model").attr("disabled", "disabled");
+                    });
+
+                    $("#id_year").change(function () {
+                        getModels($("#id_make").val(), $("#id_year").val());
+                        $("#id_model").removeAttr("disabled")
+                    });
+
+                }
+            });
+
+            function getModels(make, year) {
+                $.ajax({
+                    url: "{% url "search_vehicle_model" %}",
+                    data: "q=*&make="+make+"&year="+year+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}",
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        $('#id_model').children().remove();
+
+                        $.each(data.results, function(i, result) {
+                            $('#id_model')
+                            .append($("<option></option>")
+                            .attr("value", result.name)
+                           .attr("id", "id_model_" + result.pk)
+                            .text(result.name))
+                        });
+                    }
+                });
+            };
+        });
+    </script>
+    <script>
+
+       $(document).ready(function(){
+           $.ajax({    //create an ajax request to display.php
+            type: "GET",
+            url: "{% url "accessories_list_model" %}",
+            <!--data: "csrfmiddlewaretoken={{ csrf_token }}",   //expect html to be returned-->
+            success: function(response){
+                res = response.length;
+                var i = 0;
+                while( i < res ){
+                    $("<div class='item'><form action='{% url 'shop_cartitem_create' %}' method='post' >{% csrf_token %}<input id='id_content_type_id' maxlength='100' name='content_type_id' type='hidden' value='112'><input id='id_object_id' maxlength='100' name='object_id' type='hidden' value='"+response[i]+"'><input type='hidden' id='id_make' name='make' value='N/A'><input type='hidden' id='id_year' name='year' value='N/A'><input type='hidden' id='id_model' name='model' value='N/A'><input id='id_quantity' name='quantity' type='hidden' value='4' /><input type='hidden' name='accessories' value='accessories' /><input type='hidden' id = 'name' name='accessories_id' value='"+response[i]+"'/><input type='hidden' value='"+response[i+1]+"' name='name'/><input type='hidden' value='"+response[i + 3]+"' name='price'/><h3>"+response[i + 1]+"</h3> <img  class='image' src='"+response[i + 2]+ "' alt='Chania'> <p>$"+response[i + 3]+"</p><input type='submit' class='button' id='submit_accessories' value='Add TO Cart' /></form></div>").clone().appendTo(".carousel-inner");
+                    if(i == 0){
+                        $(".item").addClass( "active" );
+                    }
+                    i = i + 4;
+                }
+            }
+
+        });
+        });
+
+    </script>
+    <script>
+        var dialog = document.getElementById('window');
+        $('body').delegate("#finalize_cart", "click" , function(){
+            var dialog = document.getElementById('window');
+            if ($(this).text().search('Review Order') != -1){
+                 dialog.show();
+                 $('#buy-wheel-popup').attr('style', 'display:block;');
+        }
+        });
+    </script>
+
+{% endblock %}
+

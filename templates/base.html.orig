@@ -1,0 +1,280 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. --><head id="www-kxwheels-com" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{% block title %}Custom Chrome Wheels, Rims & Tires for Sale, Canada{% endblock %}</title>
+    <meta name="title" content="{% block meta_keywords %}chrome wheels, rims, tires Canada, rims Canada, custom wheels, wheels Canada, wheels and tires, wheels and rims, alloy wheels, wheels for sale{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Canada's online discount tire Catalogue, we offer tons of rim and tire choices. Build your car or truck rim and tire package today.{% endblock %}">
+
+    <meta name="google-site-verification" content="">
+    <meta name="author" content="Nav Aulakh, nav@shiftonline.com">
+    <meta name="Copyright" content="Copyright KXWheels.com 2011. All Rights Reserved.">
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon_tire.ico">
+    <link rel="apple-touch-icon" href="{{ STATIC_URL }}img/apple-touch-icon.png">
+
+    <link href="{{ STATIC_URL }}css/reset.css" rel="stylesheet" type="text/css"/>
+    
+
+    {% if not subdomain %}
+		<link href="{{ STATIC_URL }}css/960_16_col.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ STATIC_URL }}css/loadbox01.css" rel="stylesheet" type="text/css"/>     
+    {% else %}
+    	<link href="{{ STATIC_URL }}css/960_16_col.css" rel="stylesheet" type="text/css"/>
+    	<link href="{{ STATIC_URL }}css/style_blue.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ STATIC_URL }}css/loadbox02.css" rel="stylesheet" type="text/css"/>
+    {% endif %}
+
+    <!-- Extras -->
+    {% block extra_css %}{% endblock %}
+
+	<!--<script src="{{ STATIC_URL }}js/startLoad.js" LANGUAGE="JavaScript"></script>-->
+    <script>
+    function startKXLoad() {
+        $('#loadBox').css('left', '50%');
+        $('#loadBox').css('top', '50%');
+        $('#loadBox').css('marginLeft', '-200px');
+        $('#loadBox').css('marginTop', '-118px');
+        $('#loadBorder').css('left', '0px');
+        $('#loadBorder').css('top', '0px');
+        $('#loadBorder').css('right', '0px');
+        $('#loadBorder').css('buttom', '0px');
+        $('#loadBox').show();
+        $('#loadBorder').show();
+    }
+    function endKXLoad() {
+        $('#loadBox').hide();
+        $('#loadBorder').hide();
+    }
+    </script>
+    <script src="{{ STATIC_URL }}js/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body onUnload="" {% block extra_body %}{% endblock %}>
+
+<div id="loadBorder"></div>
+<div id="loadBox"><img src="{{ STATIC_URL }}img/kx_load_ani.gif" width="126" height="22" style="padding-top:190px"/></div>
+<div class="container_16">
+{% if not subdomain %}
+
+    <header>
+        <div class="grid_7">
+            <a href="/" class="logo"><img src="{{ STATIC_URL }}img/logo_kxwheels.png" alt="KXWheels"></a>
+        </div>
+
+        <div class="grid_9">
+            {% include "account/menu.html" %}
+            <ol id="vehicle_specification">
+                {% if request.session.vehicle %}
+                <li><a href="{% url vehicle_model_search %}" class="select_vehicle">[Change vehicle]</a></li>
+                <li><strong>{{ request.session.vehicle }}</strong></li>
+                {% else %}
+                <li><a href="{% url vehicle_model_search %}" class="select_vehicle">Select a vehicle</a></li>
+                {% endif %}
+            </ol>
+        </div>
+    </header>
+    <div class="clear"></div>
+
+    <nav>
+        <div class="grid_16">
+        <ul>
+            <li class="first" id="nav_tires">
+                <a href="{% url tire_landing %}">Tires</a>
+                <ul>
+                    <li><a href="{% url tire_manufacturer_list %}" onClick="startKXLoad()">Browse All Tires</a></li>
+                    <li><a href="{% url tire_tiresize_search %}" onClick="startKXLoad()">Search Tire Sizes</a></li>
+                    <li><a href="{% url tire_vehicle_search %}" onClick="startKXLoad()">Search Tires By Vehicle</a></li>
+                    <li><a href="{% url tire_staggered_search %}" onClick="startKXLoad()">Staggered Tire Sizes</a></li>
+                </ul>
+            </li>
+            <li id="nav_wheels">
+                <a href="{% url wheel_landing %}">Wheels</a>
+                <ul>
+                    <li><a href="{% url wheel_manufacturer_list %}" onClick="startKXLoad()">Browse All Wheels</a></li>
+                    <li><a href="{% url wheel_wheelsize_search %}" onClick="startKXLoad()">Search Wheel Sizes</a></li>
+                    <li><a href="{% url wheel_vehicle_search %}" onClick="startKXLoad()">Search Wheels By Vehicle</a></li>
+                </ul>
+            </li>
+            <li id="nav_accessories">
+                <a href="/content/accessories/">Accessories</a>
+            </li>
+            <li><a href="{% url auth_dealer_create %}">Dealer Pricing</a></li>
+            <li><a href="/content/experts/">The Experts</a></li>
+            <li class="last"><a href="/content/contact-us/">Contact Us</a></li>
+        </ul>
+        </div>
+    </nav>
+    <div class="clear"></div>
+    
+    {% else %}
+    <div id="topbar">
+        <div id="topbar_content">
+            {% include "account/menu.html" %}
+        </div>
+        <br clear="all" />
+    </div>
+    <div id="background" class="test">
+    <div id="mainbox">
+     <div id="header">
+        {% if subdomain_profile.dealer_logo %}
+        <a href="/"><img src="{{ MEDIA_URL }}{{ subdomain_profile.dealer_logo }}" width="366" height="67" id="logo" /></a>
+        {% else %}
+        <img src="{{ STATIC_URL }}img/logo_kxwheels.png" width="366" height="67" id="logo" />
+        {% endif %}
+        <div id="vehiclebox">
+            {% if request.session.vehicle %}
+            <a href="{% url vehicle_model_search %}" class="select_vehicle">[Change vehicle]</a>
+            &nbsp;&nbsp;&nbsp;{{ request.session.vehicle }}
+            {% else %}
+            <a href="{% url vehicle_model_search %}" class="select_vehicle">Select a vehicle</a>
+            {% endif %}
+        </div>
+        <br clear="all" />
+     </div>
+     <div id="menubox">
+          <ul>
+            <li id='tires_dropdown'><a href="{% url tire_landing %}">Tires</a>
+                <ul id='tires_menu'>
+                    <li><a href="{% url tire_manufacturer_list %}" onClick="startKXLoad()">Browse All Tires</a></li>
+                    <li><a href="{% url tire_tiresize_search %}" onClick="startKXLoad()">Search Tire Sizes</a></li>
+                    <li><a href="{% url tire_vehicle_search %}" onClick="startKXLoad()">Search Tires By Vehicle</a></li>
+                    <li><a href="{% url tire_staggered_search %}" onClick="startKXLoad()">Staggered Tire Sizes</a></li>
+                </ul>
+            </li>
+            <li id='wheels_dropdown'><a href="{% url wheel_landing %}">Wheels</a>
+                <ul id='wheels_menu'>
+                    <li><a href="{% url wheel_manufacturer_list %}" onClick="startKXLoad()">Browse All Wheels</a></li>
+                    <li><a href="{% url wheel_wheelsize_search %}" onClick="startKXLoad()">Search Wheel Sizes</a></li>
+                    <li><a href="{% url wheel_vehicle_search %}" onClick="startKXLoad()">Search Wheels By Vehicle</a></li>
+                </ul>
+            </li>
+            <li><a href="/content/accessories/">Accessories</a></li>
+            <li><a href="/kx/contact-us/">Contact</a></li>
+          </ul>
+          <br clear="all" />
+     </div>
+    
+    {% endif %}
+
+    <div class="clear"></div>
+    <!-- Here be the dragons -->
+    {% block content %}{% endblock %}
+
+    {% if subdomain %}
+    </div>
+    </div>
+    <div id="footer">
+    {% else %}
+    <footer>
+    {% endif %}
+        <div class="grid_1">&nbsp;</div>
+        
+        {% if not subdomain %}
+        <div class="grid_3">
+            <h5>My KX Wheels</h5>
+            {% include "account/menu.html" with for_footer="true"%}
+        </div>
+        <div class="grid_3">
+            <h5>Information</h5>
+            <ul>
+                <li><a href="/content/fitment-guarantee/">Fitment Guarantee</a></li>
+                <li><a href="/content/shipping-costs/">Shipping Costs</a></li>
+                <li><a href="/content/placing-orders/">Placing an Order</a></li>
+                <li><a href="/content/payment-options/">Payment Options</a></li>
+            </ul>
+        </div>
+        <div class="grid_3">
+            <h5>Order Information</h5>
+            <ul>
+                <li><a href="/content/order-cancellation/">Order Cancellation</a></li>
+                <li><a href="/content/inspecting-your-order/">Inspecting Your Order</a></li>
+                <li><a href="/content/returns/">Returns</a></li>
+                <li><a href="/content/warranty/">Warranty Information</a></li>
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div class="grid_3 last">
+            <h5>Popular Links</h5>
+            <ul>
+                <li><a href="{% url tire_tire_calculator %}">Tire Size Calculator</a></li>
+                <li><a href="{% url wheel_backspace_calculator %}">Wheel Offset Calculator</a></li>
+                <li><a href="/content/tire-wheel-installation/">Wheel Install Guide</a></li>
+                <li><a href="/content/wheel-torq-specs/">Wheel Torq Specs</a></li>
+            </ul>
+        </div>
+        <div class="grid_3 last">
+            <h5>Articles</h5>
+            <ul>
+                <li><a href="/content/articles-snow-tire/">Snow Tire Articles</a></li>
+                <li><a href="/content/articles-tire-tech/">Tire Tech Articles</a></li>
+                <li><a href="/content/articles-wheel-tech/">Wheel Tech Articles</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+
+        <div class="grid_16">
+
+        </div>
+        <div class="clear"></div>
+    {% if subdomain %}
+    </div>
+    {% else %}
+    </footer>
+    {% endif %}
+
+    <!-- Javascript goes here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/common.js"></script>
+    <script type="text/javascript">
+        $(function(){
+          endKXLoad();
+          $('#tires_menu').hide();
+          $('#wheels_menu').hide();
+          $('#tires_dropdown').hover(function(){$('#tires_menu').show();}, function(){$('#tires_menu').hide();});
+          $('#wheels_dropdown').hover(function(){$('#wheels_menu').show();}, function(){$('#wheels_menu').hide();});
+        });
+    </script>
+
+    {% if not subdomain or current_user != subdomain_profile.user %}
+    <script src="{{ STATIC_URL }}js/softy.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            SOFTY.cart.add_url = "{% url shop_cartitem_create %}";
+            SOFTY.cart.short_summary_url = "{% url shop_cart_short_summary %}";
+            SOFTY.cart.display();
+        })
+    </script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4735321-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+    </script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+{% if not subdomain %}
+</div> <!-- .container_16 -->
+{% endif %}
+</body>
+</html>

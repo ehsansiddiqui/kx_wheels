@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+    <link rel="stylesheet" href="{% static "admin/css/widgets.css" %}">
+    <style>
+    table {
+        width: 100%;
+    }
+    table thead th {
+        color: #666;
+        padding: 2px 5px;
+        font-size: 11px;
+        background: #E1E1E1 url({% static "admin/img/admin/nav-bg.gif" %}) top left repeat-x;
+        border-bottom: 1px solid #DDD;
+        text-align:left;
+        font-size: 12px;
+    }
+    table tbody tr td select {
+        width: 50%;
+        font-size: 15px;
+    }
+    table tbody tr td a {
+        cursor: pointer;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+{% if not subdomain %}
+<script>
+window.location = "/";
+</script>
+{% else %}
+<div class="inline-group">
+<div class="tabular inline-related">
+{% if errors %}
+<label style="color:red;">Please correct following errors:</label>
+<ol style="color:red; margin-left:18px;">
+{% for error in errors %}
+<li>{{error}}</li>
+{% endfor %}
+</ol>
+{% endif %}
+<form method="post">
+{% csrf_token %}
+
+<fieldset class="module">
+<h2> Tire Manufacturer Markups </h2>
+<table>
+<thead>
+<tr>
+    <th class="required">Manufacturer</th>
+    <th width="29%" class="required">Markup</th>
+    <th width="1%"></th>
+</tr>
+</thead>
+<tbody>
+{% for dmd in dealer_tire_manufacturer_discounts %}
+<tr>
+<td class="manufacturer">
+<select name="tire_manufacturers">
+    <option value="-1">----------</option>
+    {% for m in tire_manufacturer_list %}
+    {% if m.id == dmd.manufacturer.id %}
+    <option value="{{m.id}}" selected="selected">{{m.name}}</option>
+    {% else %}
+    <option value="{{m.id}}">{{m.name}}</option>
+    {% endif %}
+    {% endfor %}
+</select>
+</td>
+<td class="discount">
+<input name="tire_discount_{{dmd.manufacturer.id}}" type="text" class="vIntegerField" value="{{dmd.discount}}">
+</td>
+<td class="delete">
+<div>
+<a class="inline-deletelink">Remove</a>
+</div>
+</td>
+</tr>
+{% endfor %}
+<tr class="tire-add-row add-row">
+<td colspan="3"><a>Add Another Tire Manufacturer Markup</a></td>
+</tr>
+</tbody>
+</table>
+</fieldset>
+
+<br clear="all"/>
+
+<fieldset class="module">
+<h2> Wheel Manufacturer Markups </h2>
+<table>
+<thead>
+<tr>
+    <th class="required">Manufacturer</th>
+    <th width="29%" class="required">Markup</th>
+    <th width="1%"></th>
+</tr>
+</thead>
+<tbody>
+{% for dmd in dealer_wheel_manufacturer_discounts %}
+<tr>
+<td class="manufacturer">
+<select name="wheel_manufacturers">
+    <option value="-1">----------</option>
+    {% for m in wheel_manufacturer_list %}
+    {% if m.id == dmd.manufacturer.id %}
+    <option value="{{m.id}}" selected="selected">{{m.name}}</option>
+    {% else %}
+    <option value="{{m.id}}">{{m.name}}</option>
+    {% endif %}
+    {% endfor %}
+</select>
+</td>
+<td class="discount">
+<input name="wheel_discount_{{dmd.manufacturer.id}}" type="text" class="vIntegerField" value="{{dmd.discount}}">
+</td>
+<td class="delete">
+<div>
+<a class="inline-deletelink">Remove</a>
+</div>
+</td>
+</tr>
+{% endfor %}
+<tr class="wheel-add-row add-row">
+<td colspan="3"><a>Add Another Wheel Manufacturer Markup</a></td>
+</tr>
+</tbody>
+</table>
+</fieldset>
+
+<div class="submit-row">
+<input type="submit" value="Save" class="defualt" name="_save">
+</div>
+
+</form>
+</div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ block.super }}
+<script>
+var tire_tr_html = '<tr><td class="manufacturer"><select name="tire_manufacturers"><option value="-1" selected="selected">----------</option>{% for m in tire_manufacturer_list %}<option value="{{m.id}}">{{m.name}}</option>{% endfor %}</select></td><td class="discount"><input type="text" class="vIntegerField" value="0"></td><td class="delete"><div><a class="inline-deletelink">Remove</a></div></td></tr>';
+var wheel_tr_html = '<tr><td class="manufacturer"><select name="wheel_manufacturers"><option value="-1" selected="selected">----------</option>{% for m in wheel_manufacturer_list %}<option value="{{m.id}}">{{m.name}}</option>{% endfor %}</select></td><td class="discount"><input type="text" class="vIntegerField" value="0"></td><td class="delete"><div><a class="inline-deletelink">Remove</a></div></td></tr>';
+
+$('.inline-group').on('click', '.inline-deletelink', function() {
+    $(this).parents('tr').remove();
+});
+$('.inline-group').on('change', '[name="tire_manufacturers"]', function() {
+    if($(this).val() == "-1")
+        $(this).parents('tr').find('input').removeAttr('name');
+    else
+        $(this).parents('tr').find('input').attr('name', 'tire_discount_' + $(this).val());
+});
+$('.inline-group').on('change', '[name="wheel_manufacturers"]', function() {
+    if($(this).val() == "-1")
+        $(this).parents('tr').find('input').removeAttr('name');
+    else
+        $(this).parents('tr').find('input').attr('name', 'wheel_discount_' + $(this).val());
+});
+$('.tire-add-row a').click(function() {
+    $(this).parents('tr').before(tire_tr_html);
+});
+$('.wheel-add-row a').click(function() {
+    $(this).parents('tr').before(wheel_tr_html);
+});
+</script>
+{% endblock %}
+
+

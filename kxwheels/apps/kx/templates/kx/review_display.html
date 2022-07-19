@@ -1,0 +1,94 @@
+{% for review in reviews %}
+    <div class="review {% cycle 'odd' 'even' %}">
+        <div class="grid_3  vertical_line">
+            <div>
+                {% if review.reviewer %}
+                <p>{{ review.reviewer.username }}</p>
+                {% else %}
+                <p>{{ review.name }}</p>
+                {% endif %}
+
+                <p>Posted: {{ review.created_at|timesince }} ago</p>
+
+                <p>
+                    <strong>Rating:</strong>
+                    <div class="star_rating">{{ review.rating }}/5</div>
+                </p>
+
+                <p>
+                    <strong>Vehicle:</strong><br>
+                    Year: {{ review.year }} <br>
+                    Make: {{ review.make }} <br>
+                    Model: {{ review.model }}
+                </p>
+
+            </div>
+        </div>
+        <div class="grid_12">
+            <div class="grid_12 alpha omega">
+                <h3>{{ review.title }}</h3>
+                <hr>
+            </div>
+
+            <div class="grid_6 alpha">
+                <strong>Pros:</strong>
+                <p>{{ review.pros }}</p>
+            </div>
+
+            <div class="grid_6 omega">
+                <strong>Cons:</strong>
+                <p>{{ review.cons}}</p>
+            </div>
+
+            <div class="grid_12 alpha omega">
+                <hr>
+                <strong>Bottom line:</strong>
+                <p>{{ review.bottom_line }}</p>
+            </div>
+
+            {% if type == "tire" %}
+
+                <div class="grid_12 alpha omega">
+                    <hr>
+                </div>
+
+                <div class="grid_3 alpha">
+                    <strong>Dry/Hot Weather</strong><br>
+                    <div class="star_rating">{{ review.dry_rating }}/5</div>
+                </div>
+
+                <div class="grid_3">
+                    <strong>Noise</strong><br>
+                    <div class="star_rating">{{ review.noise_rating}}/5</div>
+                </div>
+
+                <div class="grid_3">
+                    <strong>Offroad</strong><br>
+                    <div class="star_rating">{{ review.offroad_rating}}/5</div>
+                </div>
+
+                <div class="grid_3 omega">
+                    <strong>Wet</strong><br><br>
+                    <div class="star_rating">{{ review.wet_rating}}/5</div>
+                </div>
+
+                <div class="grid_3 alpha">
+                    <strong>Comfort</strong><br>
+                    <div class="star_rating">{{ review.comfort_rating}}/5</div>
+                </div>
+
+                <div class="grid_3">
+                    <strong>Snow</strong><br>
+                    <div class="star_rating">{{ review.snow_rating}}/5</div>
+                </div>
+
+                <div class="grid_3">
+                    <strong>Treadwear</strong><br>
+                    <div class="star_rating">{{ review.treadwear_rating}}/5</div>
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="clear"></div>
+    </div>
+{% endfor %}

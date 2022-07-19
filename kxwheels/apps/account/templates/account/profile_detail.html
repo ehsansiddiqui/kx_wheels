@@ -1,0 +1,16 @@
+{% for profile in object_list %}
+    <div class="grid_3">
+        <p>
+        {{ profile.address_1 }}<br>
+        {% if profile.address_2 %}{{ profile.address_2 }}<br>{% endif %}
+        {{ profile.city}}, {{ profile.province }}<br>
+        {{ profile.postal_code }}<br>
+        {{ profile.country }}
+        </p>
+    
+
+        
+        
+        <p><a href="{% url "auth_profile_update" profile.name %}">Edit</a></p>
+    </div>
+{% endfor %}

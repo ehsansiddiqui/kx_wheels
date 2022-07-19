@@ -1,0 +1,215 @@
+{% extends "kx/base.html" %}
+
+
+{% block search_filter %}
+    <form method="get" id="wheelsize_search" action="{% url "search_wheel_wheelsize" %}">
+        <div>{{ form.manufacturer.label_tag }}<br>{{ form.manufacturer }}</div>
+        <div>{{ form.diameter.label_tag }}{{ form.diameter }}</div>
+        <div>{{ form.wheelwidth.label_tag }}{{ form.wheelwidth }}</div>
+        <div>{{ form.boltpattern.label_tag }}{{ form.boltpattern }}</div>
+        <div>
+            <label for="id_offset">Offset range</label><br>
+            Min<br>{{ form.offset_min }} Max<br>{{ form.offset_max }}
+        </div>
+        <div>{{ form.finish.label_tag }}{{ form.finish }}</div>
+        <div><input type="submit" value="Search"></div>
+    </form>
+{% endblock %}
+
+{% block main_content %}
+    <div class="main">
+        <div class="grid_13">
+            <h1>Wheel Size Search</h1>
+        </div>
+
+        <div class="grid_13">
+            <div class="pagination">
+                <span class="prev">&laquo; Prev</span>
+                <span class="page">Page 1 of 10</span>
+                <span class="next">Next &raquo;</span>
+            </div>
+        </div>
+
+        <div class="grid_13">
+            <div id="search_results">
+                <p align="center"><img src="{% static "img/wheelsize_search.jpg" %}"></p>
+            </div>
+        </div>
+
+        <div class="grid_16">
+            <div class="pagination">
+                <span class="prev">&laquo; Prev</span>
+                <span class="page">Page 1 of 10</span>
+                <span class="next">Next &raquo;</span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static "js/jquery.tmpl.js" %}"></script>
+
+    <script type="text/html" id="results_tmpl">
+        <div class="wheelsize">
+            <h3><%= manufacturer %><br><span><%= wheel %></span></h3>
+            <div class="pictures">
+
+                <img src="<%= thumbnail_med %>" class="thumbnail">
+            </div>
+
+            <ul style="width:130px;">
+                <li class="ws_finish">Finish: <span><%= finish %></span></li>
+                <li class="ws_size">Size: <span><%= diameter %> x <%= wheelwidth %></span></li>
+                <li class="ws_offset">Offset: <span><%=offset %></span></li>
+                <li class="ws_boltpattern">Boltpattern 1: <span><%= boltpattern_1 %></span></li>
+                <li class="ws_boltpattern">Boltpattern 2: <span><%= boltpattern_2 %></span></li>
+                <li class="ws_permalink"><a href="<%= permalink %>">View more details ...</a></li>
+            </ul>
+            <div class="clear"></div>
+
+            {% if not subdomain or current_user != subdomain_profile.user %}
+            <div class="footer">
+                <div class="price"><%= price %></div>
+                <div class="addtocart">
+                    <form action="{% url "shop_cartitem_create" %}" method="post" class="cart" name="wheelsize_<%= sku %>">
+                        <input type="hidden" value="{{ csrf_token }}" name="csrfmiddlewaretoken">
+                        <input type="hidden" name="content_type_id" value="{{ content_type_id }}">
+                        <input type="hidden" name="object_id" value="<%= wheelsize_id %>">
+                        <input type="hidden" name="quantity" value="4">
+                        <input type="image" src="{% static "img/btn_sr_addtocart.png" %}">
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div> <!-- .wheelsize -->
+    </script>
+
+    <script>
+
+        function replace_in_querystring(url, param, value) {
+            var re = new RegExp("([?|&])" + param + "=.*?(&|$)","i");
+            if (url.match(re))
+                return url.replace(re,'$1' + param + "=" + value + '$2');
+            else
+                return url + '&' + param + "=" + value;
+        };
+
+
+        function display_pagination(data) {
+            $(".pagination").show();
+
+            // Pagination starts
+            page = data.info.page;
+            total_pages = data.info.total_pages;
+
+            $('.page').text('Page '+page+' of '+total_pages);
+
+            if (page > 1) {
+                var prev_page = parseInt(page)-1;
+                var prev_link = $('<a></a>').attr({
+                    'href': replace_in_querystring(window.location.hash, 'page', prev_page)
+                }).html('&laquo; Prev');
+                $('.prev').html(prev_link);
+            } else {
+                $('.prev').html('&laquo; Prev');
+            }
+
+            if (page < total_pages) {
+                var next_page = parseInt(page)+1;
+                var next_link = $('<a></a>').attr({
+                    'href': replace_in_querystring(window.location.hash, 'page', next_page)
+                }).html('Next &raquo;');
+                $('.next').html(next_link);
+            } else {
+                $('.next').html('Next &raquo;');
+            }
+            // Pagination ends
+        }
+
+        function display_results(data) {
+
+            var results = data.results;
+            var template = $("#results_tmpl").html();
+            var html = "";
+            for (var i=0; i<results.length; i++) {
+                html += tmpl(template, results[i]);
+            }
+            $("#search_results").html(html);
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+        }
+
+
+        function search(query) {
+            query += "&q=*";
+
+            $('#ajax_load')
+                    .hide()  // hide it initially
+                    .ajaxStart(function() {
+                        $(this).show();
+                    })
+                    .ajaxStop(function() {
+                        $(this).hide();
+                    });
+
+            $.ajax({
+                url: "{% url "search_wheel_wheelsize" %}",
+                data: query,
+                dataType: "json",
+                async: false,
+                success: function(data) {
+                    // Display pagination
+                    display_pagination(data);
+
+                    // Display results
+                    display_results(data);
+                }
+            });
+            return false;
+        }
+
+        $(function(){
+
+            var current_hash = false;
+            setInterval(function(){
+                if(window.location.hash != current_hash) {
+                    current_hash = window.location.hash;
+                    search(current_hash.replace('#', ''));
+                }
+            }, 100);
+
+            // Bind form field changes to form submit
+            $('#wheelsize_search :input').each(function() {
+                $(this).change(function() {
+                    $("#wheelsize_search").submit();
+                });
+            });
+
+            $("#wheelsize_search").submit(function(){
+                window.location = '#'+$("#wheelsize_search").serialize()+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}";
+                return false;
+            });
+
+
+            // Check if querystring exists
+            var url_parts = location.href.split('?');
+            if (url_parts.length > 1)
+                if (url_parts[1].length > 2)
+                    $("#wheelsize_search").submit();
+
+            {% if not subdomain or current_user != subdomain_profile.user %}
+            SOFTY.csrf_token = "{{ csrf_token }}";
+            SOFTY.cart.add_url = "{% url "shop_cartitem_create" %}";
+            SOFTY.cart.short_summary_url = "{% url "shop_cart_short_summary" %}";
+            $("form.cart").live('submit', function(){
+                ctid = $(this).find("input[name='content_type_id']").val();
+                oid = $(this).find("input[name='object_id']").val();
+                qty = $(this).find("input[name='quantity']").val();
+                SOFTY.cart.Add(ctid, oid, qty);
+                return false;
+            });
+            {% endif %}
+
+        });
+    </script>
+{% endblock %}

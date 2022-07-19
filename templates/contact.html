@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block content %}
+    {% block sidebar %}
+
+    {% endblock %}
+
+    {% block main_content %}
+        <div class="grid_16">
+        <h1> Contact Us </h1>
+        <p><!--<strong>We are not a retail operation. Even though we have thousands of items  in stock, we do not have a showroom or walk-in retail staff on site.? If you need something locally in the lower  mainland, please call first.</strong><br />
+        --><br />
+        {% if subdomain %}
+        <h3>Dealer Contact Details: </h3>
+        {{ subdomain_profile.first_name }} {{ subdomain_profile.last_name }}<br />
+        {% if subdomain_profile.address_1 %}
+        {{ subdomain_profile.address_1 }}<br />
+        {% endif %}
+        {% if subdomain_profile.address_2 %}
+        {{ subdomain_profile.address_2 }}<br />
+        {% endif %}
+        {%if subdomain_profile.city%}{{subdomain_profile.city}}, {%endif%}{%if subdomain_profile.province%}{{subdomain_profile.province}}{%endif%}, {%if subdomain_profile.country%}{{subdomain_profile.country}}{%endif%}<br />
+        {%if subdomain_profile.postal_code%}{{subdomain_profile.postal_code}}{%endif%}</p>
+        <table border="0" cellspacing="0" cellpadding="0" width="44%">
+          {% if subdomain_profile.cell_phone %}
+          <tr>
+            <td width="24%" valign="top"><strong>Phone:</strong></td>
+            <td width="76%"><p>{{subdomain_profile.cell_phone}}</p></td>
+          </tr>
+          {% endif %}
+          {% if subdomain_profile.fax %}
+          <tr>
+            <td width="24%" valign="top"><p><strong>Fax:</strong></p></td>
+            <td width="76%"><p>{{subdomain_profile.fax}}</p></td>
+          </tr>
+          {% endif %}
+          {% if subdomain_profile.user.email %}
+          <tr>
+            <td width="24%" valign="top"><p><strong>Email:</strong></p></td>
+            <td width="76%"><p><a href="mailto:{{subdomain_profile.user.email}}">{{subdomain_profile.user.email}}</a></p></td>
+          </tr>
+          {% endif %}
+        </table>
+        <p><strong>&nbsp;</strong></p>
+        {% endif %}
+
+        <!--<h3>Canadian Operations: </h3>
+        KX Wheels<br />
+        Surrey, BC, Canada<br />
+        V3W-3X9</p>
+        <table border="0" cellspacing="0" cellpadding="0" width="44%">
+          <tr>
+            <td width="24%" valign="top"><strong>Phone:</strong></td>
+            <td width="76%"><p>604-596-3122<br />
+              1-888-596-3122</p></td>
+          </tr>
+          <tr>
+            <td><p><strong>Fax:</strong></p></td>
+            <td><p>604-677-5484 or 604-596-3132</p></td>
+          </tr>
+          <tr>
+            <td><p><strong>Email:</strong></p></td>
+            <td><p><a href="mailto:sales@kxwheels.com">sales@kxwheels.com</a></p></td>
+          </tr>
+        </table>
+        <p>
+                  <p><strong>&nbsp;</strong></p>
+        <p><h3>USA Logistics Warehouse:</h3>
+          Pico Rivera, CA <br />
+        90660-1458</p>
+        <table border="0" cellspacing="0" cellpadding="0" width="44%">
+          <tr>
+            <td width="24%" valign="top"><strong>Phone:</strong></td>
+            <td width="76%"><p>1-888-596-3122</p></td>
+          </tr>
+          <tr>
+            <td><p><strong>Email:</strong></p></td>
+            <td><p><a href="mailto:sales@kxwheels.com">sales@kxwheels.com</a></p></td>
+          </tr>
+        </table>
+        <p><br />
+          <strong><em>Note: </em></strong><em>We do not have regular business hours, as we are not a  retail location. If you would like to purchase an item in person, please book  an appointment to come see us.</em>
+          </p><br><br>
+        </p>-->
+        </div>
+    {% endblock %}
+    <div class="clear"></div>
+{% endblock %}

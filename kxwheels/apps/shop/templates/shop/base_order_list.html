@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load shop_tags shop_filters %}
+
+{% block quick_search %}{% endblock %}
+
+{% block content %}
+	<h2>Order history</h2>
+	<table class="shop_list">
+		<thead>
+			<tr class="even_row">
+				<th align="left">Date</th>
+				<th align="left">Order #</th>
+				<th align="left">PO/Name</th>
+				<th align="left">Status</th>
+				<th align="right">Subtotal</th>
+				<th width="100"></th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for order in orders %}
+		<tr class="{% cycle 'odd_row' 'even_row' %}">
+			<td>{{ order.created_at|date:"d M, Y" }}</td>
+			<td><a href="{{ order.get_absolute_url }}">{{ order.pk }}</a></td><td>{{ order.po }}</td>
+			<td>{{ order.get_status_display }}</td>
+		    <td align="right">{{ order.total|currency }}</td>
+		    <td align="right"><input type="button" name="pdf" value="Download PDF" onclick="window.open('{{ order.get_absolute_url }}?fmt=pdf')" /></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+{% endblock %}

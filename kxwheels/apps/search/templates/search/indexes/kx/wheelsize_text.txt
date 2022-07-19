@@ -1,0 +1,10 @@
+{{ object.sku }}
+{{ object.wheel.name }}
+{{ object.wheel.manufacturer.name }}
+{{ object.diameter }}
+{{ object.wheelwidth }}
+{{ object.offset }}
+{{ object.finish }}
+{{ object.boltpattern_1 }}
+{{ object.boltpattern_2 }}
+{{ object.centerbore }}

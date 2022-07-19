@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "plugins/nivo/default.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "plugins/nivo/nivo-slider.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "plugins/nivo/style.css" %}" type="text/css" media="screen" />
+    <style type="text/css">
+#hbox {
+	background-color: #F7F7F7;
+	padding: 20px;
+	text-align: center;
+}
+#hbox h1 {
+	padding: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	margin-left: 0px;
+}
+#hbox h2 {
+	margin: 0px;
+	padding: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    {% if not subdomain %}
+
+    <div class="grid_16">
+        <div id="banner">
+        	<div class="slider-wrapper theme-default">
+            	<div id="slider" class="nivoSlider">
+                    {% for manufacturer in manufacturer_list%}
+                        {% thumbnail manufacturer.image "940x330" as im %}
+                            <img src="{{ im.url }}" alt="Slider image">
+                        {% empty %}
+                            <img src="{{ MEDIA_URL }}media/ina_sm.jpg" alt="Image Unavailable">
+                        {% endthumbnail %}
+                     {% endfor %}	
+
+           	</div>
+        	</div>
+            				
+        </div>
+    </div>
+    <div class="clear"></div>
+    {% else %}
+    <div id="mainimagebox">
+        {% if subdomain_profile.banner %}
+            <img src="{{ MEDIA_URL }}{{ subdomain_profile.banner }}">
+        {% else %}
+            <img src="{% static "img/slides/kximg02.jpg" %}" alt="Wheel and Tire Packages in Canada">
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if not subdomain %}
+    <div class="grid_16">
+    {% else %}
+    <div id="selectbox">
+        <h2 style="margin-bottom:10px">Select Vehicle Make & Model</h2>
+    {% endif %}
+        <form id="quick_search" name="quick_search" method="post" action="{% url "vehicle_model_search" %}">
+            {% csrf_token %}
+            <p class="value">
+                <input id="id_make" name="make">
+                <input id="id_year" name="year">
+                <input id="id_model" name="model">
+            </p>
+            <p>
+                <input type="hidden" name="return_path" id="quick_return_path">
+                <input type="hidden" name="q" value="*">art
+            </p>
+            <p style="margin-top:15px">
+                {% if not subdomain %}
+                <a href="{% url "wheel_vehicle_search" %}" id="quick_search_wheeltire" onClick="startKXLoad()"><img src="{% static "img/quicksearch_btn_wheelstires.png" %}" alt=""></a>
+                <a href="{% url "wheel_vehicle_search" %}" id="quick_search_wheel" onClick="startKXLoad()"><img src="{% static "img/quicksearch_btn_wheels.png" %}" alt=""></a>
+                <a href="{% url "tire_vehicle_search" %}" id="quick_search_tire" onClick="startKXLoad()"><img src="{% static "img/quicksearch_btn_tires.png" %}" alt=""></a>
+                <a href="http://kxgarage.com" ><img src="{% static "img/quicksearch_btn_accessories.png" %}" onClick="startKXLoad()" alt=""></a>
+                {% else %}
+                <input href="{% url "wheel_vehicle_search" %}" type="button" value="Wheels &amp; Tires" id="quick_search_wheeltire" onClick="startKXLoad()"/>
+                <input href="{% url "wheel_vehicle_search" %}" id="quick_search_wheel" type="button" value="Wheels" onClick="startKXLoad()"/>
+                <input href="{% url "tire_vehicle_search" %}" id="quick_search_tire" type="button" value="Tires" onClick="startKXLoad()"/>
+                <input type="button" value="Accesories" onClick="javascript:startKXLoad();window.location='/content/accessories/'; return true;"/>
+                {% endif %}
+            </p>
+        </form>
+    </div>
+    
+    {% if not subdomain %}
+    <div class="clear"></div>
+
+    <div class="grid_4">
+        <img src="{% static "img/box_canadian.jpg" %}" alt="Wheels & Tires in Canada">
+    </div>
+    <div class="grid_4">
+        <img src="{% static "img/box_free.jpg" %}" alt="Free Mounting and Balancing on Wheel and Tire Packages">
+    </div>
+    <div class="grid_4">
+        <img src="{% static "img/box_fitment.jpg" %}" alt="KX Wheels Guarantees Fitments on Custom Wheels and Tires">
+    </div>
+    <div class="grid_4">
+        <img src="{% static "img/box_accept.jpg" %}" alt="Major Credit Cards Accepted to Purchase Wheels and Tires">
+    </div>
+    <!-- <div class="clear"></div>
+    <div class="grid_16">
+        <a href="/iconfig/"><img src="{% static "img/box_iconfigurators.jpg" %}"></a>
+    </div> -->
+	<div class="clear"></div>
+    <div class="grid_16">
+	KX Wheels is your online source to find great deals on <a href="http://kxwheels.com">Wheel and Tire Packages</a>, <a href="http://kxwheels.com">Custom Wheels</a>, <a href="http://kxwheels.com"> Car Rims</a>, Offroad Wheels and Discount Tires in Canada. We have a huge selection of custom wheels that you can choose from. We have Chrome wheels, Black wheels, Black & Machine wheels, Matte Black wheels, and the never ending import tuner wheels in silver, and hyper finishes. Having been in business for well over 10+ years, KX Wheels takes great pride in providing you with superior Customer Service...Dedicated Staff...On-time Delivery/Shipping & 100% Hassle-Free Purchases.<p>  
+<br>
+	We serve ALL of Canada for all Wheels and Tires Purchases. All of your purchases here at KX are Quality Inspected, so rest assured that you will not get any surprises once your order arrives to your doorstep. We carry most major Name brand Wheels like RMR Wheels, Fuel Offroad, KMC XD Series, RBP Wheels, Moto Metal, BMF Wheels just to name a few... For tires we also carry most major name brands like Nitto, Toyo, Pirelli, Hankook, Falken, BF Goodrich, Pro Comp, Dick Cepek amongst others.<p>  
+<br>
+	Our Customer Service Sales Advisers themselves have a combined 30+ years in the Wheel Industry, so rest assured that they will provide you with proper fitments for your car, truck or S.U.V and answer the "will they fit?" questions. Give us a call (888) 596-3122 or send us an email to sales@kxwheels.com with any question, comment or concern and we will reply to you usually the same day.
+	</div>  
+    <div class="clear"></div>
+    <div class="grid_16">
+   	  <div id="hbox">
+   	   
+       	  <h2>Canada's leading Online Distributor of Custom Wheels,Rims and Tires in Canada</h2><br>
+		 <h3>Specials on...<a href="http://kxwheels.com/kx/wheel/fuel-offroad-wheels-rims-canada/" target="_blank">Fuel Offroad Wheels</a> | <a href="http://kxwheels.com/kx/wheel/kmc-xd-series-wheels-canada/" target="_blank">KMC XD Series Wheels</a> | <a href="http://kxwheels.com/kx/wheel/bmf-wheels-canada/" target="_blank">BMF Offroad Wheels</a> | <a href="http://kxwheels.com/kx/wheel/moto-metal-wheels/" target="_blank">Moto Metal Offroad Wheels</a></h3>
+      </div>
+	  
+    </div>
+     {% endif %}
+
+	 <!-- ENTER SOCIAL BOXES -->
+
+{% endblock %}
+
+
+{% block extra_js %}
+    <script>
+        /** Quick Search **/
+        var quick_search = function(turn_path) {
+            $("#quick_return_path").val(return_path);
+
+            if ($("#id_make").val() === '' || $("#id_year").val() === '' || $("#id_model").val() === '') {
+
+				/* ------- no vehicle selected ------- */
+				var tempVehicle = "{{ selected_vehicle }}";
+				if (tempVehicle){
+					var SplitVehicle = tempVehicle.split(" ");
+					$("#id_make").val() = SplitVehicle[1];
+					$("#id_year").val() = SplitVehicle[0];
+					$("#id_model").val() = SplitVehicle[2];
+				} else {
+					endKXLoad();
+					alert("Please select a vehicle.");
+				}
+				/* ------- End no vehicle selected ------- */
+				
+            } else {
+                $("#quick_search").submit();
+            }
+
+            return false;
+        };
+
+        $(function() {
+
+            $("#quick_search_wheeltire").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            $("#quick_search_wheel").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            $("#quick_search_tire").click(function() {
+                return quick_search($(this).attr("href"));
+            });
+
+            /** Vehicle Selector **/
+            $.ajax({
+                url: '{% url "vehicle_model_search" %}',
+                success: function(data) {
+                    s = $(data).find('select');
+                    $("#id_make").replaceWith(s[0]);
+                    $("#id_year").replaceWith(s[1]);
+                    $("#id_model").replaceWith(s[2]);
+
+                    $("#id_year").attr("disabled", "disabled");
+                    $("#id_model").attr("disabled", "disabled");
+
+                    $('#id_model')
+                    .prepend($("<option></option>")
+                    .attr("value", "0")
+                    .attr("selected", "selected")
+                    .text("- Model -"));
+
+                    $("#id_make").change(function () {
+                        if ($(this).val() == "0") {
+                            $("#id_year").attr("disabled", "disabled");
+                        } else {
+                            $("#id_year").removeAttr("disabled");
+                        }
+                        $("#id_model").attr("disabled", "disabled");
+                    });
+
+                    $("#id_year").change(function () {
+                        getModels($("#id_make").val(), $("#id_year").val());
+                        $("#id_model").removeAttr("disabled")
+                    });
+
+                }
+            });
+
+            function getModels(make, year) {
+                $.ajax({
+                    url: "{% url "search_vehicle_model" %}",
+                    data: "q=*&make="+make+"&year="+year+"&csrfmiddlewaretoken={{ csrf_token }}&access_key={{ api_access_key }}",
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        $('#id_model').children().remove();
+
+                        $.each(data.results, function(i, result) {
+                            $('#id_model')
+                            .append($("<option></option>")
+                            .attr("value", result.name)
+                           .attr("id", "id_model_" + result.pk)
+                            .text(result.name))
+                        });
+                    }
+                });
+            };
+        });
+    </script>
+    
+    <script type="text/javascript" src="{% static "plugins/nivo/jquery-1.6.1.min.js" %}"></script>
+    {% if not subdomain %}
+    <script type="text/javascript" src="{% static "plugins/nivo/jquery.nivo.slider.pack.js" %}"></script>
+    {% endif %}
+    
+{% if not subdomain %}
+<script type="text/javascript">
+
+var total = $('#slider img').length;
+var rand = Math.floor(Math.random()*total);
+
+$(window).load(function() {
+    $('#slider').nivoSlider({
+        effect: 'fade', // Specify sets like: 'fold,fade,sliceDown'
+        slices: 15, // For slice animations
+        boxCols: 8, // For box animations
+        boxRows: 4, // For box animations
+        animSpeed: 400, // Slide transition speed
+        pauseTime: 2500, // How long each slide will show
+        startSlide: 0, // Set starting Slide (0 index)
+        directionNav: true, // Next & Prev navigation
+        directionNavHide: true, // Only show on hover
+        controlNav: false, // 1,2,3... navigation
+        controlNavThumbs: false, // Use thumbnails for Control Nav
+        controlNavThumbsFromRel: false, // Use image rel for thumbs
+        controlNavThumbsSearch: '.jpg', // Replace this with...
+        controlNavThumbsReplace: '_thumb.jpg', // ...this in thumb Image src
+        keyboardNav: true, // Use left & right arrows
+        pauseOnHover: false, // Stop animation while hovering
+        manualAdvance: false, // Force manual transitions
+        captionOpacity: 0.8, // Universal caption opacity
+        prevText: 'Prev', // Prev directionNav text
+        nextText: 'Next', // Next directionNav text
+		randomStart: false,
+        beforeChange: function(){}, // Triggers before a slide transition
+        afterChange: function(){}, // Triggers after a slide transition
+        slideshowEnd: function(){}, // Triggers after all slides have been shown
+        lastSlide: function(){}, // Triggers when last slide is shown
+        afterLoad: function(){} // Triggers when slider has loaded
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

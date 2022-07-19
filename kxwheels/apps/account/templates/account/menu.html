@@ -1,0 +1,51 @@
+{% spaceless %}
+{% if not subdomain %}
+{% if user.is_authenticated and user.is_active %}
+    <ul id="account_menu">
+        <li><a href="{% url "shop_cart" %}">Cart (<span class="cart_items_count">0</span>)</a></li>
+        <li><a href="{% url "auth_account" %}">My Account</a></li>
+        <li><a href="{% url "auth_order_history" %}">Order History</a></li>
+        <li><a href="{% url "auth_password_change" %}">Change password</a></li>
+        <li><a href="{% url "auth_logout" %}">Logout</a></li>
+    </ul>
+{% else %}
+    <ul id="account_menu">
+        <li><a href="{% url "shop_cart" %}">Cart (<span class="cart_items_count"></span>)</a></li>
+        <li><a href="{% url "auth_login" %}">Login</a></li>
+        <li><a href="{% url "auth_order_history_logout" %}">Order History</a></li>
+        <li><a href="{% url "registration_register" %}">Register</a></li>
+        <li><a href="{% url "auth_password_reset" %}">Forgot password</a></li>
+    </ul>
+{% endif %}
+
+{% else %}
+
+{% if subdomain == "www" %}
+<script language="JavaScript">
+window.location = "http://{{url}}";
+</script>
+{% else %}
+{% if user.is_authenticated and user.is_active %}
+    {% if not for_footer %}
+    <ul id="account_menu">
+    {% else %}
+    <ul id="account_menu2">
+    {% endif %}
+        <li><a href="{% url "shop_cart" %}">Cart (<span class="cart_items_count">0</span>)</a></li>
+        <li><a href="{% url "auth_account" %}">My Account</a></li>
+        <li><a href="{% url "auth_password_change" %}">Change password</a></li>
+        <li><a href="{% url "auth_logout" %}">Logout</a></li>
+    </ul>
+{% else %}
+    {% if not for_footer %}
+    <ul id="account_menu">
+    {% else %}
+    <ul id="account_menu2">
+    {% endif %}
+        <li><a href="{% url "auth_login" %}">Login</a></li>
+        <li><a href="{% url "auth_password_reset" %}">Forgot password</a></li>
+    </ul>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endspaceless %}

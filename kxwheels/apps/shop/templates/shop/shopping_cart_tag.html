@@ -1,0 +1,12 @@
+{% load shop_tags shop_filters %}
+{% if cart %}
+<div class="main_content_info_box highlight">
+<table>
+  <tr>
+    <td width="100"><strong>Your Cart: </strong></td>
+    <td width="530" align="center">You have <strong>{{ cart.total_item_qty }}</strong> item{{ cart.total_item_qty|pluralize }} in your cart totalling {{ cart.total|currency }}</td>
+    <td width="100" align="right"><input value="View Cart &rarr;" type="submit" onclick="window.location.href='{% url "shop_order_create" %}'"></td>
+  </tr>
+</table>
+</div>
+{% endif %}

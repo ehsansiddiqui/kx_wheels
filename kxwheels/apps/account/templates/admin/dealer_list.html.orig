@@ -1,0 +1,28 @@
+{% extends "admin/change_list.html" %}
+{% load adminmedia admin_list i18n %}
+{% load url from future %}
+
+      {% block filters %}
+        {% if cl.has_filters %}
+          <div id="changelist-filter">
+            <h2>{% trans 'Filter' %}</h2>
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+            <hr/>
+            <h3>Dealer State</h3>
+            <ul><li>
+              <a href='/admin/auth/user/?profiles__subdomain__isnull=True'>Don't Show Dealers</a>
+              </li><li>
+              <a href='/admin/auth/user/?profiles__subdomain__isnull=False'>Only Show Dealers</a>
+            </li></ul>
+            <h3>Dealer Customers</h3>
+            <ul><li>
+              <a href='/admin/auth/user/'>Show All Customers</a>
+              </li><li>
+              <a href='/admin/auth/user/?orders__dealer__isnull=False'>Dealer Customers</a>
+              </li><li>
+              <a href='/admin/auth/user/?orders__dealer__isnull=True'>KX Site Customers</a>
+            </li></ul>
+          </div>
+        {% endif %}
+      {% endblock %}
+

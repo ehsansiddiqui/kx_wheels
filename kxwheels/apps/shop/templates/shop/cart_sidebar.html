@@ -1,0 +1,13 @@
+{% load shop_filters %}
+<div class="cart_sidebar">
+{% if cart.items.all %}
+    <p>
+        Item{{ cart.get_total_items|pluralize }} in the cart:
+        <span class="items_number">{{ cart.get_total_items }}</span>
+        <span class="items_total">{{ cart.get_subtotal|currency }}</span>
+    </p>
+    <a href="{% url "shop_cart" %}" class="button">Checkout</a>
+{% else %}
+    There are no items in your cart.
+{% endif %}
+</div>

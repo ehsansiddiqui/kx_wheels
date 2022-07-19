@@ -1,0 +1,39 @@
+{% load shipping_tags %}<?xml version="1.0" encoding="UTF-8" ?>
+<FDXRateAvailableServicesRequest xmlns:api="http://www.fedex.com/fsmapi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FDXRateAvailableServicesRequest.xsd">
+
+    <RequestHeader> 
+        <AccountNumber>{{ config.ACCOUNT_NUMBER }}</AccountNumber>
+        <MeterNumber>{{ config.METER_NUMBER }}</MeterNumber>
+        <CarrierCode>{{ config.CARRIER_CODES.enabled.0 }}</CarrierCode>
+    </RequestHeader>
+
+    <ShipDate>{{ extra.ship_date|date:"Y-m-d" }}</ShipDate>
+    <DropoffType>REGULARPICKUP</DropoffType>  
+    <Packaging>{{ config.CONTAINERS.enabled.0 }}</Packaging> 
+    <WeightUnits>LBS</WeightUnits>
+    <Weight>{{ parcel.weight|unit:"lb"|floatformat:"-1" }}</Weight>
+    <ListRate>false</ListRate>
+
+    <OriginAddress>
+        <StateOrProvinceCode>{{ seller.province }}</StateOrProvinceCode>
+        <PostalCode>{{ seller.postal_code|cut:" " }}</PostalCode>
+        <CountryCode>{{ seller.country }}</CountryCode>
+    </OriginAddress>
+
+    <DestinationAddress>
+        <StateOrProvinceCode>{{ buyer.province }}</StateOrProvinceCode>
+        <PostalCode>{{ buyer.postal_code|cut:" " }}</PostalCode>
+        <CountryCode>{{ buyer.country }}</CountryCode>
+    </DestinationAddress>
+
+    <Payment>
+        <PayorType>SENDER</PayorType>
+    </Payment>
+
+    <DeclaredValue>
+        <Value>{{ parcel.total }}</Value>
+        <CurrencyCode>{{ config.CURRENCY_CODE }}</CurrencyCode>
+    </DeclaredValue>
+    <PackageCount>1</PackageCount>
+
+</FDXRateAvailableServicesRequest>

@@ -1,0 +1,68 @@
+{% extends "account/base.html" %}
+{% load shop_filters %}
+
+{% block content %}
+
+    <div class="grid_16">
+
+        <h2>Order History</h2>
+
+        <table class="orders">
+            <tr>
+                <th>Date</th>
+                <th>Order No.</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Make</th>
+                <th>year</th>
+                <th>Model</th>
+
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.created_at }}</td>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.get_total|currency }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in order.items.all %}
+                    <li>{{ item.product.name }}</li>
+                    {% endfor %}
+                    </ol>
+                    </td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.order_id = order.id %}
+                            <li>{{ item.make }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.order_id = order.id %}
+                            <li>{{ item.year }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                     <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.order_id = order.id %}
+                            <li>{{ item.model }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="clear"></div>
+
+{% endblock %}

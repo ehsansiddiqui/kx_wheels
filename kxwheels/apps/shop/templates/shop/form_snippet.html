@@ -1,0 +1,22 @@
+{% load staticfiles %}
+
+{% for field in form.visible_fields %}
+    <div class="form_row{% if field.errors %} error{% endif %}">
+        <label for="{{ field.auto_id }}">
+            {{ field.label }}
+        </label>
+        {{ field }}
+        {% if field.errors %}
+        <img src="{% static "img/exclamation_red.png" %}">
+        <div id="{{ field.auto_id }}_error_list">
+            <ul>{% for error in field.errors %}
+                <li>{{ error|striptags }}</li>{% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+{% endfor %}
+
+{% for field in form.invisible_fields %}
+    {{ field }}
+{% endfor %}

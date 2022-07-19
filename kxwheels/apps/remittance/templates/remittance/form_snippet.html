@@ -1,0 +1,22 @@
+<div id="payment_form" class="nice_form">
+{% for field in form.visible_fields %}
+    <div class="form_row{% if field.errors %} error{% endif %}" id="payby_{{ field.auto_id }}">
+        <label for="{{ field.auto_id }}">
+            {{ field.label }}
+            <span>{{ field.help_text }}</span>
+        </label>
+        {{ field }}
+        {% if field.errors %}
+        <div id="{{ field.auto_id }}_error_list">
+            <ul>{% for error in field.errors %}
+                <li>{{ error|striptags }}</li>{% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+
+{% for field in form.invisible_fields %}
+    {{ field }}
+{% endfor %}

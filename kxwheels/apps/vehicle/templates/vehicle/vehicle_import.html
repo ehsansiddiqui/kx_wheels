@@ -1,0 +1,42 @@
+{% extends "kx/base.html" %}
+
+{% block left_col %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_10">
+        <h2>Import Vehicles</h2>
+
+        <form action="" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+            {% csrf_token %}
+            <label for="file">File</label><input type="file" name="file" value="" id="file">
+            <input type="submit" value="Import">
+        </form>
+        {% if extension_error %}
+            <div id="extension_error" style="color:red;">
+                <p>{{extension_error}}</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            setTimeout(function(){
+                get_imported_records();
+            }, 3000);
+
+            function get_imported_records(){
+                $.ajax({
+                    type:'GET',
+                    url:'/kx/import/wheel/',
+                    data:{action: 'get_imported_records'},
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            }
+        })
+    </script>
+
+{% endblock %}

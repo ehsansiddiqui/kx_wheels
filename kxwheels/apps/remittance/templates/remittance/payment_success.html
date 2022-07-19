@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<style type="text/css">
+#shopping_cart td {
+	padding: 7px;
+}
+.underdot {
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #CCC;
+}
+.extraSpace {
+	padding-top: 12px !important;
+	padding-bottom: 12px !important;
+}
+#billbox {
+	padding: 10px;
+	border: 1px solid #CCC;
+	margin-right: 4px;
+}
+</style>
+{% endblock %}
+{% load remittance_filters %}
+{% load account_tags %}
+
+{% block content %}
+
+<div class="grid_14">
+    <h2>Thank you for your order!</h2>
+</div>
+<div class="grid_2">
+    <button id="print_receipt" onclick="window.print();">Print Receipt</button>
+</div>
+<div class="clear"></div>
+
+<div class="grid_16 receipt">
+    <p>&nbsp;</p>
+    <table width="940"><tr>
+        <!--<td width="34%">
+            {{ seller.company_name }}
+            <address>
+            {{ seller.address_1 }}, <br>
+            {{ seller.city }}, {{ seller.province }} <br> 
+            {{ seller.postal_code }}<br>
+            {{ seller.country }}
+            </address>
+        </td>-->
+        <td width="34%">
+            KX Wheels
+            <address>
+            Surrey, BC <br> 
+            V3W 3X9<br>
+            Canada
+            </address>
+        </td>
+        <td width="33%">
+            <p align="center">
+            RECEIPT
+            <br>
+            &laquo; {{ transaction.message }} &raquo;
+            </p>
+        </td>
+        
+       <!-- <td width="33%">
+            <p align="right">
+            Email: {{ seller.email }}<br>
+            Phone: {{ seller.phone }}<br>
+                {% if seller.fax %}
+                    Fax: {{ seller.fax }}
+                {% endif %}
+            </p>
+        </td>-->
+        <td width="33%">
+            <p align="right">
+            Email: sales@kxwheels.com<br>
+            Phone: 1-888-596-3122<br>
+            Fax: 604-677-5484
+            </p>
+        </td>
+    </tr></table>
+    
+    <br>
+    {% if paypal %}
+        <table width="940">
+            <tr>
+                <td width="313">
+                    <div id="billbox">
+                    <strong>PayPal information</strong><br>
+                    Email: {{ paypal_email }}<br>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    {% else %}
+        <table width="940"><tr>
+            <td width="313">
+                <div id="billbox">
+                <strong>Billing information</strong><br>
+                {{ buyer.billing_first_name }} {{ buyer.billing_last_name }}<br>
+                {{ buyer.billing_address_1 }}, <br>
+                {{ buyer.billing_city }}, {{ buyer.billing_province }} <br> 
+                {{ buyer.billing_postal_code }}<br>
+                {{ buyer.billing_country }}<br>
+                Phone: {{ buyer.billing_phone }}<br>
+                </div>
+            </td>
+            
+            <td width="313">
+            <div id="billbox">
+                <strong>Shipping information:</strong><br>
+                {{ buyer.shipping_first_name }} {{ buyer.shipping_last_name }}<br>
+                {{ buyer.shipping_address_1 }}, <br>
+                {{ buyer.shipping_city }}, {{ buyer.shipping_province }} <br> 
+                {{ buyer.shipping_postal_code }}<br>
+                {{ buyer.shipping_country }}<br>
+                Phone: {{ buyer.shipping_phone }}<br>
+                </div>
+            </td>
+            
+            <td width="314">
+            <div id="billbox"><p class="align_right">
+                <strong>Order information:</strong><br>
+                Order #: {{ transaction.purchase.order }}<br>
+                Transaction #: {{ transaction.trans_id }}<br>
+                Approval Code: {{ transaction.auth_code}}<br>
+                Response Code: {{ transaction.response_code}}<br>
+                Date/Time: {{ transaction.trans_datetime }}<br>
+                Amount: {{ transaction.amount|currency:purchase.currency }}</p>
+                </div>
+            </td>
+      </tr></table>
+    {% endif %}
+
+    <br>
+
+    <table width="940" id="shopping_cart">
+        <thead>
+            <tr>
+                <td width="120" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item #</strong></th>
+                <td width="553" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item name</strong></th>
+                <td width="111" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Unit Price</strong></th>
+                <td width="41" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Qty</strong></th>
+                <td width="111" style="background-color:#666; color:#FFFFFF;" align="left"><strong>Item total</strong></th>
+            </tr>
+        </thead>
+        {% if not paypal %}
+            <tbody>
+                {% for item in transaction.purchase.items.all %}
+                <tr>
+                    <td class="underdot extraSpace">{{ item.sku }}</td>
+                    <td class="underdot extraSpace">{{ item.name|linebreaks }}</td>
+                    <td class="underdot extraSpace">{{ item.unit_price|currency:purchase.currency }}</td>
+                    <td class="underdot extraSpace">{{ item.qty }}</td>
+                    <td class="underdot extraSpace">{{ item.ext_price|currency:purchase.currency }}</td>
+                </tr>
+                {% endfor %}
+
+                <tr>
+                    <td colspan="4" style="text-align: right;">Subtotal: </td>
+                    <td class="align_right">{{ transaction.purchase.subtotal|currency:purchase.currency }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="text-align: right;">Tax: </td>
+                    <td class="align_right">{{ transaction.purchase.tax|currency:purchase.currency }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="text-align: right;">Discount: </td>
+                    <td class="align_right">{{ transaction.purchase.discount|currency:purchase.currency }}</td>
+
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="text-align: right;">Shipping: </td>
+                    <td class="align_right">{{ transaction.purchase.shipping|currency:purchase.currency }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="text-align: right;"><strong>Total: </strong></td>
+                    <td class="align_right"><strong>{{ transaction.purchase.total|currency:purchase.currency }}</strong></td>
+                </tr>
+            </tbody>
+        {% endif %}
+    </table>
+</div>
+<div class="clear"></div>
+{% endblock %}

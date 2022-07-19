@@ -1,0 +1,141 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "32fb8156e656e67db6128bb96cc554f14e16a202f998042098f97f30a211e7a8"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "appdirs": {
+            "hash": "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e",
+            "version": "==1.4.3"
+        },
+        "babel": {
+            "hash": "sha256:e86ca5a3a6bb64b9bbb62b9dac37225ec0ab5dfaae3c2492ebd648266468042f",
+            "version": "==2.4.0"
+        },
+        "beautifulsoup": {
+            "hash": "sha256:6a8cb4401111e011b579c8c52a51cdab970041cc543814bbd9577a4529fe1cdb",
+            "version": "==3.2.1"
+        },
+        "cached-property": {
+            "hash": "sha256:8aacd79aa85a793419c76de9662d9a72ad4751eda2a8b8eb94223adc4d8d85f1",
+            "version": "==1.3.0"
+        },
+        "defusedxml": {
+            "hash": "sha256:702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20",
+            "version": "==0.5.0"
+        },
+        "django": {
+            "hash": "sha256:d8e2fd119756ab10b43a31052c3c8efbc262064b81eecb7871372de4d37b1a94",
+            "version": "==1.8.18"
+        },
+        "django-crequest": {
+            "hash": "sha256:5f50e303c613e01fe05bff2cd6e4b9fc2e177a79d080d7eef8dce281425e013e",
+            "version": "==2016.3.16"
+        },
+        "django-haystack": {
+            "hash": "sha256:277d82589491f71b2ba158a0afcf94e917e78cf8b84fbd06f4157116074b16d1",
+            "version": "==2.6.0"
+        },
+        "django-markdown-deux": {
+            "hash": "sha256:5b4a3cd9454af5b4cec0e19151b41d98d09400ddae0688afb81dbf62a4edafff",
+            "version": "==1.0.5"
+        },
+        "django-mptt": {
+            "hash": "sha256:422cc3b4326edfdba65ba5d59b29540f72581bafab53c439d90a89101d2eacc8",
+            "version": "==0.8.7"
+        },
+        "django-recaptcha": {
+            "hash": "sha256:25e19b56f55101aaf145107e58e00f336d813886dc14de993c2d778f92ac22f9",
+            "version": "==1.3.0"
+        },
+        "django-registration": {
+            "hash": "sha256:14ffa4c07ad902afaa1d096ea241282b76724348b8b7518cecad617870178283",
+            "version": "==2.2"
+        },
+        "https://github.com/downloads/juanre/magnitude/magnitude-0.9.4.tar.gz": {
+            "hash": "sha256:a0576c67295f815f3f5d0d751365d6cdd52d51444d8e01cc2464209dc8cffd5f",
+            "version": "=="
+        },
+        "isodate": {
+            "hash": "sha256:42105c41d037246dc1987e36d96f3752ffd5c0c24834dd12e4fdbe1e79544e31",
+            "version": "==0.5.4"
+        },
+        "lxml": {
+            "hash": "sha256:9fd1aef1e6d834e5191383bd1db7a0b56a564905ab9060e30ee6964aabbb905a",
+            "version": "==3.7.3"
+        },
+        "markdown2": {
+            "hash": "sha256:20a9439a80d93c221080297119d9d31285a18c904489948deae3c7e05c7c5e38",
+            "version": "==2.3.3"
+        },
+        "olefile": {
+            "hash": "sha256:61f2ca0cd0aa77279eb943c07f607438edf374096b66332fae1ee64a6f0f73ad",
+            "version": "==0.44"
+        },
+        "pillow": {
+            "hash": "sha256:95940e8a1f5dac3c3d23f847809fba90255a2ed15c2675e5491fba56b5e5afe8",
+            "version": "==4.1.0"
+        },
+        "pip": {
+            "hash": "sha256:690b762c0a8460c303c089d5d0be034fb15a5ea2b75bdf565f40421f542fefb0",
+            "version": "==9.0.1"
+        },
+        "psycopg2": {
+            "hash": "sha256:bf48be2d01f6e34e5fbd8976f7b66158a83a33b92739acd13fc1934c60b71cfb",
+            "version": "==2.7.1"
+        },
+        "pysolr": {
+            "hash": "sha256:fd1233e80dcfb7405ca5a33982f485f2ab2f8dffc675c52eff3b33eec950c060",
+            "version": "==3.6.0"
+        },
+        "python-memcached": {
+            "hash": "sha256:2775829cb54b9e4c5b3bbd8028680f0c0ab695db154b9c46f0f074ff97540eb6",
+            "version": "==1.58"
+        },
+        "pytz": {
+            "hash": "sha256:d1d6729c85acea5423671382868627129432fba9a89ecbb248d8d1c7a9f01c67",
+            "version": "==2017.2"
+        },
+        "recaptcha-client": {
+            "hash": "sha256:28c6853c1d13d365b7dc71a6b05e5ffb56471f70a850de318af50d3d7c0dea2f",
+            "version": "==1.0.6"
+        },
+        "requests": {
+            "hash": "sha256:1a720e8862a41aa22e339373b526f508ef0c8988baf48b84d3fc891a8e237efb",
+            "version": "==2.13.0"
+        },
+        "requests-toolbelt": {
+            "hash": "sha256:17077c6876338ba4101b6e9ab6ba925da970387a7a7eab91d28eed8d25da01f0",
+            "version": "==0.7.1"
+        },
+        "rollbar": {
+            "hash": "sha256:76027021adf9350adcf76e1bfac5f0c68d715d9029bb7a0068a63a881fa488a7",
+            "version": "==0.13.11"
+        },
+        "six": {
+            "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
+            "version": "==1.10.0"
+        },
+        "sorl-thumbnail": {
+            "hash": "sha256:bb277dc98daa07e892d429b73eed749411f7eff1ee6feef142a19e029582e8cd",
+            "version": "==12.3"
+        },
+        "uwsgi": {
+            "hash": "sha256:572ef9696b97595b4f44f6198fe8c06e6f4e6351d930d22e5330b071391272ff",
+            "version": "==2.0.15"
+        },
+        "zeep": {
+            "hash": "sha256:b31a3a59bc1b79eb18e0d6b3d54bb10cbe21d6f64edbf7b51f5e5d81b6024910",
+            "version": "==1.4.1"
+        }
+    },
+    "develop": {}
+}

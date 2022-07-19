@@ -1,0 +1,108 @@
+table#shopping_cart { 
+    border-top: 1px #ccc solid;
+    border-bottom: 1px #ccc solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    margin-top: 0px;
+}
+
+table#shopping_cart thead {
+    background-color: #fafafa;
+    border-bottom: 1px #ccc solid;
+}
+
+table#shopping_cart th {
+    padding:6px;
+    border-left: 1px #e6e6e6 solid;
+    border-right: 1px #e6e6e6 solid;
+}
+
+table#shopping_cart td { 
+    padding:6px;
+    border-left: 1px #e6e6e6 solid;
+    border-right: 1px #e6e6e6 solid;
+    border-bottom: 1px #e6e6e6 solid;
+}
+table#shopping_cart  input[name=quantity]{ 
+    width:30px;
+}
+
+table#shopping_cart li {
+    font-size: .8em;
+    list-style: none;
+    line-height:1.2em;
+}
+
+
+.error_tip img {
+    vertical-align: middle;
+}
+
+.form_row {
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.form_row label {
+    text-transform: capitalize;
+    width: 100px;
+    float: left;
+}
+
+.form_row input[type=text],
+.form_row input[type=password],
+.form_row select {
+    width: 200px;
+}
+.form_row textarea {
+    height: 80px;
+    width: 200px;
+}
+.form_submit {
+    padding: 20px 0;
+    text-align: center;
+}
+.form_submit input[type=submit] {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-transition: all 0.1s linear 0s;
+    background-color: #ccc;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF 25%, #ccc);
+    background-repeat: no-repeat;
+    border-color: #999;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    line-height: normal;
+    padding: 8px 14px 8px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    font-size: 1.25em;
+}
+.form_submit input[type=submit]:hover  {
+    background: #b8b8b8;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF 25%, #b8b8b8);
+}
+
+
+
+.align_right { 
+    text-align:right;
+}
+.align_center {
+    text-align:center;
+}
+.error ul { 
+    display:none;
+}
+/*** Receipt ***/
+.receipt {
+    /*border: 1px solid #e6e6e6;*/
+}
+

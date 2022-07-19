@@ -1,0 +1,37 @@
+{% load thumbnail kx_tags %}
+{% for customer_medium in customer_media %}
+    <div class="customer_medium {% cycle 'odd' 'even' %}">
+
+        <div>
+            {% if customer_medium.picture and not customer_medium.video %}
+                <div class="grid_3">
+                    {% thumbnail customer_medium.picture "275x275" as im %}
+                        <a href="{{ MEDIA_URL }}{{ customer_medium.picture }}" class="fancybox"><img src="{{ im.url }}" alt="{{ wheel.name }}"></a>
+                    {% endthumbnail %}
+                </div>
+                <div class="grid_12">
+                    <h4>{{ customer_medium.title|truncatewords:4 }}</h4>
+                    <p>{{ customer_medium.year }} {{ customer_medium.make }} {{ customer_medium.model }}</p>
+                    <p>{{ customer_medium.comment }}</p>
+                </div>
+                <div class="clear"></div>
+            {% endif %}
+        </div>
+
+        <div>
+            {% if customer_medium.video %}
+                <div class="grid_3">
+                    <a href="{% get_video_embed_url customer_medium.video %}" class="video fancybox.iframe">
+                        <img src="{% get_video_thumb customer_medium.video %}" width="275">
+                    </a>
+                </div>
+                <div class="grid_12">
+                    <h4>{{ customer_medium.title }}</h4>
+                    <p>{{ customer_medium.year }} {{ customer_medium.make }} {{ customer_medium.model }}</p>
+                    <p>{{ customer_medium.comment }}</p>
+                </div>
+                <div class="clear"></div>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,118 @@
+{% load shop_tags shop_filters %}
+<html>
+<style>
+@page {
+  size: letter;
+  margin:5.3cm 0.8cm 2.5cm 0.8cm;
+  @frame header {
+    -pdf-frame-content: header_frame;
+    margin:0.8cm;
+  }
+  @frame footer {
+    -pdf-frame-content: footer_frame;
+    height:3.5cm;
+    bottom:0cm;
+    margin:0.8cm;
+  }
+}
+@font-face {
+	font-size:2em;
+	font-family: Arial;
+}
+body {
+	font-size:1.5em;
+}
+h1 {
+	font-size:180%;
+	margin:0;
+	padding:0;
+}
+th {
+	text-align:left;
+}
+hr {
+	color: #333;
+}
+
+p#order_notes { border:1px solid #ccc; background:#efefef; padding:5px; }
+
+tr.items_head { border-bottom:1px solid #666; }
+tr.items_foot { border-top:1px solid #666; }
+
+</style>
+<body>
+  <div id="header_frame">
+  <table border="0" cellspacing="0" cellpadding="5" width="100%">
+  	<tr>
+	  <td width="40%"><img src="{{ MEDIA_URL }}images/logo.jpg"></td>
+	  <td width="27%" align="right"><br><pdf:barcode value="SHOP.ORDER {{ order.pk }}" align="right"/></td>
+	  <td width="33%" align="right"><br>
+        <em>{{ shop_config.street1 }}<br>
+		{{ shop_config.city }}, {{ shop_config.province.iso_3166_2 }}&nbsp;&nbsp;&nbsp;{{ shop_config.postal_code }}</em><br>
+		Phone: {{ shop_config.phone }}<br>
+		Fax: {{ shop_config.fax }}
+      </td>
+	</tr>
+  </table>
+  <hr>
+  </div>
+
+  <p id="order_notes" align="center"><strong>This is not an invoice but merely a confirmation of the order placed.</strong></p>
+  <table border="0" cellspacing="0" cellpadding="5" width="100%">
+  	<tr>
+	  <td width="33%">
+		<strong>Bill to:</strong><br>
+        <strong>{{ order.user.first_name }} {{ order.user.last_name }}</strong><br>
+		<em>
+		{{ order.user.profile.mailing_address }},<br>
+		{{ order.user.profile.mailing_city }} {{ order.user.profile.mailing_province.iso_3166_2 }}&nbsp;&nbsp;&nbsp;{{ order.user.profile.mailing_postal_code }}<br>
+		</em>
+		Phone: {{ order.user.profile.phone }}<br>
+		{% if order.user.profile.fax %}
+		Fax: {{ order.user.profile.fax }}
+		{% endif %}
+	  </td>
+	  <td width="33%">
+		<strong>Ship to:</strong><br>
+        <strong>{{ order.user.first_name }} {{ order.user.last_name }}</strong><br>
+		<em>
+		{{ order.user.profile.shipping_address }},<br>
+		{{ order.user.profile.shipping_city }} {{ order.user.profile.shipping_province.iso_3166_2 }}&nbsp;&nbsp;&nbsp;{{ order.user.profile.shipping_postal_code }}<br>
+		</em>
+		Phone: {{ order.user.profile.phone }}<br>
+		{% if order.user.profile.fax %}
+		Fax: {{ order.user.profile.fax }}
+		{% endif %}
+	  </td>
+	  <td width="34%" align="right" valign="top">
+		<h1>Order #{{ order.id}}</h1>
+		Date: {{ order.created_at|date:"d M, Y"}}<br>
+		User: {{ order.user }}<br>
+        {% if order.po %}PO: {{ order.po }}<br>{% endif %}
+	  </td>
+	</tr>
+  </table>
+
+  {% if order.notes %}<p id="order_notes"><strong>Customer notes:</strong> {{ order.notes }}</p>{% endif %}
+ 
+  <table border="0" cellspacing="0" cellpadding="5" width="100%" class="items">
+  	<tr class="items_head"><th>SKU</th><th>Product</th><th align="right">Cost</th><th align="center">Qty.</th><th align="right">Item total</th></tr>
+	{% for item in order.items.all %}
+	<tr>
+	  <td width="15%">{{ item.product.sku }}</td>
+	  <td width="40%">{{ item.product }}</td>
+	  <td align="right">{{ item.price|currency }}</td>
+	  <td width="10%" align="center">{{ item.qty }}</td>
+	  <td align="right">{{ item.item_total|currency }}</td>
+	</tr>
+	{% endfor %}
+	<tr class="items_foot"><td colspan="4" align="right"><strong>Subtotal:</strong></td><td align="right"><strong>{{ order.total|currency }}</strong></td>
+  </table>
+
+<div id="footer_frame" align="center">
+    <hr>
+    Copyright &copy; 2010 {{ shop_config.store_name }}. All rights reserved.<br>
+    Page <pdf:pagenumber>
+</div>
+</body>
+</html>

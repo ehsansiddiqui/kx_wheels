@@ -1,0 +1,21 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+    <div class="grid_16">
+    {% if object_list %}
+        <h2>{{ user.get_full_name }}'s profiles </h2>
+        
+        <!--
+        <ul>{% for profile in object_list %}
+            <li><a href="{{ profile.get_absolute_url }}">{{ profile.name }}</a> 
+                <a href="{% url "auth_profile_delete" profile.name %}">(X)</a></li>{% endfor %}
+        </ul>
+        -->
+        {% include "account/profile_detail.html" %}
+        
+    {% else %}
+        <h2>Just one more step</h2>
+        You don't seem to have a profile. Would you like to create one? <a href="{% url "auth_profile_create" %}">Yes</a>
+    {% endif %}
+    </div>
+{% endblock %}

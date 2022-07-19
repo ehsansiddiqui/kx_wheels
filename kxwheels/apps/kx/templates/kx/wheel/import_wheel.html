@@ -1,0 +1,168 @@
+{% extends "kx/base.html" %}
+
+{% block left_col %}{% endblock %}
+
+{% block main_content %}
+<div class="grid_10">
+    <h2>Import Wheels</h2>
+    <div class="grid_10">
+        <form action="" method="post" enctype="multipart/form-data" accept-charset="utf-8" id="import_form">
+            {% csrf_token %}
+            <label for="file">File:</label>
+            <input type="file" name="file" value="" id="file">
+            <input type="submit" value="Import" id="import">
+        </form>
+        <input type="hidden" value='{{yes}}' id="check_status">
+        <input type="hidden" value='{{file_name}}' id="file_name">
+        <input type="hidden" value='{{error}}' id="error_msg">
+        <input type="hidden" value='{{error_columns}}' id="error_columns">
+    </div>
+    <div>
+        <p class="imported_records" style="margin-left:20px;"></p>
+    </div>
+    <div>
+        <input type="button" style="margin-top: 40px;margin-left: 40px;" value="Terminate" id="terminate">
+    </div>
+    {% if extension_error %}
+    <div id="extension_error" style="color:red;">
+        <p>{{extension_error}}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            $("#file").prop('disabled', true);
+            if($(".imported_records").val() =='Files Terminated Forcefully .'){
+                $("#file").prop('disabled', false);
+            }
+            else{
+                setTimeout(function(){
+                    check_import_wheels_file();
+            }, 5000);
+            }
+            if($("#error_msg").val()== 'error'){
+            $(".imported_records").css('color', 'red');
+            $(".imported_records").html("Already Uploading a File in Progress You can't Upload the File:");
+            }
+	    if($("#error_columns").val()== "wrong"){
+                $(".imported_records").css('color', 'red');
+                $(".imported_records").html("You have invalid Headings in CSV File. Check it out!");
+            }
+            $("#import").click(function(e){
+                e.preventDefault();
+                name = $('input[type=file]').val().split('\\').pop();
+                if(name)
+                {
+                    $("#import_form").submit();
+                }
+            });
+            if($("#check_status").val()== 'importing'){
+            setTimeout(function(){
+            if($(".imported_records").val()=='Files Terminated Forcefully .'){
+                $("#file").prop('disabled', false);
+            }
+            else{
+               run_import_wheels();
+            }
+            },5000);
+
+            }
+        $("#terminate").click(function(){
+            terminate_import_wheels_file();
+        });
+        function terminate_import_wheels_file(){
+		var token = $('#token').val();
+                $.ajax({
+                type:'POST',
+                url:'/kx/import/wheel/',
+                data:{action: 'terminate', "csrfmiddlewaretoken": token,},
+                success:function(data){
+                    if(data.success){
+                        alert('Terminating The Files Forcefully');
+                        $(".imported_records").html('Files Terminated Forcefully .');
+			$("#file").prop('disabled', false);
+                        }
+                        }
+                });
+        }
+
+
+        function check_import_wheels_file(){
+		var token = $('#token').val();
+                $.ajax({
+                type:'POST',
+                url:'/kx/import/wheel/',
+                data:{action: 'check_file', "csrfmiddlewaretoken": token,},
+                success:function(data){
+                    if(data.success){
+                        $(".imported_records").html('Please Wait processing for Wheels Upload.');
+                        setTimeout(function(){
+                            get_imported_records();
+                        }, 5000);
+                    }
+                    else{
+                        $("#file").prop('disabled', false);
+                    }
+
+                }
+                });
+            }
+
+            function run_import_wheels(){
+                $("#file").prop('disabled', true);
+                file_name = $('#file_name').val();
+                var token = $('#token').val();
+                var name = file_name.split("/");
+
+                var data= {"val":name[name.length - 1] , "csrfmiddlewaretoken": token, "action": "run_script"}
+                $.ajax({
+                    type:'POST',
+                    url:'/kx/import/wheel/',
+                    data: data,
+                    success:function(data){
+                        if(data.success){
+                           if($("#check_status").val()== 'importing'){
+                                    $(".imported_records").html('Please Wait processing for Wheels Upload.');
+                                    setTimeout(function(){
+
+                                        get_imported_records();
+                                    }, 15000);
+                                }
+                        }
+                }
+                });
+                }
+            function get_imported_records(){
+                $.ajax({
+                    type:'GET',
+                    url:'/kx/import/wheel/',
+                    data:{action: 'get_imported_records'},
+                    success:function(data){
+                        if(data.success){
+                            if(data.count == 'ALL'){
+                                imp = $(".imported_records").html();
+                                if(imp != 'Files Terminated Forcefully .'){
+                                    $(".imported_records").html('ALL Wheels are imported.......!');
+                                    $("#file").prop('disabled', false);
+                                    $("#check_status").val()='';
+                                }
+                            }
+                            if(data.count != 'ALL'){
+                                if($("#check_status").val()== 'importing'){
+                                    setTimeout(function(){
+                                        get_imported_records();
+                                    }, 5000);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+</script>
+
+{% endblock %}

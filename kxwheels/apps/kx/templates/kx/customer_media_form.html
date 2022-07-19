@@ -1,0 +1,221 @@
+{% load thumbnail staticfiles %}
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+<head id="www-kxwheels-com" data-template-set="html5-reset">
+    <link rel="stylesheet" href="{% static "plugins/uni_form/css/uni-form.css" %}" type="text/css" />
+    <link rel="stylesheet" href="{% static "plugins/uni_form/css/default.uni-form.css" %}" type="text/css" />
+
+    <style>
+        .button {
+            font-size: 1em;
+            -moz-border-bottom-colors: none;
+            -moz-border-image: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            -moz-transition: all 0.1s linear 0s;
+            background-color: #ccc;
+            background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF 25%, #ccc);
+            background-repeat: no-repeat;
+            border-color: #999;
+            border-radius: 4px 4px 4px 4px;
+            border-style: solid;
+            border-width: 1px;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+            color: #333333;
+            cursor: pointer;
+            display: inline-block;
+            line-height: normal;
+            padding: 5px 14px 6px;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        }
+        .button:hover {
+            background-position: 0 -5px;
+            text-decoration: none;
+            color: #333333;
+        }
+
+        form#id_customer_media {
+            font: 13px/17px helvetica, arial, sans-serif;
+            margin-top: 30px;
+        }
+
+        form#id_customer_media fieldset {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            margin-bottom:20px;
+            padding: 10px;
+        }
+
+        form#id_customer_media legend {
+            margin-left: 20px;
+        }
+
+        form#id_customer_media label {
+            text-align: right;
+        }
+
+        form#id_customer_media label span {
+            display:block;
+            margin-top: 6px;
+            font-size: 90%;
+            line-height: 16px;
+            color: #999;
+        }
+
+        form#id_customer_media input[type="text"],
+        form#id_customer_media select,
+        form#id_customer_media textarea {
+            font-size: 1em;
+        }
+
+        form#id_customer_media textarea {
+            height: 80px;
+        }
+
+        form#id_customer_media ul.errorlist {
+            float: right;
+            width: 65%;
+            font-size: 90%;
+            color: #333;
+        }
+
+        form#id_customer_media #rating_msg {
+            left: 55%;
+            position: absolute;
+            line-height: 20px;
+        }
+
+        #recaptcha_area {
+            float: left;
+        }
+        #recaptcha_response_field {
+            left: 0;
+        }
+    </style>
+    <script>var RecaptchaOptions = { theme : 'white' };</script>
+
+</head>
+<body>
+
+{% if not user.is_authenticated %}
+    <div class="uniForm">
+    <div id="errorMsg">
+        <h3>Please login or register.</h3>
+    </div>
+{% else %}
+
+    <form name="add_customer_media" action="" id="id_customer_media" class="uniForm" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="header">
+            {% if form.errors %}
+                <div id="errorMsg">
+                    <h3>Oh Oh! There seems to some trouble with the information you provided.</h3>
+                    <ol>
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            {% endif %}
+        </div>
+
+        <fieldset class="inlineLabels">
+            <legend>Send us your action shot or a video.</legend>
+
+            {% for field in form.visible_fields %}
+                <div id="{{ field.html_name}}" class="ctrlHolder{% if field.errors %} error{% endif %}">
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">{% for error in field.errors %}<li>{{ error|striptags }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            {% for field in form.invisible_fields %}
+                {{ field }}
+            {% endfor %}
+        </fieldset>
+
+        <div class="buttonHolder">
+            <button class="button" type="submit">Submit</button>
+        </div>
+    </form>
+
+{% endif %}
+
+
+<script type="text/javascript">
+    if (typeof jQuery == 'undefined')
+        document.write("<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'><\/script>");
+</script>
+
+<script>
+
+
+    /** Vehicle Selector **/
+    $.ajax({
+        url: '{% url "vehicle_model_search" %}',
+        success: function(data) {
+            s = $(data).find('select');
+            $("#id_make").replaceWith(s[0]);
+            $("#id_year").replaceWith(s[1]);
+            $("#id_model").replaceWith(s[2]);
+
+            $("#id_year").attr("disabled", "disabled");
+            $("#id_model").attr("disabled", "disabled");
+
+            $('#id_model')
+                    .prepend($("<option></option>")
+                    .attr("value", "0")
+                    .attr("selected", "selected")
+                    .text("- Model -"));
+
+            $("#id_make").change(function () {
+                if ($(this).val() == "0") {
+                    $("#id_year").attr("disabled", "disabled");
+                } else {
+                    $("#id_year").removeAttr("disabled");
+                }
+                $("#id_model").attr("disabled", "disabled");
+            });
+
+            $("#id_year").change(function () {
+                getModels($("#id_make").val(), $("#id_year").val());
+                $("#id_model").removeAttr("disabled")
+            });
+
+        }
+    });
+
+    function getModels(make, year) {
+        $.ajax({
+            url: "{% url "search_vehicle_model" %}",
+            data: "q=*&make="+make+"&year="+year+"&access_key={{ api_access_key }}&csrfmiddlewaretoken={{ csrf_token }}",
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                $('#id_model').children().remove();
+
+                $.each(data.results, function(i, result) {
+                    $('#id_model')
+                            .append($("<option></option>")
+                            .attr("value", result.name)
+                            .attr("id", "id_model_" + result.pk)
+                            .text(result.name))
+                });
+            }
+        });
+    };
+
+</script>
+
+</body>
+</html>

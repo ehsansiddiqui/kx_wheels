@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object }}{% endblock %}
+{% block meta_description %}{{ object }} bolt pattern and centerbore{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+  
+  <div style="padding: 10px">
+    <h1>Find Wheels &amp; Tires for {{ object }}</h1><br />
+    
+    <p><b>Manufacturer: </b> {{ object.manufacturer }}</p>
+    <p><b>Year: </b> {{ object.year }}</p>
+    <p><b>Bolt Pattern: </b> {{ object.boltpattern }}</p>
+    <p><b>Centerbore: </b> {{ object.centerbore }}</p>
+    <hr/>
+    <div style="float:left; width: 400px;">
+      <a href="http://kxwheels.com/kx/tire/vehicle_search/">Find tires that fit this vehicle.</a>
+    </div>
+    <div>
+      <a href="http://kxwheels.com/kx/wheel/vehicle_search/">Find wheels that fit this vehicle.</a>
+    </div>
+    <hr/>
+    <div style="float:left; width: 400px;">
+      <h3>OE Tire Sizes</h3>
+      <ul>
+        {% for ts in object.get_oe_tire_sizes %}
+          <li>{{ ts }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div style="float:left; width: 400px;">
+      <h3>Plus Tire Sizes</h3>
+      <ul>
+        {% for ts in object.get_plus_tire_sizes %}
+          <li>{{ ts }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <br clear="all" />
+  </div>
+  
+{% endblock %}

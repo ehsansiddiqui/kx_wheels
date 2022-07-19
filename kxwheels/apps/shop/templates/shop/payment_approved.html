@@ -1,0 +1,162 @@
+{% extends "shop/base.html" %}
+{% load shop_filters staticfiles %}
+
+{% block content %}
+
+<div class="grid_14">
+    <h2>Thanks for shopping at {{ site.store_name }}!</h2>
+</div>
+<div class="grid_2">
+    <button id="print_receipt">Print Receipt</button>
+</div>
+<div class="clear"></div>
+
+<div class="grid_16 receipt">
+    <table width="940"><tr>
+        <td width="34%">
+            {{ site.store_name }}
+            <address>
+            {{ site.street1 }}, <br>
+            {{ site.city }}, {{ site.province }} <br> 
+            {{ site.postal_code }}<br>
+            {{ site.country }}
+            </address>
+        </td>
+        
+        <td width="33%">
+            <p align="center">
+            RECEIPT
+            <br>
+            &laquo; {{ payment.message }} &raquo;
+            </p>
+        </td>
+        
+        <td width="33%">
+            <p align="right">
+            Email: {{ site.store_email }}<br>
+            Phone: {{ site.phone|telephone }}<br>
+            Fax: {{ site.fax|telephone }}
+            </p>
+        </td>
+    </tr></table>
+    
+    <br>
+
+    <table width="940"><tr>
+        <td width="40%">
+            <strong>Billing information</strong><br>
+            {{ payment.order.billing_first_name }} {{ payment.order.billing_last_name }}<br>
+            {{ payment.order.billing_address_1 }}, <br>
+            {{ payment.order.billing_city }}, {{ payment.order.billing_province }} <br> 
+            {{ payment.order.billing_postal_code }}<br>
+            {{ payment.order.billing_country }}<br>
+            Phone: {{ payment.order.billing_phone|telephone }}<br>
+        </td>
+        
+        <td>
+            <strong>Shipping information:</strong><br>
+            {{ payment.order.shipping_first_name }} {{ payment.order.shipping_last_name }}<br>
+            {{ payment.order.shipping_address_1 }}, <br>
+            {{ payment.order.shipping_city }}, {{ payment.order.shipping_province }} <br> 
+            {{ payment.order.shipping_postal_code }}<br>
+            {{ payment.order.shipping_country }}<br>
+            Phone: {{ payment.order.shipping_phone|telephone }}<br>
+        </td>
+        
+        <td width="33%"><p class="align_right">
+            <strong>Order information:</strong><br>
+            Order #: {{ payment.order.pk }}<br>
+            Transaction #: {{ payment.trans_id }}<br>
+            Approval Code: {{ payment.auth_code}}<br>
+            Response Code: {{ payment.response_code}}<br>
+            Date/Time: {{ payment.trans_datetime }}<br>
+            Amount: {{ payment.amount|currency }}</p>
+        </td>
+    </tr></table>
+    
+    <br>
+    
+    <table width="940" id="shopping_cart">
+        <thead>
+            <tr>
+                <th width="">Item #</th>
+                <th width="">Item name</th>
+                <th width="">Unit Price</th>
+                <th width="">Qty</th>
+                <th width="">Item total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in payment.order.items.all %}
+            <tr>
+                <td>{{ item.product.sku }}</td>
+                <td>
+                    {{ item.product.name|truncatewords:8 }}
+                    <ul>{% for item_opt in item.options.all %}
+                        <li>
+                            {{ item_opt.name }}: {{ item_opt.value }}
+                            {% if item_opt.price_adjustment > 0 %}
+                            ({{ item_opt.price_adjustment|currency }})
+                            {% endif %}
+                        </li>{% endfor %}
+        			</ul></nobr>
+                </td>
+                <td class="align_right">{{ item.get_price|currency }}</td>
+                <td class="align_center">{{ item.qty }}</td>
+                <td class="align_right">{{ item.get_extended_price|currency }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="4" class="align_right">Subtotal: </td>
+                <td class="align_right">{{ payment.order.get_subtotal|currency }}</td>
+            </tr>
+
+            {% for tax in payment.order.get_tax_summary %}
+            <tr>
+                <td colspan="4" class="align_right">{{ tax.0 }}: </td>
+                <td class="align_right">{{ tax.1|currency }}</td>
+            </tr>
+            {% endfor %}
+
+            {% if payment.order.discount %}
+            <tr>
+                <td colspan="4" class="align_right">Discount: </td>
+                <td colspan="1" class="align_right" width="145">
+                        {{ payment.order.get_discount_summary.1|currency }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td colspan="4" class="align_right">Shipping (
+                    {{ payment.order.get_shipping_summary.0 }} 
+                    {{ payment.order.get_shipping_summary.1 }}): </td>
+                <td colspan="1" class="align_right">
+                    {{ payment.order.get_shipping_summary.2|currency }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="align_right">Total: </td>
+                <td class="align_right"><span id="cart_total">{{ payment.order.get_total|currency }}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="clear"></div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static "js/jquery.printElement.min.js" %}"></script>
+<script>
+    $(function(){
+        $('#print_receipt').click(function(){
+            $('.receipt').printElement({ 
+                overrideElementCSS: ['{% static "css/shop.css" %}']
+            });
+        });
+    })
+</script>
+    
+{% endblock %}

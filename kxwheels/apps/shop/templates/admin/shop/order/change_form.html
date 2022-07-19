@@ -1,0 +1,162 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify staticfiles %}
+{% load url from future %}
+
+{% block extrahead %}{{ block.super }}
+{% url 'admin:jsi18n' as jsi18nurl %}
+<script type="text/javascript" src="{{ jsi18nurl|default:"../../../jsi18n/" }}"></script>
+{{ media }}
+<style type="text/css" media="screen">
+div.note {
+    margin:20px 0;
+    /*
+    padding: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;*/
+}
+
+div.staff_note h2 {
+    color:#333;
+    background: #ccc; /* for non-css3 browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e6e6e6', endColorstr='#ccc'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#efefef), to(#ccc)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #efefef,  #ccc); /* for firefox 3.6+ */
+}
+
+div.note_content {
+    padding:10px;
+    font-size:11px;
+}
+</style>
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />{% endblock %}
+
+{% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
+
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">
+     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+     <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+     {% if has_change_permission %}<a href="../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo;
+     {% if add %}{% trans "Add" %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endif %}{% endblock %}
+
+{% block content %}<div id="content-main">
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+    <li><a href="history/" class="historylink">{% trans "History" %}</a></li>
+    {% if has_absolute_url %}<li><a href="../../../r/{{ content_type_id }}/{{ object_id }}/" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
+    {% endblock %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}
+<div>
+{% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
+{% if save_on_top %}{% submit_row %}{% endif %}
+{% if errors %}
+    <p class="errornote">
+    {% blocktrans count errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+    </p>
+    {{ adminform.form.non_field_errors }}
+{% endif %}
+
+{% block field_sets %}
+<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.module_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
+{% for fieldset in adminform %}
+  {% include "admin/shop/order/fieldset.html" %}
+{% endfor %}
+
+{% submit_row %}
+
+{% if adminform.form.get_transactions|length != 0 %}
+<fieldset class="module">
+<h2>Transactions</h2>
+<table>
+<thead>
+<tr>
+<th>Transaction ID</th>
+<th>Transaction Type</th>
+<th>Transaction Datetime</th>
+<th>Amount</th>
+<th>Method</th>
+{% if adminform.form.get_transactions.0.paypal_email %}
+<th>Paypal Email</th>
+{% endif %}
+<th>Gateway</th>
+<th>Auth Code</th>
+<th>ISO Code</th>
+<th>Response Code</th>
+<th>Reason Code</th>
+<th>Message</th>
+<th>Approved?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+{% for t in adminform.form.get_transactions %}
+<td><a target=_blank href="/admin/remittance/transaction/{{t.trans_id}}/">{{t.trans_id}}</a></td>
+<td>{{t.trans_type}}</td>
+<td>{{t.trans_datetime}}</td>
+<td>${{t.amount}}</td>
+<td>{{t.method}}</td>
+{% if t.paypal_email %}
+<td>{{ t.paypal_email }}</td>
+{% endif %}
+<td>{{t.gateway}}</td>
+<td>{{t.auth_code}}</td>
+<td>{{t.iso_code}}</td>
+<td>{{t.response_code}}</td>
+<td>{{t.reason_code}}</td>
+<td>{{t.message}}</td>
+<td>{{t.is_success}}</td>
+{% endfor %}
+</tr>
+</tbody>
+</table>
+</fieldset>
+{% endif %}
+
+<!-- Manually disable related objects forms -->
+<input type="hidden" name="payments-TOTAL_FORMS" value="0" id="id_payments-TOTAL_FORMS" /><input type="hidden" name="payments-INITIAL_FORMS" value="0" id="id_payments-INITIAL_FORMS" /><input type="hidden" name="payments-MAX_NUM_FORMS" id="id_payments-MAX_NUM_FORMS" />
+<input type="hidden" name="notes-TOTAL_FORMS" value="0" id="id_notes-TOTAL_FORMS" /><input type="hidden" name="notes-INITIAL_FORMS" value="0" id="id_notes-INITIAL_FORMS" /><input type="hidden" name="notes-MAX_NUM_FORMS" id="id_notes-MAX_NUM_FORMS" />
+<input type="hidden" name="items-TOTAL_FORMS" value="0" id="id_items-TOTAL_FORMS" /><input type="hidden" name="items-INITIAL_FORMS" value="0" id="id_items-INITIAL_FORMS" /><input type="hidden" name="items-MAX_NUM_FORMS" id="id_items-MAX_NUM_FORMS" />
+</form>
+{% endblock %}
+
+{% block after_field_sets %}{% endblock %}
+
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% include inline_admin_formset.opts.template %}
+{% endfor %}
+{% endblock %}
+
+{% for note in original.notes.all %}
+    <div class="module note {% if note.created_by.is_staff %}staff_note{% endif %}">
+        <h2>{% if note.created_by.first_name %}{{ note.created_by.first_name }}
+        {% else %}{{ note.created_by.username|capfirst }}{% endif %} 
+        wrote {{ note.created_at|timesince }} ago</h2>
+        <div class="note_content">{{ note.note }}</div>
+    </div>
+{% endfor %}
+
+{% block after_related_objects %}{% endblock %}
+
+{% if adminform and add %}
+   <script type="text/javascript">document.getElementById("{{ adminform.first_field.id_for_label }}").focus();</script>
+{% endif %}
+
+{# JavaScript for prepopulated fields #}
+{% prepopulated_fields_js %}
+
+</div>
+</div>
+{% endblock %}

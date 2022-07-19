@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load shop_tags shop_filters %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+    <link rel="stylesheet" href="{% static "admin/css/widgets.css" %}">
+    <style>
+    table {
+        width: 100%;
+    }
+    table thead th {
+        color: #666;
+        padding: 2px 5px;
+        font-size: 11px;
+        background: #E1E1E1 url({% static "admin/img/admin/nav-bg.gif" %}) top left repeat-x;
+        border-bottom: 1px solid #DDD;
+        text-align:left;
+        font-size: 12px;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="inline-group">
+  <div class="tabular inline-related">
+
+    <h2> Orders </h2>
+    <table>
+      <thead>
+        <tr>
+            <th>Orders</th>
+            <th></th>
+            <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        
+            <tr>
+                <td width="33%">
+                    <strong>Bill to:</strong><br>
+                    <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+                    {{ order.billing_address_1 }}, <br>
+                    {{ order.billing_city }}, {{ order.billing_province }} <br> 
+                    {{ order.billing_postal_code }}<br>
+                    {{ order.billing_country }}<br><br>
+                    Phone: {{ order.billing_phone|telephone }}<br>
+                </td>
+                <td width="33%">
+                    <strong>Ship to:</strong><br>
+                    <strong>{{ order.customer.first_name }} {{ order.customer.last_name }}</strong><br>
+                    {{ order.shipping_address_1 }}, <br>
+                    {{ order.shipping_city }}, {{ order.shipping_province }} <br> 
+                    {{ order.shipping_postal_code }}<br>
+                    {{ order.shipping_country }}<br><br>
+                    Phone: {{ order.shipping_phone|telephone }}<br>
+                </td>
+                <td width="34%" align="right" valign="top">
+                    <h1>Order #{{ order.id}}</h1>
+                    Date: {{ order.created_at|date:"d M, Y"}}<br>
+                    User: {{ order.customer }}<br>
+                    {% if order.po %}PO: {{ order.po }}<br>{% endif %}
+                </td>
+            </tr>
+        
+        {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ block.super }}
+<script>
+
+</script>
+{% endblock %}
+
+

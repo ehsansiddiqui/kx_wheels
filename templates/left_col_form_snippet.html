@@ -1,0 +1,12 @@
+{% for field in form.visible_fields %}
+    <div class="form_row{% if field.errors %} error{% endif %}">
+        <label for="{{ field.auto_id }}">
+            {{ field.label }}
+        </label>
+        {{ field }}
+    </div>
+{% endfor %}
+
+{% for field in form.invisible_fields %}
+    {{ field }}
+{% endfor %}

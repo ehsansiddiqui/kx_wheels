@@ -1,0 +1,58 @@
+{% extends "kx/base.html" %}
+{% load thumbnail kx_tags markdown_deux_tags %}
+
+{% block title %}{{ accessories }}{% endblock %}
+
+{% block meta_title %}{{ accessories.meta_title }}{% endblock %}
+{% block meta_keywords %}{{ accessories.meta_keywords }}{% endblock %}
+{% block meta_description %}{{ accessories.meta_description }}{% endblock %}
+
+{% block sidebar%}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>{{ accessories }}</h1>
+    </div>
+
+    <div class="grid_3">
+        {% if accessories.picture %}
+            {% thumbnail accessories.picture "125x80" as im %}
+                <img src="{{ im.url }}" alt="{{ accessories.name }}">
+            {% endthumbnail %}
+        {% endif %}
+    </div>
+    <div class="grid_13">
+
+    </div>
+
+    <div class="clear"></div><br />
+
+    <div class="grid_16">
+        {% include "kx/pagination.html"%}
+    </div>
+
+    {% for accessorie in accessories_list %}
+        <div class="grid_3">
+            <div class="block">
+                <a href="{{ accessorie.get_absolute_url }}">
+                    {% kxthumbnail accessorie.pictures.all.0 "med" as im %}
+                        {% if im.path %}
+                            <img src="{{ im.path }}" alt="{{ accessorie.name }}">
+                        {% else %}
+                            <img src="{{ MEDIA_URL }}media/ina.jpg" alt="{{ accessorie.name }}" width="125">
+                        {% endif %}
+                    {% endkxthumbnail %}
+                    {{ accessorie }}
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="clear"></div>
+
+    <div class="grid_16">
+        {% include "kx/pagination.html" %}
+    </div>
+    <div class="grid_16" style="font-size: 12px; line-height: 16px; padding-top: 10px; padding-bottom: 10px;">
+        {{ accessories.description|markdown:"safe" }}
+    </div>
+{% endblock %}

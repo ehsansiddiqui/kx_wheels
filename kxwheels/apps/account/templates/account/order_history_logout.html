@@ -1,0 +1,76 @@
+{% extends "account/base.html" %}
+{% load shop_filters %}
+
+{% block content %}
+
+    <div class="grid_16">
+
+        <h2>Order History</h2>
+
+        <table class="orders">
+            <tr>
+                <th>Date</th>
+                <th>Order No.</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Make</th>
+                <th>Year</th>
+                <th>Model</th>
+                <th>IP_Address</th>
+                <th>Name_Of_User</th>
+
+            </tr>
+            {{ item }}
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.created_at|truncatewords:1 }}</td>
+                    <td>{{ order.cart_id }}</td>
+                    <td>{{ order.price}}</td>
+                    <td>{{ order.status }}</td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.orderlogout_id = order.id %}
+                            <li>{{ item.product }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.orderlogout_id = order.id %}
+                            <li>{{ item.make }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                    <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.orderlogout_id = order.id %}
+                            <li>{{ item.year }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                      <td>
+                    <ol style="margin-left:15px;">
+                    {% for item in ordersproduct %}
+                        {% if item.orderlogout_id = order.id %}
+                            <li>{{ item.model }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                    </td>
+                    <!--<td>{{ order.product }}</td>-->
+                    <td>{{ order.ip_address}}</td>
+                    <td>{{ order.name }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="clear"></div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "kx/base.html" %}
+
+{% block title %}custom rims canada,custom wheels canada,custom rims for sale,wheel and tire packages,truck wheels,offroad wheels,tuner wheels,kx wheels canada{% endblock %}
+{% block meta_description %}KX Wheels is Canada’s leading online distributor of Rims,Wheels & Wheel and Tire Packages in Canada. We specialize in custom wheels,high performance tires,rims and auto mags.{% endblock %}
+{% block meta_keywords %}rims,custom wheels,rims in canada,wheels in canada,discount tires in canada,mags,tires and wheels Canada,wheel and tire packages,off-road wheels,discount wheels,truck wheels,staggered rims{% endblock %}
+
+{% load thumbnail %}
+
+{% block sidebar %}{% endblock %}
+
+{% block main_content %}
+    <div class="grid_16">
+        <h1>Brands</h1>
+    </div>
+
+    {% for manufacturer in manufacturer_list %}
+        <div class="grid_3">
+            <div class="block" style="height:200px; vertical-align:middle;">
+                
+                <table width="100%" height="100%" border="1" cellspacing="0" cellpadding="0" style="width:100%; height:100%">
+                    <tr>
+                        <td valign="middle" align="center" style="text-align:center; vertical-align:middle">
+                            <div class="container" align="center">
+                                    <a href="{{ manufacturer.get_absolute_url }}" style="display: table-cell; vertical-align: middle;">
+                                    {% thumbnail manufacturer.picture "125x80" as im %}
+                                        <img src="{{ im.url }}" alt="{{ wheel.name }}" class="image" style="width:100%">
+                                        {% if request.user.is_superuser %}
+                                        
+                                        <div class="middle">
+                                            <input type="button" class="text" data-id={{manufacturer.id}} data-href="{% url 'marked_as_featured' %}" value="Add to Featured Brand" />
+                                              </div>
+                                              {% endif %}
+                                    {% empty %}
+                                        <img src="/static/img/accord_honda_2013_wheel_lg.jpg" alt="Image Unavailable">
+                                        
+                                    {% endthumbnail %}
+                                    <br>
+                                    <span>{{ manufacturer }}</span>
+                                   
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" charset="utf-8">
+   
+   $('.text').click(function(){
+    var idf = $(this).attr('data-id');
+    var token = '{{csrf_token}}';
+   // alert(token);
+            $.ajax({
+                type:'POST',
+                url: $(this).attr('data-href'),
+                data: {id:idf,
+                csrfmiddlewaretoken: token},
+                dataType: "json",
+                async: false,
+                success: function(data) {
+                    alert(data.message);
+                },
+                error: function(data){
+                    alert("Feature Not Added ")
+                }
+                
+            });
+           // alert("Feature Added Sucessfully");
+            return false;
+            
+        });
+
+    </script>
+
+{% endblock %}

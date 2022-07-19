@@ -1,0 +1,50 @@
+from django.contrib import admin
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+from account.models import Profile, Dealer, Developer
+from account.forms import ProfileAdminForm
+from kx.models.tire import TireManufacturerDiscount, DealerTireManufacturerDiscount
+from kx.models.wheel import WheelManufacturerDiscount, DealerWheelManufacturerDiscount
+from shop.models import Order
+
+admin.site.unregister(User)
+
+class TireManufacturerDiscountInline(admin.TabularInline):
+    model = TireManufacturerDiscount
+    extra = 10
+
+class WheelManufacturerDiscountInline(admin.TabularInline):
+    model = WheelManufacturerDiscount
+    extra = 10
+
+class DealerTireManufacturerDiscountInline(admin.TabularInline):
+    model = DealerTireManufacturerDiscount
+    extra = 10
+
+class DealerWheelManufacturerDiscountInline(admin.TabularInline):
+    model = DealerWheelManufacturerDiscount
+    extra = 10
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    form = ProfileAdminForm
+
+class User(User):
+    def subdomains(self):
+        return 'stuff'
+
+class UserAdmin(UserAdmin):
+    change_list_template = 'admin/dealer_list.html'
+    inlines = (ProfileInline,TireManufacturerDiscountInline,WheelManufacturerDiscountInline,)
+    list_display = UserAdmin.list_display + ('dealer',)
+    def dealer(self, user):
+        orders = Order.objects.filter(customer=user,dealer__isnull=False)
+        if len(orders):
+            return orders[0].dealer
+    #list_filter = ('profiles__subdomain__isnull',)
+    
+from django.contrib.auth.models import User
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Dealer)
+admin.site.register(Developer)
