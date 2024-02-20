@@ -1,89 +1,84 @@
-name: Ubuntu
-on: [push, pull_request]
-jobs:
-  make:
-    strategy:
-      matrix:
-        test_task: [ "check", "test-bundler-parallel", "test-bundled-gems", "test-all TESTS=--repeat-count=2", "leaked-globals" ]
-        os:
-          - ubuntu-20.04
-#         - ubuntu-18.04
-#         - ubuntu-16.04
-        debug: ["", "-DRUBY_DEBUG"]
-        exclude:
-          - test_task: test-bundler-parallel
-            os: ubuntu-16.04
-          - test_task: test-bundled-gems
-            os: ubuntu-16.04
-          - test_task: "test-all TESTS=--repeat-count=2"
-            os: ubuntu-16.04
-          - test_task: leaked-globals
-            os: ubuntu-16.04
-          - os: ubuntu-16.04
-            debug: -DRUBY_DEBUG
-          - test_task: "test-all TESTS=--repeat-count=2"
-            debug: -DRUBY_DEBUG
-          - test_task: leaked-globals
-            debug: -DRUBY_DEBUG
-      fail-fast: false
-    env:
-      GITPULLOPTIONS: --no-tags origin ${{github.ref}}
-      RUBY_DEBUG: ci
-    runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
-    steps:
-      - run: mkdir build
-        working-directory:
-      - name: Install libraries
-        run: |
-          set -x
-          sudo apt-get update -q || :
-          sudo apt-get install --no-install-recommends -q -y build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev bison autoconf ruby
-      - name: git config
-        run: |
-          git config --global advice.detachedHead 0
-      - uses: actions/checkout@v2
-        with:
-          path: src
-      - name: Fixed world writable dirs
-        run: |
-          chmod -v go-w $HOME $HOME/.config
-          sudo chmod -R go-w /usr/share
-          sudo bash -c 'IFS=:; for d in '"$PATH"'; do chmod -v go-w $d; done' || :
-      - name: Set ENV
-        run: |
-          echo "JOBS=-j$((1 + $(nproc --all)))" >> $GITHUB_ENV
-      - run: autoconf
-        working-directory: src
-      - name: Run configure
-        run: ../src/configure -C --disable-install-doc cppflags=${{ matrix.debug }}
-      - run: make $JOBS incs
-      - run: make $JOBS
-      - run: make prepare-gems
-        if: matrix.test_task == 'check'
-      - name: Create dummy files in build dir
-        run: |
-          ./miniruby -e '(("a".."z").to_a+("A".."Z").to_a+("0".."9").to_a+%w[foo bar test zzz]).each{|basename|File.write("#{basename}.rb", "raise %(do not load #{basename}.rb)")}'
-        if: matrix.test_task == 'check'
-      - run: make $JOBS -s ${{ matrix.test_task }}
-        timeout-minutes: 30
-        env:
-          RUBY_TESTOPTS: "-q --tty=no"
-          TEST_BUNDLED_GEMS_ALLOW_FAILURES: ""
-      - uses: k0kubun/action-slack@v2.0.0
-        with:
-          payload: |
-            {
-              "ci": "GitHub Actions",
-              "env": "${{ matrix.os }} / ${{ matrix.test_task }}${{ matrix.debug }}",
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "commit": "${{ github.sha }}",
-              "branch": "${{ github.ref }}".split('/').reverse()[0]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SIMPLER_ALERTS_URL }} # ruby-lang slack: ruby/simpler-alerts-bot
-        if: failure() && github.event_name == 'push'
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
+name: "CodeQL"
 
-defaults:
-  run:
-    working-directory: build
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '30 17 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze
+    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
+    #   - https://gh.io/supported-runners-and-hardware-resources
+    #   - https://gh.io/using-larger-runners
+    # Consider using larger runners for possible analysis time improvements.
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript-typescript', 'python' ]
+        # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
+        # Use only 'java-kotlin' to analyze code written in Java, Kotlin or both
+        # Use only 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+
+        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # queries: security-extended,security-and-quality
+
+
+    # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
+    # If this step fails, then you should remove it and run the build manually (see below)
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+
+    #   If the Autobuild fails above, remove it and uncomment the following three lines.
+    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+
+    # - run: |
+    #     echo "Run, Build Application using script"
+    #     ./location_of_script_within_repo/buildscript.sh
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
